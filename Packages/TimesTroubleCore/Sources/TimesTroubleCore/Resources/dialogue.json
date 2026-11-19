@@ -1,0 +1,270 @@
+{
+"line_366b0470": {
+"speaker": "narrator",
+"scene": "intro",
+"text": "One sunny morning on Rainbow Island…"
+},
+"line_a4f03612": {
+"speaker": "otter",
+"scene": "intro",
+"text": "Ta-da! Mosey, meet the Tick-Tock Times Machine!"
+},
+"line_0f445d4e": {
+"speaker": "mosey",
+"scene": "intro",
+"text": "Otter, it's a bathtub."
+},
+"line_271727a5": {
+"speaker": "otter",
+"scene": "intro",
+"text": "A bathtub that travels through time! It runs on times tables."
+},
+"line_a74947d0": {
+"speaker": "mosey",
+"scene": "intro",
+"text": "Could it take us back to the dinosaurs? Mosasaurs swam in the sea back then."
+},
+"line_702c458b": {
+"speaker": "otter",
+"scene": "intro",
+"text": "Your great-great-great… great-grandma! Answer three sums to wind it up!"
+},
+"line_2dac9fba": {
+"speaker": "narrator",
+"scene": "intro",
+"text": "Whoosh! Back, back, back… sixty-six million years!"
+},
+"line_078cca1a": {
+"speaker": "narrator",
+"scene": "intro",
+"text": "CLANG! The Times Machine crash-landed and burst into six pieces!"
+},
+"line_c7fb4afd": {
+"speaker": "mosey",
+"scene": "intro",
+"text": "Otter, the parts flew off in every direction."
+},
+"line_4766ee49": {
+"speaker": "otter",
+"scene": "intro",
+"text": "No parts, no machine. No machine, no way home!"
+},
+"line_1f9ce060": {
+"speaker": "narrator",
+"scene": "intro",
+"text": "Then, not very far away, something very big went ROAR."
+},
+"line_a566a553": {
+"speaker": "mosey",
+"scene": "intro",
+"text": "That was a T-Rex."
+},
+"line_a0885e7c": {
+"speaker": "otter",
+"scene": "intro",
+"text": "How do you know?"
+},
+"line_9dddfe45": {
+"speaker": "mosey",
+"scene": "intro",
+"text": "Because it's a lot closer now."
+},
+"line_dd51ea74": {
+"speaker": "otter",
+"scene": "intro",
+"text": "Let's find those parts. Quickly!"
+},
+"line_bf7cf9c8": {
+"speaker": "otter",
+"scene": "workshop",
+"text": "Back to Crash Camp! Time to fit the part."
+},
+"line_39830939": {
+"speaker": "mosey",
+"scene": "workshop",
+"text": "Every bolt has to go in just the right place. Let's count carefully."
+},
+"line_479d54ab": {
+"speaker": "otter",
+"scene": "workshop",
+"text": "It fits! Listen to it tick!"
+},
+"line_7e59777c": {
+"speaker": "mosey",
+"scene": "workshop",
+"text": "One step closer to home."
+},
+"line_821832a9": {
+"speaker": "otter",
+"scene": "help",
+"text": "Hey, don't worry! Why don't you ask a grown-up for some help?"
+},
+"line_85b7cf61": {
+"speaker": "mosey",
+"scene": "help",
+"text": "This one's a bit tricky. How about asking a grown-up to help us?"
+},
+"line_b00136d4": {
+"speaker": "otter",
+"scene": "help",
+"text": "You're trying really hard! Shall we get a grown-up to help with this one?"
+},
+"line_1ae1971d": {
+"speaker": "mosey",
+"scene": "help",
+"text": "Even the best explorers ask for help. Why don't you find a grown-up?"
+},
+"line_09890bc9": {
+"speaker": "mosey",
+"scene": "hollow-1",
+"text": "Look at all these eggs, Otter. They're about to hatch!"
+},
+"line_1555d6bd": {
+"speaker": "otter",
+"scene": "hollow-1",
+"text": "Answer the sums and they'll pop open!"
+},
+"line_4f75473b": {
+"speaker": "mosey",
+"scene": "hollow-1",
+"text": "Gently. They're only babies."
+},
+"line_906273ed": {
+"speaker": "otter",
+"scene": "hollow-1",
+"text": "Baby dinosaurs! They think I'm their mum."
+},
+"line_e0a3e45b": {
+"speaker": "mosey",
+"scene": "hollow-1",
+"text": "You do have the right hair."
+},
+"line_49b803dd": {
+"speaker": "maia",
+"scene": "hollow-2",
+"text": "HONK! Who's that sniffing round my nest?"
+},
+"line_8b02452e": {
+"speaker": "otter",
+"scene": "hollow-2",
+"text": "Run, Mosey! Pick the path with the right answer!"
+},
+"line_f2bf47f9": {
+"speaker": "mosey",
+"scene": "hollow-2",
+"text": "Right answers make us faster. Go, go, go!"
+},
+"line_e1326e47": {
+"speaker": "otter",
+"scene": "hollow-2",
+"text": "We lost her! I think."
+},
+"line_c3b19f01": {
+"speaker": "mosey",
+"scene": "hollow-2",
+"text": "She's gone back to sit on something shiny."
+},
+"line_175fd3b2": {
+"speaker": "mosey",
+"scene": "hollow-3",
+"text": "This stream is too fast to swim, even for me."
+},
+"line_d2c0d36c": {
+"speaker": "otter",
+"scene": "hollow-3",
+"text": "Then we'll hop across on the stones with the right numbers!"
+},
+"line_0772ed76": {
+"speaker": "mosey",
+"scene": "hollow-3",
+"text": "Count carefully. Splashing is not a plan."
+},
+"line_c1b92584": {
+"speaker": "otter",
+"scene": "hollow-3",
+"text": "Dry feet! Well, mostly."
+},
+"line_1c6a9c96": {
+"speaker": "otter",
+"scene": "hollow-4",
+"text": "Shh! Mama Maia is fast asleep on her nest."
+},
+"line_3b7610d7": {
+"speaker": "mosey",
+"scene": "hollow-4",
+"text": "And look what she's sitting on. Our Cog!"
+},
+"line_7f790986": {
+"speaker": "otter",
+"scene": "hollow-4",
+"text": "Each right answer is one tiptoe closer. Quietly!"
+},
+"line_c86ba7e2": {
+"speaker": "mosey",
+"scene": "hollow-4",
+"text": "She's sitting right on top of it."
+},
+"line_809f0f22": {
+"speaker": "otter",
+"scene": "hollow-4",
+"text": "Then we'll have to be brave. And quick."
+},
+"line_5e92f8e7": {
+"speaker": "maia",
+"scene": "hollow-5",
+"text": "HONK! You again! Stay away from my shiny egg!"
+},
+"line_6a436791": {
+"speaker": "otter",
+"scene": "hollow-5",
+"text": "It's not an egg! It's part of our time machine!"
+},
+"line_68985ed0": {
+"speaker": "mosey",
+"scene": "hollow-5",
+"text": "Answer quickly, Otter. Here she comes!"
+},
+"line_c7aab85e": {
+"speaker": "otter",
+"scene": "hollow-5",
+"text": "One part back. Five to go!"
+},
+"line_e5230e5c": {
+"speaker": "mosey",
+"scene": "hollow-5",
+"text": "And not a single egg was harmed."
+},
+"line_388c0ed7": {
+"speaker": "maia",
+"scene": "hollow-5",
+"text": "Shoo! Shoo! Nobody touches my shiny egg!"
+},
+"line_13b9a7cb": {
+"speaker": "maia",
+"scene": "hollow-5",
+"text": "Still here? Oh, my poor nerves! Off you go, you little rascals!"
+},
+"line_3443dcae": {
+"speaker": "maia",
+"scene": "hollow-5",
+"text": "Wait. Since when do eggs go tick-tock?"
+},
+"line_c5ae80fc": {
+"speaker": "otter",
+"scene": "hollow-5",
+"text": "Mama Maia, it isn't an egg. It's the Cog from our time machine!",
+"mood": "befriended"
+},
+"line_798a3507": {
+"speaker": "maia",
+"scene": "hollow-5",
+"text": "Oh my. Oh dear. I've been keeping a cog warm all week!",
+"mood": "befriended"
+},
+"line_1af87b78": {
+"speaker": "maia",
+"scene": "hollow-5",
+"text": "Here, take it, dears. And come back when my real babies hatch!",
+"mood": "befriended"
+}
+}

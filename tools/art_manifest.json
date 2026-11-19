@@ -1,0 +1,417 @@
+{
+ "styles": {
+  "sprite": "Art style: premium children's storybook video-game art, soft painterly cel shading, clean confident dark-brown outlines, rounded friendly shapes, gentle rim light, rich saturated colours. Full subject visible and centred with generous empty margin on every side. Fully transparent background, no ground, no cast shadow, no text, no border.",
+  "scene": "Art style: premium children's storybook video-game background, soft painterly rendering, rich saturated colours, gentle atmospheric depth, soft lighting, rounded friendly shapes. No characters, no animals, no text, no logos, no borders.",
+  "scene_with_characters": "Art style: premium children's storybook video-game art, soft painterly cel shading, rich saturated colours, soft lighting.",
+  "logo": "Art style: premium children's video-game logo, glossy, bold and friendly. Fully transparent background, no scenery, no characters, no extra words.",
+  "icon": "Art style: premium children's storybook video-game icon, soft painterly cel shading, clean confident dark-brown outlines, rounded chunky friendly shapes, glossy highlights, rich saturated colours, bold simple silhouette that reads clearly at small size. One single subject, centred, with generous empty margin on every side. Fully transparent background, no ground, no cast shadow, no text, no letters, no numbers, no border.",
+  "badge": "Art style: premium children's storybook video-game reward sticker, soft painterly cel shading, clean confident dark-brown outlines, glossy highlights, rich saturated colours. A single round sticker badge with a thick cream scalloped rim, centred, with generous empty margin on every side. Fully transparent background, no ground, no cast shadow, no text, no letters, no numbers."
+ },
+ "assets": [
+  {
+   "name": "otter_ref",
+   "refs": [
+    "tools/reference/otter_photo.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Turn this plush toy into a 2D cartoon game hero called Otter: a lovable, mischievous brown river otter. Keep the toy's identity: deep chocolate-brown curly fluffy fur, a wide cream muzzle and cream tummy, a big shiny black nose, small rounded ears, chunky short arms and legs. Give him large expressive friendly dark eyes with bright highlights, cute whiskers, a long thick otter tail, and a teal adventurer's scarf tied round his neck. No t-shirt. He stands upright on two feet in a relaxed happy pose, three-quarter view facing right, whole body visible, warm cheeky smile."
+  },
+  {
+   "name": "mosey_ref",
+   "refs": [
+    "tools/reference/mosey_photo.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Redraw this plush toy as ONE single 2D cartoon character illustration (one figure only: not a character sheet, no extra poses, no labels, no scenery, no water). He is a cute, friendly male mosasaur, a prehistoric sea reptile (not a land dinosaur, whale, shark or dolphin). Keep the toy's identity: bright ocean-blue body, a soft pale-grey bobbly frill running along his back and a second frill along his side, pale turquoise belly, golden-amber eyes, exactly four long paddle-shaped swimming flippers edged with pale frill, and a long aquatic tail ending in a fluke. Rounded friendly snout, gentle closed-mouth smile with small neat white pointed teeth with slightly rounded tips peeking out along the edge of his upper jaw (he is a mosasaur), still warm and friendly, never fierce, large expressive eyes with bright highlights and no eyelashes, a slightly bold brow, a cheeky boyish grin, and nothing round his neck. Relaxed floating pose, side-on three-quarter view with his head pointing to the RIGHT of the picture, whole body including tail and all four flippers visible.",
+   "note": "tools/raw/mosey_ref.png (and mosey_idle.png) is the approved Option A of docs/art-proposals/mosey-teeth/ (option_a.png), itself an edit of the earlier approved 'Option A' from docs/art-proposals/mosey-boy/."
+  },
+  {
+   "name": "machine_whole",
+   "quality": "high",
+   "prompt": "The Tick-Tock Times Machine: a funny home-made time machine. It is an old white clawfoot bathtub on four little cart wheels, with a big round brass dial showing the numbers 1 to 12 bolted on the front like a dashboard, a large brass cog wheel on its side, a coiled copper spring sticking up at the back, a red three-bladed propeller on a pole on top, a shiny brass bell on the rim, and at the back its heart: the Times Core, a carved wooden cuckoo-clock box with a softly glowing rainbow crystal shard in its little window. Cheerful, ramshackle and lovable, three-quarter view facing right, whole machine visible. The machine is empty and parked: no driver, no characters, no animals.",
+   "note": "M2 look check. First take had an otter driving it; regenerated empty so the parts and wreck can be drawn from it."
+  },
+  {
+   "name": "machine_wrecked",
+   "refs": [
+    "tools/raw/machine_whole.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "This is the time machine. Draw exactly the same machine in the same art style, but crash-landed and broken, funny rather than sad: the bathtub tipped slightly on its side with a dent, one wheel off, and the dial, the cog wheel, the spring, the propeller, the bell and the cuckoo-clock Times Core all missing, leaving only empty brackets, loose bolts and a few stray wires. A small puff of smoke. One object only."
+  },
+  {
+   "name": "part_cog",
+   "refs": [
+    "tools/raw/machine_whole.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same art style as the reference time machine. Show just one part of it, alone, as a single game collectable: the large brass cog wheel, shiny, seen straight on."
+  },
+  {
+   "name": "part_spring",
+   "refs": [
+    "tools/raw/machine_whole.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same art style as the reference time machine. Show just one part of it, alone, as a single game collectable: the coiled copper spring, bouncy and shiny."
+  },
+  {
+   "name": "part_propeller",
+   "refs": [
+    "tools/raw/machine_whole.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same art style as the reference time machine. Show just one part of it, alone, as a single game collectable: the red three-bladed propeller with its little brass hub."
+  },
+  {
+   "name": "part_bell",
+   "refs": [
+    "tools/raw/machine_whole.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same art style as the reference time machine. Show just one part of it, alone, as a single game collectable: the shiny brass bell."
+  },
+  {
+   "name": "part_dial",
+   "refs": [
+    "tools/raw/machine_whole.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same art style as the reference time machine. Show just one part of it, alone, as a single game collectable: the big round brass dial with the numbers 1 to 12 and one pointer."
+  },
+  {
+   "name": "part_core",
+   "refs": [
+    "tools/raw/machine_whole.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same art style as the reference time machine. Show just one part of it, alone, as a single game collectable: the Times Core: the carved wooden cuckoo-clock box with the softly glowing rainbow crystal shard in its little window."
+  },
+  {
+   "name": "otter_scared",
+   "refs": [
+    "tools/raw/otter_ref.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "This is Otter. Draw exactly the same character: same chocolate-brown curly fur, cream muzzle and tummy, big black nose, whiskers, teal scarf, same proportions and art style. One figure only. New pose: startled in a funny cartoon way, as if a big dinosaur has just roared nearby: fur standing on end, eyes wide, mouth open in a yelp, both arms up, leaning back."
+  },
+  {
+   "name": "otter_fix",
+   "refs": [
+    "tools/raw/otter_ref.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "This is Otter. Draw exactly the same character: same chocolate-brown curly fur, cream muzzle and tummy, big black nose, whiskers, teal scarf, same proportions and art style. One figure only. New pose: proudly fixing something: holding a big steel spanner in one paw, a smudge of oil on his cheek, a pair of brass time-traveller goggles pushed up on his forehead, determined happy grin."
+  },
+  {
+   "name": "mosey_scared",
+   "refs": [
+    "tools/raw/mosey_ref.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "This is Mosey the mosasaur. Draw exactly the same character (a boy): same ocean-blue body, pale-grey bobbly frills along back and side, turquoise belly, golden-amber eyes with no eyelashes, small neat white pointed teeth with slightly rounded tips peeking out along the edge of his upper jaw, four frill-edged flippers, tail fluke, nothing round his neck, same proportions and art style. One figure only. Head pointing to the right. New pose: startled in a funny cartoon way, as if a big dinosaur has just roared nearby: eyes very wide, frills standing up, mouth open in a gulp, front flippers raised."
+  },
+  {
+   "name": "mosey_dash",
+   "refs": [
+    "tools/raw/mosey_ref.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "This is Mosey the mosasaur. Draw exactly the same character (a boy): same ocean-blue body, pale-grey bobbly frills along back and side, turquoise belly, golden-amber eyes with no eyelashes, small neat white pointed teeth with slightly rounded tips peeking out along the edge of his upper jaw, four frill-edged flippers, tail fluke, nothing round his neck, same proportions and art style. One figure only. New pose: hurrying along on dry land as fast as he can towards the right, flippers flapping and body wiggling like a seal, glancing back over his shoulder with a worried grin."
+  },
+  {
+   "name": "duo_machine",
+   "refs": [
+    "tools/raw/otter_ref.png",
+    "tools/raw/mosey_ref.png",
+    "tools/raw/machine_whole.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "size": "1536x1024",
+   "prompt": "These are Otter (brown otter with teal scarf), Mosey (a boy: blue mosasaur with pale-grey frills, no eyelashes and nothing round his neck) and their bathtub time machine. Draw exactly these three together as one isolated sticker-style sprite in the same art style: Otter sits at the front of the bathtub steering, wearing brass goggles, and Mosey is squeezed into the tub behind him with his tail hanging over the side; both are cheering as the machine whooshes along towards the right, propeller spinning. Mosey is much bigger than Otter. Only the machine and the two characters: no scenery, no sky, no ground."
+  },
+  {
+   "name": "boss_maia",
+   "quality": "high",
+   "prompt": "A big funny video-game boss dinosaur, comical and lovable, never scary: rounded chunky shapes, big expressive eyes, no sharp claws on show. One figure only, whole body visible. Side view facing LEFT: her head is at the LEFT end of her body with her duck bill pointing to the LEFT, and her long thick tail stretches out to the right. She looks where she is going, never back over her shoulder. Mama Maia, a plump, motherly Maiasaura: a hadrosaur, the duck-billed plant-eating dinosaur, with a SHORT thick neck, sturdy hind legs much bigger than her front legs, standing on all fours with her head up. Soft sage-green skin, cream belly and pale freckle spots, a wide flat duck bill, a small bony crest above her eyes, big eyes with long eyelashes. She is fussy and flustered: eyebrows raised, a worried 'oh my!' expression, one front foot lifted.",
+   "note": "Regenerated so every Maia pose faces one way with her head at the front (the first set had her head turned backwards)."
+  },
+  {
+   "name": "boss_maia_chase",
+   "refs": [
+    "tools/raw/boss_maia.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same character and art style as the reference, same colours, markings and proportions, same size. One figure only. Keep her facing LEFT exactly like the reference: head and bill at the left end of her body, tail to the right, looking where she is going, never back over her shoulder. New pose: bustling forward to the LEFT in a fluster to chase someone away from her nest, bill wide open in a loud honk, eyes narrowed crossly, little dust puffs behind her feet. Comical, never frightening."
+  },
+  {
+   "name": "boss_maia_happy",
+   "refs": [
+    "tools/raw/boss_maia.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same character and art style as the reference, same colours, markings and proportions, same size. One figure only. Keep her facing LEFT exactly like the reference: head and bill at the left end of her body, tail to the right, looking where she is going, never back over her shoulder. New pose: beaming with relief and gratitude, eyes closed in a big warm smile, cheeks flushed, a couple of small hearts floating above her head."
+  },
+  {
+   "name": "boss_trevor",
+   "quality": "high",
+   "prompt": "A big funny video-game boss dinosaur, comical and lovable, never scary: rounded chunky shapes, big expressive eyes, no sharp claws on show. One figure only, whole body visible, facing left towards the viewer's left. Trevor, a chunky, grumpy Triceratops standing on all four legs: warm orange-brown skin with darker stripes on his back, a big neck frill edged in yellow, exactly three horns (two long ones above the eyes and a short one on his nose), bushy grumpy eyebrows and a coiled copper spring stuck on one of his horns, which he is cross about."
+  },
+  {
+   "name": "boss_trevor_chase",
+   "refs": [
+    "tools/raw/boss_trevor.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same character and art style as the reference, same colours, markings and proportions, same size and facing the same way. One figure only. New pose: charging forward with his head lowered and horns pointing ahead, snorting two little puffs of steam from his nostrils, grumpy frown, the spring still stuck on his horn. Comical, never frightening."
+  },
+  {
+   "name": "boss_trevor_happy",
+   "refs": [
+    "tools/raw/boss_trevor.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same character and art style as the reference, same colours, markings and proportions, same size and facing the same way. One figure only. The spring is gone from his horn at last and he is delighted: a huge happy open-mouthed smile, eyes bright and crinkled with joy, eyebrows raised high (no frown at all), one front foot lifted in a friendly wave.",
+   "note": "First take kept his frown and lost the transparent background."
+  },
+  {
+   "name": "bg_hollow",
+   "quality": "high",
+   "size": "1536x1024",
+   "background": "opaque",
+   "style": "scene",
+   "prompt": "Wide side-view game background. Keep the middle band of the picture open and uncluttered for gameplay, with the ground along the bottom fifth. Hatchling Hollow, in the time of the dinosaurs: a sunny, sheltered prehistoric valley with giant ferns and cycads, soft mossy ground, big round nests of twigs holding speckled dinosaur eggs, a gentle stream, and a smoking volcano far away on the horizon. Warm morning light, friendly and inviting."
+  },
+  {
+   "name": "bg_meadow",
+   "quality": "high",
+   "size": "1536x1024",
+   "background": "opaque",
+   "style": "scene",
+   "prompt": "Wide side-view game background. Keep the middle band of the picture open and uncluttered for gameplay, with the ground along the bottom fifth. Three-Horn Meadow, in the time of the dinosaurs: a wide, rolling prehistoric meadow of long grass and wildflowers with tall horsetail plants, a few monkey-puzzle trees, rocky outcrops, a winding dirt trail and huge fluffy clouds. Bright, breezy midday light."
+  },
+  {
+   "name": "logo",
+   "quality": "high",
+   "size": "1536x1024",
+   "style": "logo",
+   "prompt": "A playful video-game title logo that reads exactly: 'Otter & Mosey' on the top line in big chunky rounded letters, and 'T-Rex Times Trouble' beneath in smaller bold letters on a curved ribbon. Warm cream and golden letters with a thick dark-teal outline, a small brass clock cog, a fern leaf and a few dinosaur footprints as decoration. Spelling must be exact."
+  },
+  {
+   "name": "bg_map",
+   "quality": "high",
+   "size": "1536x1024",
+   "background": "opaque",
+   "style": "scene",
+   "prompt": "A stylised illustrated adventure map of a prehistoric valley seen from high above, like a painted board-game map: soft green plains, patches of giant ferns, a winding blue river, sandy paths, rocky hills around the edges, a misty swamp in one corner and a smoking volcano far off in another, gentle cloud shadows. The centre is an open grassy clearing. No buildings, no characters, no animals, no text, no compass."
+  },
+  {
+   "name": "island_hollow",
+   "quality": "high",
+   "prompt": "A tiny game world-map location seen from a high three-quarter angle: one small round chunk of prehistoric land with a grassy, rocky rim, nothing around it, no characters, no animals. Hatchling Hollow: a sheltered dip full of giant ferns with three big twig nests holding speckled dinosaur eggs."
+  },
+  {
+   "name": "island_meadow",
+   "quality": "high",
+   "prompt": "A tiny game world-map location seen from a high three-quarter angle: one small round chunk of prehistoric land with a grassy, rocky rim, nothing around it, no characters, no animals. Three-Horn Meadow: long grass and wildflowers, a few monkey-puzzle trees and a rocky outcrop."
+  },
+  {
+   "name": "island_swamp",
+   "quality": "high",
+   "prompt": "A tiny game world-map location seen from a high three-quarter angle: one small round chunk of prehistoric land with a grassy, rocky rim, nothing around it, no characters, no animals. Spiky Swamp: a murky green pool with lily pads, tall horsetail reeds and a few spiky plants."
+  },
+  {
+   "name": "island_peaks",
+   "quality": "high",
+   "prompt": "A tiny game world-map location seen from a high three-quarter angle: one small round chunk of prehistoric land with a grassy, rocky rim, nothing around it, no characters, no animals. Pterodactyl Peaks: tall jagged rocky spires with a big twig nest on the highest peak, wisps of cloud."
+  },
+  {
+   "name": "island_ridge",
+   "quality": "high",
+   "prompt": "A tiny game world-map location seen from a high three-quarter angle: one small round chunk of prehistoric land with a grassy, rocky rim, nothing around it, no characters, no animals. Raptor Ridge: a dark rocky ridge with a small smoking volcano and glowing orange cracks."
+  },
+  {
+   "name": "island_rex",
+   "quality": "high",
+   "prompt": "A tiny game world-map location seen from a high three-quarter angle: one small round chunk of prehistoric land with a grassy, rocky rim, nothing around it, no characters, no animals. T-Rex Territory: a dramatic dark jungle clearing with giant footprints pressed into the mud and broken tree stumps."
+  },
+  {
+   "name": "bg_camp",
+   "quality": "high",
+   "size": "1536x1024",
+   "background": "opaque",
+   "style": "scene",
+   "prompt": "Wide side-view game background. Keep the middle band of the picture open and uncluttered for gameplay, with the ground along the bottom fifth. Crash Camp, in the time of the dinosaurs: a cosy little clearing ringed by giant ferns, with a small tent, a workbench made from a log with a few tools on it, a coil of rope, and a gentle campfire glow. Late afternoon light, homely and calm."
+  },
+  {
+   "name": "fg_hollow",
+   "quality": "high",
+   "size": "1536x1024",
+   "prompt": "A foreground layer for a side-scrolling game, drawn as an isolated strip: content ONLY along the bottom quarter of the picture, spanning the full width edge to edge; the upper three quarters are completely empty. Slightly darker and softer than a normal sprite because it sits closest to the camera. The strip shows lush prehistoric ferns, mossy rocks and a few small speckled eggshell pieces."
+  },
+  {
+   "name": "fg_camp",
+   "quality": "high",
+   "size": "1536x1024",
+   "prompt": "A foreground layer for a side-scrolling game, drawn as an isolated strip: content ONLY along the bottom quarter of the picture, spanning the full width edge to edge; the upper three quarters are completely empty. Slightly darker and softer than a normal sprite because it sits closest to the camera. The strip shows soft ferns, a few logs, scattered brass bolts and a coil of rope."
+  },
+  {
+   "name": "reward_pet-pip",
+   "style": "icon",
+   "prompt": "An adorable chubby baby Maiasaura (a duck-billed dinosaur) in soft sage green with a cream tummy, a tiny flat duck bill and big happy eyes, sitting up and waving."
+  },
+  {
+   "name": "reward_pet-nubbin",
+   "style": "icon",
+   "prompt": "An adorable chubby baby Triceratops in warm orange with a little yellow-edged frill and three tiny stubby horns, big happy eyes, trotting happily."
+  },
+  {
+   "name": "reward_hat-goggles",
+   "style": "icon",
+   "prompt": "A pair of brass time-traveller goggles with round green-tinted lenses on a brown leather strap, with a tiny clock cog on the side."
+  },
+  {
+   "name": "reward_deco-campfire",
+   "style": "icon",
+   "prompt": "A cosy little campfire of crossed logs ringed with stones, with friendly flames and a few sparks."
+  },
+  {
+   "name": "boss_maia_sleep",
+   "refs": [
+    "tools/raw/boss_maia.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same character and art style as the reference, same colours, markings and proportions, same size. One figure only. Keep her facing LEFT exactly like the reference: head and bill at the left end of her body, tail to the right, looking where she is going, never back over her shoulder. New pose: fast asleep, snuggled down on a big round nest of twigs with her head resting at the LEFT end of the nest, eyes closed, mouth slightly open in a snore, with a big shiny brass cog wheel peeking out from under her tummy among the twigs. Cosy and funny."
+  },
+  {
+   "name": "stone",
+   "style": "icon",
+   "prompt": "One flat, rounded river stepping stone seen from slightly above, grey with soft mossy green patches and a little sparkle of water at its edge."
+  },
+  {
+   "name": "bolt",
+   "style": "icon",
+   "prompt": "One shiny chunky brass bolt with a hexagonal head, standing upright."
+  },
+  {
+   "name": "bone",
+   "style": "icon",
+   "prompt": "One single chunky cartoon dinosaur bone, cream coloured with a soft brown outline, lying diagonally."
+  },
+  {
+   "name": "fossil_1",
+   "quality": "high",
+   "prompt": "A cartoon dinosaur fossil skeleton for a children's museum game: a complete, chunky, friendly skeleton made of smooth cream-coloured bones with soft brown outlines, standing in side view facing right, whole skeleton visible, no stand, no base, no labels. It is the skeleton of a tiny Compsognathus, a small, light two-legged dinosaur with a long tail."
+  },
+  {
+   "name": "fossil_2",
+   "quality": "high",
+   "prompt": "A cartoon dinosaur fossil skeleton for a children's museum game: a complete, chunky, friendly skeleton made of smooth cream-coloured bones with soft brown outlines, standing in side view facing right, whole skeleton visible, no stand, no base, no labels. It is the skeleton of a Pteranodon with its two big wings spread wide and a long pointed head crest."
+  },
+  {
+   "name": "fossil_3",
+   "quality": "high",
+   "prompt": "A cartoon dinosaur fossil skeleton for a children's museum game: a complete, chunky, friendly skeleton made of smooth cream-coloured bones with soft brown outlines, standing in side view facing right, whole skeleton visible, no stand, no base, no labels. It is the skeleton of a Triceratops with its big bony frill and exactly three horns."
+  },
+  {
+   "name": "fossil_4",
+   "quality": "high",
+   "prompt": "A cartoon dinosaur fossil skeleton for a children's museum game: a complete, chunky, friendly skeleton made of smooth cream-coloured bones with soft brown outlines, standing in side view facing right, whole skeleton visible, no stand, no base, no labels. It is the skeleton of a Stegosaurus with tall back plates and exactly four tail spikes."
+  },
+  {
+   "name": "fossil_5",
+   "quality": "high",
+   "prompt": "A cartoon dinosaur fossil skeleton for a children's museum game: a complete, chunky, friendly skeleton made of smooth cream-coloured bones with soft brown outlines, standing in side view facing right, whole skeleton visible, no stand, no base, no labels. It is the skeleton of an Ankylosaurus with its wide armoured body and a heavy club on the end of its tail."
+  },
+  {
+   "name": "fossil_6",
+   "quality": "high",
+   "prompt": "A cartoon dinosaur fossil skeleton for a children's museum game: a complete, chunky, friendly skeleton made of smooth cream-coloured bones with soft brown outlines, standing in side view facing right, whole skeleton visible, no stand, no base, no labels. It is the skeleton of a Parasaurolophus with its long curved head crest, standing on its back legs."
+  },
+  {
+   "name": "fossil_7",
+   "quality": "high",
+   "prompt": "A cartoon dinosaur fossil skeleton for a children's museum game: a complete, chunky, friendly skeleton made of smooth cream-coloured bones with soft brown outlines, standing in side view facing right, whole skeleton visible, no stand, no base, no labels. It is the skeleton of a Brachiosaurus with its very long neck reaching up high."
+  },
+  {
+   "name": "fossil_8",
+   "quality": "high",
+   "prompt": "A cartoon dinosaur fossil skeleton for a children's museum game: a complete, chunky, friendly skeleton made of smooth cream-coloured bones with soft brown outlines, standing in side view facing right, whole skeleton visible, no stand, no base, no labels. It is the skeleton of a Spinosaurus with its tall sail of spines along its back."
+  },
+  {
+   "name": "fossil_9",
+   "quality": "high",
+   "prompt": "A cartoon dinosaur fossil skeleton for a children's museum game: a complete, chunky, friendly skeleton made of smooth cream-coloured bones with soft brown outlines, standing in side view facing right, whole skeleton visible, no stand, no base, no labels. It is the skeleton of a Diplodocus with its very long neck and very long whip-like tail."
+  },
+  {
+   "name": "fossil_10",
+   "quality": "high",
+   "prompt": "A cartoon dinosaur fossil skeleton for a children's museum game: a complete, chunky, friendly skeleton made of smooth cream-coloured bones with soft brown outlines, standing in side view facing right, whole skeleton visible, no stand, no base, no labels. It is the skeleton of a Velociraptor, small and quick, with its big curved toe claws."
+  },
+  {
+   "name": "fossil_11",
+   "quality": "high",
+   "prompt": "A cartoon dinosaur fossil skeleton for a children's museum game: a complete, chunky, friendly skeleton made of smooth cream-coloured bones with soft brown outlines, standing in side view facing right, whole skeleton visible, no stand, no base, no labels. It is the skeleton of an Iguanodon with its thumb spikes, standing on its back legs."
+  },
+  {
+   "name": "fossil_12",
+   "quality": "high",
+   "prompt": "A cartoon dinosaur fossil skeleton for a children's museum game: a complete, chunky, friendly skeleton made of smooth cream-coloured bones with soft brown outlines, standing in side view facing right, whole skeleton visible, no stand, no base, no labels. It is the skeleton of a mighty Tyrannosaurus rex with its big head, strong jaws and famously tiny arms."
+  },
+  {
+   "name": "otter_munch",
+   "refs": [
+    "tools/raw/otter_ref.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "This is Otter. Draw exactly the same character: same chocolate-brown curly fur, cream muzzle and tummy, big black nose, whiskers, teal scarf, same proportions and art style. One figure only. New pose: happily eating a big juicy red berry, holding it in both paws up at his mouth with a bite taken out, cheeks puffed out as he chews, eyes squeezed shut with delight."
+  },
+  {
+   "name": "otter_yum",
+   "refs": [
+    "tools/raw/otter_ref.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "This is Otter. Draw exactly the same character: same chocolate-brown curly fur, cream muzzle and tummy, big black nose, whiskers, teal scarf, same proportions and art style. One figure only. New pose: has just finished a tasty snack: licking his lips with a little pink tongue, eyes closed blissfully, one paw patting his round full tummy, very contented."
+  },
+  {
+   "name": "mosey_munch",
+   "refs": [
+    "tools/raw/mosey_ref.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "This is Mosey the mosasaur. Draw exactly the same character (a boy): same ocean-blue body, pale-grey bobbly frills along back and side, turquoise belly, golden-amber eyes with no eyelashes, small neat white pointed teeth with slightly rounded tips peeking out along the edge of his upper jaw, four frill-edged flippers, tail fluke, nothing round his neck, same proportions and art style. One figure only. Head pointing to the right. New pose: happily munching a big juicy red berry held in his mouth, cheeks puffed out as he chews, eyes squeezed shut with delight, front flippers raised happily."
+  },
+  {
+   "name": "mosey_yum",
+   "refs": [
+    "tools/raw/mosey_ref.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "This is Mosey the mosasaur. Draw exactly the same character (a boy): same ocean-blue body, pale-grey bobbly frills along back and side, turquoise belly, golden-amber eyes with no eyelashes, small neat white pointed teeth with slightly rounded tips peeking out along the edge of his upper jaw, four frill-edged flippers, tail fluke, nothing round his neck, same proportions and art style. One figure only. Head pointing to the right. New pose: has just finished a tasty snack: licking his lips with a little pink tongue, eyes closed blissfully, a contented happy smile, one flipper patting his tummy."
+  }
+ ]
+}

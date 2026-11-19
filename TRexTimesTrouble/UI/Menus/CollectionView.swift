@@ -1,0 +1,308 @@
+import TimesTroubleCore
+import SwiftUI
+
+/// Everything the player has collected: crystals, pets and hats. Trophies have their own cabinet.
+struct CollectionView: View {
+    @Environment(AppModel.self) private var model
+    @State private var tab = 0
+    @State private var showingPhoto = false
+    private let tabs = [("⚙️", "Parts"), ("🐾", "Pets"), ("🎩", "Hats")]
+
+    var body: some View {
+        GeometryReader { geometry in
+            let compact = geometry.size.height < 480
+            ZStack {
+                VStack(spacing: compact ? 6 : 14) {
+                    HStack(spacing: 8) {
+                        RoundButton(symbol: "chevron.left", label: "Back to map") { model.route = .map }
+                        Spacer()
+                        ForEach(tabs.indices, id: \.self) { index in
+                            Button(action: tapped { tab = index }) { IconLabel(tabs[index].1, emoji: tabs[index].0, size: compact ? 15 : 20) }
+                                .buttonStyle(ChunkyButtonStyle(fill: tab == index ? Palette.gold : Palette.cream, size: compact ? 15 : 20))
+                        }
+                        Spacer()
+                    }
+                    ScrollView {
+                        content(compact: compact).padding(compact ? 10 : 20)
+                    }
+                    .panel(fill: Palette.cream.opacity(0.96))
+                }
+                .padding(compact ? 8 : 24)
+                if showingPhoto { GroupPhotoViewer { showingPhoto = false } }
+            }
+            .screenBackground("bg_camp", blur: 8, dim: 0.4)
+            .environment(\.compact, compact)
+        }
+    }
+
+    @ViewBuilder private func content(compact: Bool) -> some View {
+        let profile = model.profile
+        let columns = [GridItem(.adaptive(minimum: compact ? 130 : 170), spacing: 12)]
+        switch tab {
+        case 0:
+            LazyVGrid(columns: columns, spacing: 12) {
+                ForEach(model.catalog.islands) { island in
+                    let found = profile?.crystals.contains(island.id) ?? false
+                    tile(compact: compact, title: island.partName, subtitle: found ? "Won back from \(island.guardian.name)!" : "Still missing…", earned: found) {
+                        Image("part_\(island.part)").resizable().scaledToFit().saturation(found ? 1 : 0).opacity(found ? 1 : 0.35)
+                    }
+                }
+                // The group photo from the finale, once every part is back. Tapping it plays the ending again.
+                if let profile, profile.crystals.count == model.catalog.islands.count {
+                    Button(action: tapped { showingPhoto = true }) {
+                        tile(compact: compact, title: "Group photo", subtitle: "Tap to look at it", earned: true) {
+                            Image("bg_ending").resizable().aspectRatio(1.5, contentMode: .fill)
+                                .frame(width: compact ? 66 : 96, height: compact ? 44 : 64).clipped()
+                                .padding(3).padding(.bottom, 4).background(.white)
+                                .shadow(color: .black.opacity(0.3), radius: 3, y: 2)
+                                .rotationEffect(.degrees(-3))
+                        }
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        case 1: rewardGrid(.pet, columns: columns, compact: compact)
+        default: rewardGrid(.accessory, columns: columns, compact: compact)
+        }
+    }
+
+    private func rewardGrid(_ kind: RewardKind, columns: [GridItem], compact: Bool) -> some View {
+        let profile = model.profile
+        return LazyVGrid(columns: columns, spacing: 12) {
+            ForEach(model.catalog.rewards.filter { $0.kind == kind }) { reward in
+                let owned = profile?.has(reward.id) ?? false
+                let worn = profile?.equippedAccessory == reward.id
+                Button(action: tapped {
+                    guard owned, kind == .accessory else { return }
+                    model.update { $0.wear(worn ? nil : reward.id) }
+                }) {
+                    tile(compact: compact, title: owned ? reward.name : "???",
+                         subtitle: !owned ? "Keep exploring to find it" : (kind == .accessory ? (worn ? "Both wearing it! Tap to take off" : "Tap for both to wear") : "Your friend"),
+                         earned: owned, highlight: worn) {
+                        Glyph(reward.emoji, size: compact ? 50 : 70, art: reward.art).saturation(owned ? 1 : 0).opacity(owned ? 1 : 0.25)
+                    }
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
+
+    private func tile<Icon: View>(compact: Bool, title: String, subtitle: String, earned: Bool, highlight: Bool = false, @ViewBuilder icon: () -> Icon) -> some View {
+        VStack(spacing: 4) {
+            icon().frame(height: compact ? 50 : 70)
+            Text(title).font(.game(compact ? 14 : 18)).foregroundStyle(Palette.ink).multilineTextAlignment(.center).lineLimit(2).minimumScaleFactor(0.7)
+            Text(subtitle).font(.game(compact ? 11 : 13, weight: .bold)).foregroundStyle(Palette.ink.opacity(0.6)).multilineTextAlignment(.center).lineLimit(2).minimumScaleFactor(0.7)
+        }
+        .padding(10)
+        .frame(maxWidth: .infinity, minHeight: compact ? 118 : 160)
+        .background(RoundedRectangle(cornerRadius: 16).fill(highlight ? Palette.gold.opacity(0.6) : (earned ? .white : .white.opacity(0.5)))
+            .overlay(RoundedRectangle(cornerRadius: 16).strokeBorder(Palette.ink.opacity(earned ? 1 : 0.3), lineWidth: 3)))
+    }
+}
+
+/// The home island, which the player decorates with things earned on the adventure.
+struct HomeIslandView: View {
+    @Environment(AppModel.self) private var model
+    @State private var dragging: UUID?
+    /// The last quick tap on a decoration, so a second one soon after puts it away.
+    @State private var lastTap: (id: UUID, time: Date)?
+
+    var body: some View {
+        GeometryReader { geometry in
+            let compact = geometry.size.height < 480
+            let itemSize: CGFloat = compact ? 54 : 84 * ScreenMetrics.scale(geometry)
+            ZStack {
+                // Pets the player has rescued wander along the beach.
+                ForEach(Array(pets.enumerated()), id: \.element.id) { index, pet in
+                    Glyph(pet.emoji, size: itemSize * 0.85, art: pet.art)
+                        .position(x: geometry.size.width * (0.12 + 0.76 * Double(index) / Double(max(pets.count - 1, 1))), y: geometry.size.height * (index.isMultiple(of: 2) ? 0.8 : 0.72))
+                }
+                ForEach(model.profile?.decorations ?? []) { placed in
+                    if let reward = model.catalog.reward(placed.reward) {
+                        Glyph(reward.emoji, size: itemSize * 1.25, art: reward.art)
+                            .scaleEffect(dragging == placed.id ? 1.2 : 1)
+                            .position(x: placed.x * geometry.size.width, y: placed.y * geometry.size.height)
+                            // One gesture does both, because a drag that starts on touch-down swallows the
+                            // taps a separate double-tap would need: a real drag moves the decoration,
+                            // and two quick taps that barely move put it away.
+                            .gesture(DragGesture(minimumDistance: 0)
+                                .onChanged { value in
+                                    guard hypot(value.translation.width, value.translation.height) > 6 else { return }
+                                    dragging = placed.id
+                                    move(placed.id, to: value.location, in: geometry.size, persist: false)
+                                }
+                                .onEnded { value in
+                                    dragging = nil
+                                    guard hypot(value.translation.width, value.translation.height) > 6 else {
+                                        tap(placed.id)
+                                        return
+                                    }
+                                    move(placed.id, to: value.location, in: geometry.size, persist: true)
+                                })
+                    }
+                }
+                // The trophy cabinet stands at the camp too.
+                Button(action: tapped { model.openTrophies() }) {
+                    VStack(spacing: 2) {
+                        Image("trophy_cabinet").resizable().scaledToFit().frame(height: itemSize * 2)
+                        Text("Trophies").font(.game(compact ? 12 : 16)).foregroundStyle(Palette.ink)
+                            .padding(.horizontal, 10).padding(.vertical, 2).panel(radius: 10)
+                    }
+                }
+                .buttonStyle(.plain)
+                .position(x: geometry.size.width * 0.88, y: geometry.size.height * 0.4)
+                .accessibilityLabel("Trophy cabinet")
+                VStack {
+                    // Everything sits along the top, so the ground is free for decorations.
+                    HStack(alignment: .top, spacing: 10) {
+                        RoundButton(symbol: "chevron.left", label: "Back to map") { model.route = .map }
+                        VStack(spacing: 2) {
+                            Text("Crash Camp").font(.game(compact ? 22 : 32)).foregroundStyle(Palette.ink)
+                            Text("Tap to add. Drag to move. Double-tap to put away.")
+                                .font(.game(compact ? 11 : 14, weight: .bold)).foregroundStyle(Palette.ink.opacity(0.7))
+                        }
+                        .padding(.horizontal, 14).padding(.vertical, 6).panel(radius: 18)
+                        .fixedSize()
+                        Spacer(minLength: 0)
+                    }
+                    // The decorations in a row of their own, scrolling sideways when there are lots.
+                    HStack {
+                        Spacer(minLength: 0)
+                        ScrollView(.horizontal, showsIndicators: false) { decorationTray(compact: compact) }
+                            .fixedSize(horizontal: false, vertical: true)
+                            .frame(maxWidth: geometry.size.width * 0.8)
+                    }
+                    Spacer()
+                }
+                .padding(compact ? 8 : 24)
+            }
+            .screenBackground("bg_camp")
+        }
+    }
+
+    /// The decorations earned so far, ready to add.
+    private func decorationTray(compact: Bool) -> some View {
+        HStack(spacing: compact ? 6 : 10) {
+                        ForEach(decorations) { reward in
+                            Button(action: tapped { add(reward) }) {
+                                Glyph(reward.emoji, size: compact ? 38 : 52, art: reward.art)
+                                    .frame(width: compact ? 52 : 68, height: compact ? 52 : 68)
+                                    .background(Circle().fill(.white).overlay(Circle().strokeBorder(Palette.ink, lineWidth: 3)))
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel("Add \(reward.name)")
+                        }
+        }
+        .padding(.horizontal, compact ? 8 : 14).padding(.vertical, compact ? 6 : 8)
+        .panel(fill: Palette.cream.opacity(0.95))
+    }
+
+    private var pets: [Reward] {
+        model.catalog.rewards.filter { $0.kind == .pet && (model.profile?.has($0.id) ?? false) }
+    }
+
+    private var decorations: [Reward] {
+        model.catalog.rewards.filter { $0.kind == .decoration && (model.profile?.has($0.id) ?? false) }
+    }
+
+    private func add(_ reward: Reward) {
+        model.update { profile in
+            guard profile.decorations.count < 24 else { return }
+            profile.decorations.append(PlacedDecoration(reward: reward.id, x: .random(in: 0.25...0.75), y: .random(in: 0.65...0.88)))
+        }
+        AudioManager.shared.play(.pop, volume: 0.6)
+    }
+
+    /// A second quick tap on the same decoration puts it away.
+    private func tap(_ id: UUID) {
+        if let last = lastTap, last.id == id, Date().timeIntervalSince(last.time) < 0.45 {
+            lastTap = nil
+            model.update { $0.decorations.removeAll { $0.id == id } }
+            AudioManager.shared.play(.pop, volume: 0.5)
+        } else {
+            lastTap = (id, Date())
+        }
+    }
+
+    private func move(_ id: UUID, to point: CGPoint, in size: CGSize, persist: Bool) {
+        let x = min(max(point.x / size.width, 0.04), 0.96), y = min(max(point.y / size.height, 0.22), 0.94)
+        model.update { profile in
+            guard let index = profile.decorations.firstIndex(where: { $0.id == id }) else { return }
+            profile.decorations[index].x = x
+            profile.decorations[index].y = y
+        }
+    }
+}
+
+/// Sound and accessibility options for the grown-ups area.
+struct SettingsOverlay: View {
+    @Environment(AppModel.self) private var model
+
+    var body: some View {
+        GeometryReader { geometry in
+            let compact = geometry.size.height < 480
+            ZStack {
+                Color.black.opacity(0.55).ignoresSafeArea().onTapGesture { model.showSettings = false }
+                VStack(spacing: compact ? 6 : 14) {
+                    HStack {
+                        Text("Settings").font(.game(compact ? 26 : 36)).foregroundStyle(Palette.ink)
+                        Spacer()
+                        RoundButton(symbol: "xmark", size: 50, label: "Close") { model.showSettings = false }
+                    }
+                    ScrollView {
+                        SettingsControls(compact: compact)
+                    }
+                }
+                .padding(compact ? 14 : 28)
+                .frame(maxWidth: 720, maxHeight: geometry.size.height * 0.94)
+                .panel()
+                .padding(10)
+            }
+        }
+    }
+}
+
+/// The shared sound and accessibility controls, used by Settings and the parent area.
+struct SettingsControls: View {
+    var compact: Bool
+    @Environment(AppModel.self) private var model
+
+    var body: some View {
+        let settings = Binding(get: { model.settings }, set: { model.settings = $0 })
+        VStack(spacing: compact ? 6 : 12) {
+            slider("Music", "music.note", value: settings.musicVolume)
+            slider("Sounds", "bell.fill", value: settings.effectsVolume)
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: compact ? 250 : 300), spacing: 10)], spacing: compact ? 6 : 10) {
+                toggle("Mute everything", "speaker.slash.fill", settings.muted)
+                toggle("Read questions aloud", "text.bubble.fill", settings.spokenInstructions)
+                toggle("Character voices", "person.wave.2.fill", settings.characterVoices)
+                toggle("Read every sum word for word", "waveform", settings.deviceVoice)
+                toggle("Vibration", "iphone.radiowaves.left.and.right", settings.haptics)
+                toggle("Calmer motion", "tortoise.fill", settings.reducedMotion)
+                toggle("High contrast", "circle.lefthalf.filled", settings.highContrast)
+                toggle("Easy-read text", "textformat.size", settings.easyReadFont)
+            }
+        }
+    }
+
+    private func slider(_ title: String, _ symbol: String, value: Binding<Double>) -> some View {
+        HStack {
+            Label(title, systemImage: symbol).font(.game(compact ? 17 : 22)).foregroundStyle(Palette.ink).frame(width: compact ? 130 : 170, alignment: .leading)
+            Slider(value: value, in: 0...1) { editing in
+                if !editing { AudioManager.shared.play(.correct) }
+            }
+            .tint(Palette.teal)
+            .frame(minHeight: 44)
+        }
+    }
+
+    private func toggle(_ title: String, _ symbol: String, _ value: Binding<Bool>) -> some View {
+        Toggle(isOn: value) {
+            Label(title, systemImage: symbol).font(.game(compact ? 16 : 20, weight: .bold)).foregroundStyle(Palette.ink)
+        }
+        .tint(Palette.teal)
+        .padding(.horizontal, 12)
+        .frame(minHeight: 48)
+        .background(RoundedRectangle(cornerRadius: 14).fill(.white.opacity(0.7)))
+    }
+}

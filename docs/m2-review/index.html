@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M2 Look and Sound</title>
+<style>
+  :root {
+    --bg: #f6f1e4; --panel: #fffdf6; --ink: #2f2418; --muted: #6d5c49; --line: #e2d7c0; --accent: #c8642c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #1d1914; --panel: #29231c; --ink: #f3ead9; --muted: #b9a88f; --line: #40362a; --accent: #ef9a5d; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 28px; margin: 0 0 4px; }
+  h2 { font-size: 20px; margin: 40px 0 8px; }
+  p.lede { color: var(--muted); margin: 0 0 24px; }
+  img.sheet { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); background: #f6f1e4; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+  .card h3 { margin: 0 0 2px; font-size: 16px; }
+  .card p { margin: 0 0 8px; color: var(--muted); font-size: 14px; }
+  audio { width: 100%; }
+  ol li { margin-bottom: 8px; }
+  code { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>T-Rex Times Trouble: M2 look and sound check</h1>
+  <p class="lede">Everything new from milestone M2, for you to approve before more is made. All art is already in the app's asset catalogue; the sounds and narration are in the app bundle. Images: OpenAI (gpt-image-2.5), $1.41 in all. Sound and voices: ElevenLabs.</p>
+
+  <h2>Decisions for you</h2>
+  <ol>
+    <li><strong>Mama Maia's voice:</strong> pick preview 1, 2 or 3 (below), or ask for another round. Preview ids expire after a while, so a pick soon avoids designing again.</li>
+    <li><strong>Trevor's voice:</strong> pick 1, 2 or 3. Preview 3 measured lowest (closest to "gruff"); 1 and 2 measured surprisingly high, so listen for whether they suit him.</li>
+    <li><strong>The look:</strong> the Times Machine, the two dinosaurs and the backgrounds set the style for the other four zones. Anything to change before M3?</li>
+    <li><strong>The T-Rex roar:</strong> is it fierce-but-fun, or too much (or too little) for your children?</li>
+  </ol>
+
+  <h2>Characters, machine and dinosaurs</h2>
+  <img class="sheet" src="contact-sheet-sprites.jpg" alt="Contact sheet: the Times Machine whole and crashed, its six parts, new Otter and Mosey poses, and Mama Maia and Trevor in three poses each">
+
+  <h2>Scenes</h2>
+  <img class="sheet" src="contact-sheet-scenes.jpg" alt="Otter and Mosey riding the Times Machine, the Hatchling Hollow background and the Three-Horn Meadow background">
+
+  <h2>Roars and sound effects</h2>
+  <div class="grid">
+    <div class="card"><h3>Mama Maia's honk</h3><p>Roar Rating 1: flustered, not fierce.</p><audio controls preload="none" src="audio/roar_maia.m4a"></audio></div>
+    <div class="card"><h3>Trevor's snort and grumble</h3><p>Roar Rating 2.</p><audio controls preload="none" src="audio/roar_trevor.m4a"></audio></div>
+    <div class="card"><h3>T-Rex roar</h3><p>Roar Rating MAX: big but theatrical.</p><audio controls preload="none" src="audio/roar_rex.m4a"></audio></div>
+    <div class="card"><h3>Dinosaur stomps</h3><p>For chasers getting closer.</p><audio controls preload="none" src="audio/stomp.m4a"></audio></div>
+    <div class="card"><h3>Times Machine starting</h3><p>The opening whoosh back in time.</p><audio controls preload="none" src="audio/machine_whirr.m4a"></audio></div>
+    <div class="card"><h3>Crash landing</h3><p>The machine bursts into six parts.</p><audio controls preload="none" src="audio/machine_crash.m4a"></audio></div>
+  </div>
+
+  <h2>Mama Maia: voice previews</h2>
+  <div class="grid">
+    <div class="card"><h3>Preview 1</h3><p>Median pitch 340 Hz.</p><audio controls preload="none" src="audio/design_maia_1.mp3"></audio></div>
+    <div class="card"><h3>Preview 2</h3><p>Median pitch 390 Hz.</p><audio controls preload="none" src="audio/design_maia_2.mp3"></audio></div>
+    <div class="card"><h3>Preview 3</h3><p>Median pitch 340 Hz.</p><audio controls preload="none" src="audio/design_maia_3.mp3"></audio></div>
+  </div>
+
+  <h2>Trevor: voice previews</h2>
+  <div class="grid">
+    <div class="card"><h3>Preview 1</h3><p>Median pitch 314 Hz.</p><audio controls preload="none" src="audio/design_trevor_1.mp3"></audio></div>
+    <div class="card"><h3>Preview 2</h3><p>Median pitch 296 Hz.</p><audio controls preload="none" src="audio/design_trevor_2.mp3"></audio></div>
+    <div class="card"><h3>Preview 3</h3><p>Median pitch 121 Hz.</p><audio controls preload="none" src="audio/design_trevor_3.mp3"></audio></div>
+  </div>
+
+  <h2>New narration (Alice, same voice as Lost Islands)</h2>
+  <p class="lede">217 new clips: every 1, 6, 7, 9, 11 and 12 times-table fact as a product, a missing number and a division, plus "Find the missing number." Three samples:</p>
+  <div class="grid">
+    <div class="card"><h3>"9 times 7."</h3><audio controls preload="none" src="audio/narration_mul_7x9.mp3"></audio></div>
+    <div class="card"><h3>"What times 12 makes 132?"</h3><audio controls preload="none" src="audio/narration_mulq_12x11.mp3"></audio></div>
+    <div class="card"><h3>"48 divided by 6."</h3><audio controls preload="none" src="audio/narration_div_6x8.mp3"></audio></div>
+  </div>
+</main>
+</body>
+</html>

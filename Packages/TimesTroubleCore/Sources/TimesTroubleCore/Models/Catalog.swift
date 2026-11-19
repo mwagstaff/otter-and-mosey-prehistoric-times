@@ -1,0 +1,238 @@
+import Foundation
+
+public enum GameMode: String, Codable, CaseIterable, Sendable {
+    case mathsSplash, bridgeBuilder, eggRescue, guardian, dinoDash, tiptoe
+
+    public var title: String {
+        switch self {
+        case .mathsSplash: "Swamp Swim"
+        case .bridgeBuilder: "Stepping Stones"
+        case .eggRescue: "Egg Hatch"
+        case .guardian: "Big Escape"
+        case .dinoDash: "Dino Dash"
+        case .tiptoe: "Tiptoe Past"
+        }
+    }
+}
+
+/// How a mode lets a child answer.
+public enum AnswerInput: Sendable {
+    /// Tap one of a few answers placed in the scene.
+    case pick
+    /// Either: a choice of answers while a fact is new, the number pad once it is getting there.
+    case pickOrType
+}
+
+extension GameMode {
+    public var answers: AnswerInput { self == .eggRescue || self == .tiptoe ? .pickOrType : .pick }
+}
+
+public enum Speaker: String, Codable, Sendable {
+    case otter, mosey, guardian, narrator
+}
+
+/// One line of dialogue. Stored in JSON as `"o:Hello!"` (o, m, g or n).
+public struct DialogueLine: Codable, Equatable, Sendable {
+    public let speaker: Speaker
+    public let text: String
+
+    public init(speaker: Speaker, text: String) {
+        self.speaker = speaker
+        self.text = text
+    }
+
+    public init(from decoder: Decoder) throws {
+        let raw = try decoder.singleValueContainer().decode(String.self)
+        let parts = raw.split(separator: ":", maxSplits: 1).map(String.init)
+        guard parts.count == 2 else {
+            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Dialogue needs a speaker prefix: \(raw)"))
+        }
+        switch parts[0] {
+        case "o": speaker = .otter
+        case "m": speaker = .mosey
+        case "g": speaker = .guardian
+        default: speaker = .narrator
+        }
+        text = parts[1]
+    }
+
+    private var prefix: String {
+        switch speaker {
+        case .otter: "o"
+        case .mosey: "m"
+        case .guardian: "g"
+        case .narrator: "n"
+        }
+    }
+
+    /// The recorded clip for this line. Every speaker is voiced; story lines are read by the
+    /// question narrator.
+    /// The key is a 32-bit FNV-1a hash of "speaker:text", matching tools/build_content.py.
+    public var audioKey: String? {
+        var hash: UInt32 = 0x811C_9DC5
+        for byte in "\(prefix):\(text)".utf8 {
+            hash = (hash ^ UInt32(byte)) &* 0x0100_0193
+        }
+        return "line_" + String(hash, radix: 16).leftPadded(to: 8)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        let prefix = switch speaker {
+        case .otter: "o"
+        case .mosey: "m"
+        case .guardian: "g"
+        case .narrator: "n"
+        }
+        try container.encode("\(prefix):\(text)")
+    }
+}
+
+extension String {
+    func leftPadded(to length: Int) -> String {
+        String(repeating: "0", count: max(0, length - count)) + self
+    }
+}
+
+public struct LevelDef: Codable, Equatable, Identifiable, Sendable {
+    public let id: String
+    public let title: String
+    public let mode: GameMode
+    public let skills: [Skill]
+    /// How many questions the level asks.
+    public let count: Int
+    public let intro: [DialogueLine]
+    public let outro: [DialogueLine]
+    /// Reward id granted the first time the level is cleared.
+    public let reward: String?
+    public let blurb: String
+}
+
+public struct GuardianDef: Codable, Equatable, Sendable {
+    public let name: String
+    public let kind: String
+    /// What the guardian says at the start of each phase.
+    public let phases: [DialogueLine]
+    public let befriended: [DialogueLine]
+}
+
+public struct Island: Codable, Equatable, Identifiable, Sendable {
+    public let id: String
+    public let name: String
+    public let tagline: String
+    public let focus: String
+    /// Hex colour of this zone, e.g. `#7BC86C`.
+    public let colour: String
+    /// How fierce the boss is, 1 (fussy) to 6 (the T-Rex), shown on the map.
+    public let roar: Int
+    /// The Times Machine part won back here (`cog`, `spring` …) and its name.
+    public let part: String
+    public let partName: String
+    /// False for a zone still to be built: it shows as "Coming soon".
+    public let ready: Bool
+    public let guardian: GuardianDef
+    public let levels: [LevelDef]
+}
+
+public enum RewardKind: String, Codable, Sendable {
+    case pet, accessory, decoration
+}
+
+public struct Reward: Codable, Equatable, Identifiable, Sendable {
+    public let id: String
+    public let kind: RewardKind
+    public let name: String
+    public let emoji: String
+}
+
+/// All bundled level definitions and story text.
+public struct Catalog: Codable, Sendable {
+    public let islands: [Island]
+    public let rewards: [Reward]
+    public let intro: [DialogueLine]
+    public let introAfter: [DialogueLine]
+    /// Kind suggestions from Otter or Mosey to fetch a grown-up when a child keeps getting stuck.
+    public let askGrownUp: [DialogueLine]
+    /// The script for the end-of-game celebration.
+    public var finale: Finale? = nil
+    /// What Otter and Mosey say in the Fix-It Workshop after each Big Escape.
+    public var workshop: Workshop? = nil
+
+    public struct Workshop: Codable, Sendable {
+        public let intro: [DialogueLine]
+        public let done: [DialogueLine]
+    }
+
+    /// What is said in the finale. Nothing spoken uses the player's name, so every line is
+    /// recorded once; the name only appears as on-screen text.
+    public struct Finale: Codable, Sendable {
+        public let opening: [DialogueLine]
+        /// One thank-you from each guardian, keyed by island id.
+        public let guardians: [String: DialogueLine]
+        public let thanks: [DialogueLine]
+        public let photo: [DialogueLine]
+        /// Otter counting down to the photo: three, two, one.
+        public let countdown: [DialogueLine]?
+        public let after: [DialogueLine]
+    }
+
+    public static let shared: Catalog = {
+        do {
+            guard let url = Bundle.module.url(forResource: "islands", withExtension: "json") else {
+                throw CocoaError(.fileNoSuchFile)
+            }
+            return try JSONDecoder().decode(Catalog.self, from: Data(contentsOf: url))
+        } catch {
+            assertionFailure("Bundled catalogue failed to load: \(error)")
+            return Catalog(islands: [], rewards: [], intro: [], introAfter: [], askGrownUp: [])
+        }
+    }()
+
+    /// Every voiced dialogue line: clip key to speaker, scene and text.
+    public struct VoicedLine: Codable, Equatable, Sendable {
+        public let speaker: String
+        public let scene: String
+        public let text: String
+        /// Set to "befriended" for a guardian's lines after it has been won over.
+        public let mood: String?
+    }
+
+    public static let voicedLines: [String: VoicedLine] = {
+        guard let url = Bundle.module.url(forResource: "dialogue", withExtension: "json"),
+              let data = try? Data(contentsOf: url),
+              let lines = try? JSONDecoder().decode([String: VoicedLine].self, from: data)
+        else { return [:] }
+        return lines
+    }()
+
+    public var allLevels: [LevelDef] { islands.flatMap(\.levels) }
+
+    public func level(_ id: String) -> LevelDef? { allLevels.first { $0.id == id } }
+
+    public func island(_ id: String) -> Island? { islands.first { $0.id == id } }
+
+    /// Which zone (0-based, in map order) a level belongs to.
+    public func zoneIndex(of levelID: String) -> Int? {
+        islands.firstIndex { $0.levels.contains { $0.id == levelID } }
+    }
+
+    public func island(containing levelID: String) -> Island? {
+        islands.first { $0.levels.contains { $0.id == levelID } }
+    }
+
+    public func reward(_ id: String) -> Reward? { rewards.first { $0.id == id } }
+
+    /// The level that follows `levelID` on the same island, if any.
+    public func nextLevel(after levelID: String) -> LevelDef? {
+        guard let island = island(containing: levelID),
+              let index = island.levels.firstIndex(where: { $0.id == levelID }),
+              index + 1 < island.levels.count
+        else { return nil }
+        return island.levels[index + 1]
+    }
+
+    /// Decorations everyone starts with or earns from star totals: (stars needed, reward id).
+    public static let starDecorations: [(stars: Int, reward: String)] = [
+        (0, "deco-palm"), (6, "deco-fountain"), (20, "deco-castle"), (45, "deco-tent"),
+    ]
+}

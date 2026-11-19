@@ -1,0 +1,430 @@
+# Otter & Mosey: T-Rex Times Trouble — game plan
+
+Status: **plan only, nothing built yet.** The four main design decisions are confirmed (section 13);
+smaller open questions are collected at the end.
+
+A native iOS and iPadOS game for UK children aged about 7–9 that teaches **times tables and the
+matching division facts**. Every question in the game is a times-tables question; the adventure is
+the wrapper. Landscape only, iOS / iPadOS 26+, fully offline, no accounts, adverts or purchases.
+A web version follows once the iOS game is finished.
+
+---
+
+## 1. The pitch
+
+Otter has built a time machine out of a bathtub, an alarm clock and a cuckoo clock. It is called
+the **Tick-Tock Times Machine**, because it runs on times tables. Mosey wants to see where he comes
+from: mosasaurs swam the seas at the same time T-Rex walked the land, 66 million years ago. They
+set the dials, whoosh back in time… and crash. The machine bursts into six parts that fly off
+across the valley. Somewhere close by, something very big **ROARS**.
+
+To get home they have to win back each part from a different dinosaur, starting with the gentle
+ones and finishing with the fiercest of all: **the T-Rex**. Each dinosaur turns out to have a
+funny reason for being cross, and the friends escape first and make peace afterwards, so the game
+is exciting without ever being frightening.
+
+Running jokes: Mosey keeps telling everyone he is *not* a dinosaur ("I'm a mosasaur!"), and so do
+the pteranodons ("We're pterosaurs, actually!"). Otter is still always hungry.
+
+### Tone rules
+
+- Dinosaurs are fierce in a cartoon way: big roars, stomps, chases. Nobody is ever hurt or eaten.
+- When a dinosaur catches up, something silly happens (it sneezes, sniffs Otter's sandwich, licks
+  Mosey) and the chase carries on. **A level can never be failed.**
+- Every boss ends with the misunderstanding cleared up and a new friend made (Lost Islands style).
+- A grown-up setting, **Gentle dinosaurs**, softens roars, removes screen shake and slows chasers
+  for sensitive children.
+
+### Story beats
+
+| Beat | What happens |
+| --- | --- |
+| Opening (Rainbow Island) | Reuses the Lost Islands title beach and music. Otter shows off the machine (powered by a leftover sliver of the Rainbow Crystal, reusing `crystal_shard`). One-question tutorial: wind the clock with an easy fact. |
+| The crash | Time-travel whoosh, sputter, CRASH. Six parts fly off. A distant roar. Mosey: "That was a T-Rex." Otter: "How do you know?" Mosey: "Because it's a lot closer now." Run! |
+| Each zone | Four escape levels, then a **Big Escape** from the zone's boss dinosaur, who has the machine part. |
+| Back at Crash Camp | A short calm **Fix-It Workshop**: fit the part using arrays and fact families. The machine visibly rebuilds, piece by piece, on the map. |
+| Finale | The T-Rex chases them through its territory. The twist: the last part, the **Times Core**, landed on his back, its ticking itches, and his tiny arms can't reach it. Otter climbs up, unhooks it and gives him the scratch of his life. Everyone gathers for a group photo (reuses the Lost Islands finale and group-photo screens), then the friends whoosh home. |
+
+---
+
+## 2. Zones and dinosaurs: easy to fierce
+
+Six zones, each with a **Roar Rating** shown on the map as footprints (1–5, then "MAX"). The
+dinosaurs get bigger, louder and faster, and the music more urgent, as the rating climbs.
+
+| # | Zone | Boss dinosaur (Roar Rating) | Part they have, and why they're cross | Default tables (Year 3) |
+| --- | --- | --- | --- | --- |
+| 1 | **Hatchling Hollow** | Mama Maia the Maiasaura (1): a fussy mum, not fierce at all | The **Cog**. She's sitting on it, convinced it's one of her eggs. | ×2, ×5, ×10 (warm-up from Year 2) |
+| 2 | **Three-Horn Meadow** | Trevor the Triceratops (2): grumpy, snorts and charges | The **Spring**, stuck on his middle horn. Three horns for the 3s. | ×3 |
+| 3 | **Spiky Swamp** | Steggy the Stegosaurus (3): swings a spiked tail | The **Propeller**, spinning on one of her four tail spikes. Four spikes for the 4s. Mosey gets to swim. | ×4 ("double the 2s") |
+| 4 | **Pterodactyl Peaks** | The Swoop Squad, a pteranodon flock (4): dive-bombing thieves | The shiny **Bell**, now in their nest. | ×8 ("double, double, double") |
+| 5 | **Raptor Ridge** | The Snatch Pack, velociraptors (5): fast, clever, feathery ("They're like angry chickens!") | The **Dial**. They're playing keep-away with it. | ÷ facts for 3, 4 and 8, plus mixed review |
+| 6 | **T-Rex Territory** | Rex the Tyrannosaurus (MAX) | The **Times Core** (see the finale). | Everything chosen, mixed |
+
+Spinosaurus, Ankylosaurus, Parasaurolophus, Brachiosaurus and baby dinosaurs appear as background
+characters, minor chasers and pets.
+
+**When a grown-up changes the tables**, zones keep their story but their table focus is
+recalculated: the chosen tables are put in a sensible difficulty order (10, 2, 5, 11, 3, 4, 9, 6,
+8, 12, 7), shared across zones 1–5, and zone 6 mixes everything. If only one table is chosen, every
+zone uses it, moving from plain facts to missing numbers, division and word problems.
+
+### Levels
+
+- Each zone: **4 levels + 1 Big Escape = 5 starred levels**, so **30 levels** in total (the same
+  size as Lost Islands). Confirmed.
+- After each Big Escape: an unstarred **Fix-It Workshop** interlude (3–4 calm puzzles).
+- About **10 questions a level** (boss: 9, in three phases of 3) so a level takes 3–5 minutes.
+
+---
+
+## 3. Learning design
+
+### Default: UK Year 3
+
+The national curriculum asks Year 3 to *recall and use multiplication and division facts for the 3,
+4 and 8 times tables*, building on 2, 5 and 10 from Year 2. Default settings:
+
+- **Focus tables:** ×3, ×4, ×8. **Review tables:** ×2, ×5, ×10.
+- **Multiply by:** 1 to 12.
+- **Question types:** multiplication, missing number, division, counting in multiples, word problems.
+
+Year 4 children sit the **Multiplication Tables Check** (25 questions, 6 seconds each, tables 2–12),
+so the grown-ups' area offers a Year 4 preset and an MTC practice mode (section 6).
+
+### Every fact is tracked on its own
+
+The engine tracks each fact (for example `mul:8x7`, `div:8x7`), reusing the Lost Islands keys and
+spaced-repetition boxes, and adds response times. Each fact moves through:
+
+| State | Meaning |
+| --- | --- |
+| New | Not seen yet. |
+| Learning | Seen; missed recently or answered with a hint. |
+| Getting there | Right first time a few times. |
+| **Secure** | Right first time 3 times, across at least 2 days. |
+| **Fluent** | Secure, and usually typed (not picked) in under 4 seconds. |
+
+### Choosing questions in a level
+
+- About 60% from the zone's focus table (new and learning facts), about 25% facts due for spaced
+  review from any chosen table, about 15% secure facts to keep confidence up.
+- New facts arrive a few at a time (about 3 per level), easiest anchors first (×1, ×2, ×10, ×5),
+  the hardest later (6×7, 7×8, 8×8 …).
+- A missed fact comes back 2–3 questions later in the same level, then returns on the spaced
+  schedule (3, 8, 20, 45, 100 answers, as in Lost Islands).
+- Never the same fact twice in a row.
+
+### Question types
+
+| Type | Example | Notes |
+| --- | --- | --- |
+| Multiply | 4 × 8 = ? | The core of the game. |
+| Missing number | 4 × ? = 32 | Links multiplication to division. |
+| Divide | 32 ÷ 4 = ? | Year 3 expects division facts for 3, 4, 8. |
+| Count in multiples | 8, 16, 24, ?, 40 | Stepping Stones mode. |
+| Groups and arrays | "3 nests with 4 eggs each" (picture) | Fix-It Workshop, and hints. |
+| Dinosaur word problems | "A Stegosaurus has 4 tail spikes. How many on 6 Stegosauruses?" | A fixed, recorded set, so every one is read aloud by the narrator. |
+| Fact families | 3 × 4, 4 × 3, 12 ÷ 3, 12 ÷ 4 | Fix-It Workshop. |
+
+### Picking versus typing the answer
+
+Typing an answer (recall) builds memory far better than picking one (recognition), so:
+
+- **New and learning facts:** pick from 3 answers.
+- **Getting there and beyond:** type it on the game's number pad.
+- Distractors come from real mistakes: the next or previous multiple, a neighbouring table, digits
+  swapped (24 and 42), and adding instead of multiplying (3 + 4 = 7).
+- A grown-up can set "always type" or "always pick".
+
+### Hints and mistakes
+
+- **Hint button** shows a strategy, never the answer: dinosaur footprints skip-counting along a
+  number line, an array of eggs, the doubling chain (×2 → ×4 → ×8), a known fact to start from
+  ("10 × 4 is 40, so 9 × 4 is 4 less"), or the swap ("You know 4 × 3!").
+- **First miss:** gentle sound, try again. **Second miss:** the answer appears with a picture,
+  Mosey explains it, and the fact comes back soon. Four recorded "ask a grown-up" lines from Lost
+  Islands are reused when a child keeps struggling.
+- **Speed is measured quietly, never demanded** by default. Stars come from accuracy only
+  (85% for 3 stars, 55% for 2, finishing always earns 1).
+
+---
+
+## 4. Game modes
+
+All built on the Lost Islands scenes, so the hard parts (layout, number pad, effects, HUD, hints,
+narration) already exist.
+
+| Mode | How it plays | Answer | Built from |
+| --- | --- | --- | --- |
+| **Dino Dash** | Otter rides Mosey (`duo_ride`) with a dinosaur behind them. Three paths ahead carry answers; take the right one for a speed boost. A gap meter shows how far ahead you are. | Pick | Maths Splash |
+| **Tiptoe Past** | Sneak past a sleeping dinosaur. Each right answer is one tiptoe step; a wrong one makes it snore louder and open one eye. Comic tension, no clock. | Type | Number Rescue |
+| **Egg Hatch** | Eggs show facts; answer to hatch babies, which become pets. | Type | Dragon Egg Rescue (reuses `egg`, `crack`, `chirp`) |
+| **Stepping Stones** | Cross a river or lava by stepping on the next multiple; a wrong stone wobbles and sinks and they hop back. | Tap / drag | Rainbow Bridge |
+| **Sky Snatch** | Pteranodons fly past carrying number stones; tap every one in the 8 times table, or the answer to the question shown. Missed ones loop back. | Tap | Word Blaster's bubbles |
+| **Big Escape** (boss) | Three-phase chase. Right answers charge **Friendship Power**; when full, Otter and Mosey pull a team move (mud splash, banana-skin slide, tail swish…) and the chase moves on. Ends with the boss befriended. | Type | Guardian encounter |
+| **Fix-It Workshop** (interlude) | Calm repair at Crash Camp: drag bolts into rows to build "3 rows of 8", slot the four fact-family gears into the part, watch it fit into the machine. | Drag | New, simple |
+
+**Chase pressure** (grown-up setting), whichever is chosen, a level can't be failed:
+- **Calm** (the default, confirmed): the chaser only moves closer after a wrong answer.
+- **Exciting**: the chaser slowly creeps closer, so quick answers help.
+- **Gentle dinosaurs**: no chasers at all, softened roars.
+
+A voluntary **Raptor Race** (60-second quick-fire against your own best score) unlocks after
+zone 5, for children who enjoy speed.
+
+---
+
+## 5. Rewards and trophies
+
+Same spirit and engine as Lost Islands: three-star levels, collections, a trophy cabinet that
+shows the gaps, at most two trophies handed out per level.
+
+| Reward | How it works |
+| --- | --- |
+| **Stars** | 3 per level, 90 in all. |
+| **Machine parts** | 6, one per zone. The Times Machine at **Crash Camp** (the map's centre) rebuilds visibly. This replaces Lost Islands' colour restoration as the big visible payoff. |
+| **Fossil Museum** *(new, the learning heart)* | One dinosaur skeleton per times table, 12 bones each (×1 to ×12). A fact turning **Secure** puts its bone in place; **Fluent** turns it gold. A complete skeleton comes to life for a moment. Children *see* their times tables being learnt. Only tables the grown-up has switched on are shown; the rest are a teaser ("Ask a grown-up to switch on the 7s!"). |
+| **Dino Nursery** (pets) | Baby dinosaurs hatched in Egg Hatch levels and earned on first clears (baby T-Rex reuses `icon_1f996`). They follow you on the map. About 12. |
+| **Hats** | Time-traveller goggles, explorer hat, fossil-hunter hat, bone hair clip, plus the six Lost Islands hats. |
+| **Crash Camp decorations** | Replaces the Home island: campfire, footprint path, fern arch, volcano lamp, plus the Lost Islands tent, lantern, flowers, palm and kite. |
+| **Dino Fact cards** *(optional)* | A real fact on each first clear, read by the narrator. |
+
+### Trophy cabinet (about 140 trophies)
+
+- **Per level:** Superstar (3 stars) and Flawless (all right first time): 60.
+- **Per zone:** Boss's Friend and Zone Champion (3 stars everywhere): 12.
+- **Milestone ladders:** stars, right answers, right first time, best streak, levels, days played,
+  machine parts, plus a new **Lightning** ladder (facts typed right in under 3 seconds).
+- **Learning:** one per table, won by completing its skeleton (12); Missing Number Master,
+  Division Detective, Counting Champ, Fact Family Fixer, Word Problem Wizard; **MTC Ready** (25/25
+  in MTC practice).
+- **Collections:** pets, hats, decorations, all fossils.
+- **Secret:** for example *Itchy Back* (scratch Rex), *Untouchable* (finish a chase with the
+  dinosaur never getting closer), *Night at the Museum* (visit the museum after 7 pm), plus the Lost
+  Islands ones that still fit (Comeback, Never Give Up, No Hints, Weekend, Back for More).
+
+The trophy rules, ladder logic, two-per-level limit, waiting list and cabinet screen are reused.
+
+---
+
+## 6. The grown-ups' area
+
+Reached through a gate, as before. **Change from Lost Islands:** its gate asks a two-digit ×
+one-digit sum, which a child practising tables could work out; use a sum well beyond times
+tables (for example 14 × 13, or a 3-digit subtraction) plus press-and-hold.
+
+### Settings
+
+- **Year group presets:** Year 2 (2, 5, 10) · **Year 3 (default)** · Year 4 / MTC (2–12) · All (1–12) · Custom.
+- **Times tables:** switch each of 1–12 on or off, and mark which are *focus* and which *review*.
+- **Multiply up to:** ×10 or ×12.
+- **Question types:** multiply, missing number, divide, count in multiples, word problems.
+- **Answers:** adaptive (recommended), always pick, always type.
+- **Chase pressure:** calm, exciting, gentle dinosaurs (see section 4).
+- **Speed:** off (default), timed bonus points, or **MTC practice**: 25 questions, 6 seconds each,
+  like the real check, scored and kept for the report.
+- **Break reminder, sound, accessibility, players, restart and delete:** reused.
+- **Play-test a level** without saving: reused.
+
+### Progress report
+
+- **The 12 × 12 grid:** every fact coloured by state (new, learning, getting there, secure, fluent).
+  The single most useful picture for a parent.
+- Per table: facts secure, accuracy, average answer time.
+- **Trickiest facts** (missed more than once) and **slowest facts**.
+- MTC practice scores over time.
+- Play time, recent trophies.
+
+---
+
+## 7. Accessibility and wellbeing
+
+Reused from Lost Islands: calmer motion, high contrast, easy-read text, every question read aloud by
+the recorded narrator, hints, volume controls, no mandatory timers, multiple players. New:
+**Gentle dinosaurs**, separate **roar volume**, and screen shake that respects reduced motion.
+
+---
+
+## 8. What we reuse from Lost Islands
+
+From `../../year3/otter-and-mosey-and-the-lost-islands`.
+
+### Art (about 65 of its 210 images)
+
+| Reuse as-is | Items |
+| --- | --- |
+| Otter (7 poses) | idle, blink, cheer, oops, run, talk, think |
+| Mosey (7 poses) | idle, blink, cheer, oops, swim, talk, think |
+| Together | `duo_ride` (Otter riding Mosey): the Dino Dash hero sprite |
+| Props | `egg`, `crystal_shard` (machine power source), `chest` |
+| Pets / icons | `icon_1f996` (baby T-Rex), volcano, egg, fire, star, gem, lock, medal, map, flag, lightning, sparkles |
+| Trophy badges (~27) | three-stars, perfect, tables, sharp-shooter, answers, stars, combo-5/8/9, adventurer, explorer, first-steps, never-give-up, comeback, no-hints, weekend, back-for-more, division, number-ninja, friendship, hat-trick, hats-all, decorator, pets-5, pets-all, treasure-all |
+| UI | `trophy_cabinet`, `trophy_champion`, `trophy_parcel`, `logo` style |
+| Rewards | 6 hats, plus tent, lantern, flowers, palm and kite decorations |
+| Backgrounds | `bg_title` for the Rainbow Island opening; `bg_dragon` (volcano with nests) as a candidate for Raptor Ridge |
+
+### New art (about 130 images, same pipeline and models)
+
+Same tools as before: `tools/generate_art.py` with the OpenAI Images API (`gpt-image-2.5-sunburst`
+for anything drawn from a reference, `gpt-image-2.5-flare` otherwise), the same five style
+prompts, then `tools/import_art.py`. **Every dinosaur gets a reference picture first** and its other
+poses are drawn from it, exactly as Otter and Mosey were.
+
+| Group | Count |
+| --- | --- |
+| New Otter / Mosey poses: scared, running away, fixing (with spanner), in the machine, goggles | ~6 |
+| Times Machine: whole, wrecked, 6 parts | ~8 |
+| 6 bosses × reference, chase / roar, happy | ~18 |
+| Minor dinosaurs (chasers, background) | ~12 |
+| Baby dinosaur pets | ~12 |
+| Fossil skeletons (one per table) and bones | ~14 |
+| Backgrounds: 6 zones + foregrounds, map, title, Crash Camp, museum, ending | ~17 |
+| Props: stones, nests, logs, footprints, ferns, bolts, gears | ~12 |
+| New badges, hats, decorations | ~25 |
+| Logo, app icon | 2 |
+
+Lost Islands spent about **$7.50** on ~210 images. Estimate here: **about $9, cap at $15**
+(`ART_BUDGET_USD=15`).
+
+### Sound and voices (all ElevenLabs, as before)
+
+| Reuse | Detail |
+| --- | --- |
+| **19 sound effects** | tap, key, nav, correct, combo, wrong, pop, star, jump, swim, crack, chirp, plank, portal, friendship, levelComplete, victory, unlock, whoosh. |
+| **Otter and Mosey voices** | Saved in the ElevenLabs account (Otter `sYN0fMdsZGmW5GjQDfRo`, Mosey = Daniel `onwK4e9ZLuTAKqWW03F9`), with the same settings and tags, so new lines match exactly. |
+| **Narrator "Alice"** | Same voice and settings for questions and story lines. |
+| **216 times-table clips** | Every 2, 3, 4, 5, 8 and 10 fact as a product, a missing number and a division, already recorded. That covers the whole default Year 3 set. |
+| Other lines | The 4 "ask a grown-up" lines, Otter's "Three! Two! One!" photo countdown. |
+| Music | `music_title` for the Rainbow Island opening; `music_dragon` as a stand-in for Raptor Ridge. |
+
+| New | Detail |
+| --- | --- |
+| Narration | The 1, 6, 7, 9, 11 and 12 tables (216 clips) so any custom choice is fully voiced; "count in 3s"-style instructions; the word problems; Dino Fact cards. |
+| Dialogue | About 150 Otter and Mosey lines, plus the boss lines (see question 1). |
+| Dinosaur voices | Designed with Voice Design, one per boss, as funny adult performers (ElevenLabs won't make children's voices; dinosaurs don't need them). |
+| Sound effects (~22) | A roar for each boss scaled by Roar Rating (T-Rex biggest, still not horrible), stomps, ground rumble, tail swish, wing flaps, raptor chirps, egg wobble, snore, time-machine whirr / sputter / crash, spanner clank, bolt, cog click, stone splash and sink, mud squelch, camera shutter. |
+| Group cheer | Re-mixed with the new cast (dinosaur roars as the "hooray"), using `cheer.mjs`. |
+| Music (~8 loops) | Title, map / Crash Camp, one per zone with intensity rising, a chase layer for Big Escapes. |
+
+Rough ElevenLabs text use: about 20,000 characters of speech, within one month of the Starter
+plan's 40,000. Sound effects and music cost more per second; check the balance with each script's
+count option before recording.
+
+### Code
+
+Reused almost whole: the platform-neutral core package (learner model, spaced repetition, sessions,
+progression, trophies, versioned save files), the times-table generator (it already supports chosen
+tables and multipliers), audio manager, narration and talking-mouth animation, character nodes,
+dialogue, HUD, number pad, effects, backdrop, trophy cabinet, collection, grown-up gate and
+dashboard, finale and group photo, debug launch arguments, content / art / audio tooling, the
+play-test runner and the web port's structure.
+
+Removed: spelling, word bank, typing, Word Blaster and Typing Turbo as they stand (their bubble and
+runner pieces are kept for Sky Snatch and Dino Dash).
+
+---
+
+## 9. Technical approach
+
+### Project
+
+Confirmed: **fork Lost Islands into this folder** and rename it, rather than building a shared
+library both games use. It's the fastest route, keeps the finished Lost Islands untouched, and
+the shared pieces can be pulled into an "Otter & Mosey kit" later if a third game comes along.
+
+- `git init` here; Xcode project `TRexTimesTrouble`; core package `TimesTroubleCore` (Foundation
+  only, no UIKit, SwiftUI or SpriteKit, so the web port stays straightforward).
+- Bundle ID following the existing pattern: `otter-and-mosey-t-rex-times-trouble.dev.skynolimit`.
+- Swift 6, SwiftUI for menus and grown-ups, SpriteKit for scenes, iOS / iPadOS 26+, landscape.
+- Content in plain JSON (`zones.json`, `dialogue.json`, `narration.json`, `problems.json`) built by
+  `tools/build_content.py` from `tools/content/zones.py`.
+- New save file name and version 1, so nothing is confused with Lost Islands saves.
+- Secrets as before: `ELEVENLABS_API_KEY` in a git-ignored `.env.local`,
+  `OPENAI_API_KEY_CHATGPT_GRAPHICS` from the environment (`bw-reload`). Nothing at runtime.
+
+### Core changes
+
+- `FactStats`: per-fact first-try history, response times and the state ladder in section 3.
+- `QuestionPlanner`: the focus / review / secure mix, new-fact pacing and in-level re-asks.
+- `ZonePlan`: maps the grown-up's tables onto zones.
+- `AnswerStyle`: pick or type, per fact and setting.
+- `Fossils`: bones and skeletons derived from fact states (no extra saved state).
+- `MTCPractice`: the 25-question, 6-second session and its scoring history.
+- Trophy rules for the new ladders and learning trophies.
+
+### Testing
+
+- Core unit tests (Swift Testing): fact correctness for every table 1–12, distractors never equal
+  the answer, planner mix, spaced-repetition timing, zone mapping for unusual table choices,
+  stars, trophies, save round-trips.
+- App tests: every mode builds and asks a question; all art and audio is bundled; progress
+  survives a relaunch.
+- The existing `tools/playtest` runner, adapted: simulator play-throughs on iPhone and iPad.
+
+---
+
+## 10. Milestones
+
+| # | Milestone | Done when |
+| --- | --- | --- |
+| M0 | **Foundation** ✅ (19 Nov 2026) | Fork, rename, strip spelling and typing, `git init`; builds and tests pass on an iPhone and iPad simulator. |
+| M1 | **Learning engine** ✅ (19 Nov 2026) | Fact tracking, planner, zone mapping, answer styles, grown-up settings model, with tests. |
+| M2 | **Look and sound check** ✅ made, awaiting your review (19 Nov 2026) | Times Machine, new Otter / Mosey poses, Mama Maia and Trevor references, two zone backgrounds, first roars and dinosaur voice previews. **You review these before more is generated:** [docs/m2-review/index.html](m2-review/index.html). |
+| M3 | **Vertical slice** ✅ built (19 Nov 2026) | Opening story and crash, Crash Camp map, Hatchling Hollow complete (4 levels, Big Escape, Fix-It Workshop), stars, first trophies, Fossil Museum, dinosaur music. **Play-test with a child here.** |
+| M4 | **Zones 2–6** | All art, voices, music and levels; finale. Note: the ElevenLabs Starter plan allows 10 custom voices and 9 are in use, so the four remaining bosses need some finished Lost Islands guardian voices removed (their lines are all recorded) or a plan upgrade. |
+| M5 | **Rewards** | Dino Nursery, hats, Crash Camp decorating, full trophy cabinet, Dino Fact cards. |
+| M6 | **Grown-ups** | Presets, the 12 × 12 report, MTC practice, new gate, Gentle dinosaurs. |
+| M7 | **Polish and QA** | Every device size, performance, accessibility pass, play-test runner green. |
+| M8 | **Web version** | See below. |
+
+---
+
+## 11. Web version (after iOS is finished)
+
+The same approach Lost Islands is already using: TypeScript, Vite and PixiJS, with:
+
+- `web/src/core`: a TypeScript port of `TimesTroubleCore`, with its tests ported too, and
+  cross-language contract tests so star, trophy, fact-state and planner rules can't drift.
+- Content JSON imported straight from the Swift package; art and audio copied in by
+  `sync-assets.mjs`; saves in the same JSON shape.
+- Scenes ported mode by mode onto the small SpriteKit-style engine already written for Lost
+  Islands (`web/src/engine`).
+- Playwright play-throughs in Chromium and mobile WebKit; `?level=` and `?short` for testing.
+
+Keeping every rule in the core package (and nothing clever in the scenes) is what makes this port
+mostly mechanical.
+
+---
+
+## 12. Risks
+
+| Risk | Mitigation |
+| --- | --- |
+| Too scary for some children | Comic chases, nobody hurt, befriending endings, Gentle dinosaurs setting, roar volume. |
+| Time pressure causing maths anxiety | Calm by default, stars from accuracy only, speed always optional. |
+| Drill fatigue (it's all times tables) | Seven modes, short levels, story between zones, visible progress in the museum and the machine. |
+| Dinosaurs looking different in each pose | One reference per dinosaur first, all poses drawn from it. |
+| Mosey on dry land | Ride and swim poses for chases; swamp and river zones for his swimming; new running pose if needed. |
+| Swift and web rules drifting | Contract tests, as in Lost Islands. |
+
+---
+
+## 13. Open questions
+
+Decided on 19 November 2026:
+
+1. **Dinosaur endings:** escape, then befriend (each boss has a funny reason for being cross).
+2. **Default chase pressure:** calm; the chaser moves only after a wrong answer.
+3. **Code:** fork Lost Islands into this folder; extract a shared kit later if a third game needs it.
+4. **First release:** 30 levels across 6 zones, plus a Fix-It Workshop after each zone.
+
+Still open, no rush:
+
+- Should the boss dinosaurs talk (designed voices), or only roar while Otter and Mosey do the
+  talking? Proposed: they roar during chases and talk once befriended.
+- Names: Mama Maia, Trevor, Steggy, the Swoop Squad, the Snatch Pack and Rex are placeholders.
+- Is this for the family only (TestFlight / direct install, like Lost Islands) or the App Store?
+  The App Store's Kids category has extra rules on gates and data, which the design already meets.
+- Include ×0 facts? (Not in the Year 3 curriculum or the MTC; proposed: no.)
+- Where will the web version be hosted? (Lost Islands builds for `/play/lost-islands/`.)
