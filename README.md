@@ -1,4 +1,4 @@
-# Otter & Mosey: T-Rex Times Trouble
+# Otter & Mosey: Prehistoric Times
 
 A native iOS and iPadOS game for UK children aged about 7–9 that teaches times tables and the
 matching division facts. Otter and Mosey take a time machine back to the dinosaurs, crash, and have
@@ -33,7 +33,7 @@ What plays today:
 - **The times-tables engine (M1):** every fact from 1 × 1 to 12 × 12 tracked on its own, zones
   sharing out the grown-up's tables, at most three new facts a level, missed facts coming back,
   picking answers while a fact is new and typing once it is getting there. See
-  `TimesTroubleCore/Education`.
+  `PrehistoricTimesCore/Education`.
 - **Campfire Sing-Along:** Otter and Mosey chant a times table over a campfire beat, three rounds
   that get faster and leave more for the child to sing, then "Fill the ladder" (the table typed in
   order) and an optional shuffle challenge. Every level opens with about a minute of its table's
@@ -55,22 +55,22 @@ to a level's first question).
 Requirements: macOS with Xcode 26 or later. No third-party dependencies.
 
 ```bash
-open TRexTimesTrouble.xcodeproj
+open PrehistoricTimes.xcodeproj
 ```
 
-Choose the `TRexTimesTrouble` scheme and an iPhone or iPad simulator, then Run. From the command line:
+Choose the `PrehistoricTimes` scheme and an iPhone or iPad simulator, then Run. From the command line:
 
 ```bash
-xcodebuild -project TRexTimesTrouble.xcodeproj -scheme TRexTimesTrouble -destination 'platform=iOS Simulator,name=iPad (A16)' build
+xcodebuild -project PrehistoricTimes.xcodeproj -scheme PrehistoricTimes -destination 'platform=iOS Simulator,name=iPad (A16)' build
 ```
 
 If several simulators share a name, pass `id=<UDID>` from `xcrun simctl list devices` instead.
-Bundle ID: `otter-and-mosey-t-rex-times-trouble.dev.skynolimit`. Home-screen name: "T-Rex Times".
+Bundle ID: `otter-and-mosey-t-rex-times-trouble.dev.skynolimit`. Home-screen name: "Prehistoric Times".
 
 ## Tests
 
 ```bash
-cd Packages/TimesTroubleCore && swift test
+cd Packages/PrehistoricTimesCore && swift test
 ```
 
 The core tests cover question correctness, adaptive difficulty, spaced repetition, sessions,
@@ -89,12 +89,12 @@ browser layers switch themselves on once a `web/` version exists.
 
 | Path | What it holds |
 | --- | --- |
-| `Packages/TimesTroubleCore` | Platform-neutral logic (Foundation only): questions, generators, learner model, sessions, progression, trophies, save data and the JSON content. |
-| `TRexTimesTrouble/App` | App entry, navigation and the app model. |
-| `TRexTimesTrouble/Game` | SpriteKit: scenes, characters, effects, art loading. |
-| `TRexTimesTrouble/UI` | SwiftUI: menus, HUD, keyboards, dialogue, grown-ups' area. |
-| `TRexTimesTrouble/Audio` | Audio, narration and haptics. |
-| `TRexTimesTrouble/Assets.xcassets`, `TRexTimesTrouble/Resources` | Bundled art, sound and recorded speech. |
+| `Packages/PrehistoricTimesCore` | Platform-neutral logic (Foundation only): questions, generators, learner model, sessions, progression, trophies, save data and the JSON content. |
+| `PrehistoricTimes/App` | App entry, navigation and the app model. |
+| `PrehistoricTimes/Game` | SpriteKit: scenes, characters, effects, art loading. |
+| `PrehistoricTimes/UI` | SwiftUI: menus, HUD, keyboards, dialogue, grown-ups' area. |
+| `PrehistoricTimes/Audio` | Audio, narration and haptics. |
+| `PrehistoricTimes/Assets.xcassets`, `PrehistoricTimes/Resources` | Bundled art, sound and recorded speech. |
 | `tools/` | Development-time content, art and audio pipelines. |
 | `docs/PLAN.md` | The game plan and milestones. |
 
@@ -103,7 +103,7 @@ browser layers switch themselves on once a `web/` version exists.
 These are unchanged from Lost Islands; see its README and `docs/ELEVENLABS.md` for the full detail.
 
 - **Content:** edit `tools/content/islands.py`, then run `python3 tools/build_content.py` to
-  regenerate the JSON in `Packages/TimesTroubleCore/Sources/TimesTroubleCore/Resources`.
+  regenerate the JSON in `Packages/PrehistoricTimesCore/Sources/PrehistoricTimesCore/Resources`.
 - **Art:** `python3 tools/generate_art.py` (OpenAI Images API, reads
   `OPENAI_API_KEY_CHATGPT_GRAPHICS`, tracks spend in `tools/.art-ledger.json`), then
   `python3 tools/import_art.py`. `tools/raw/otter_ref.png` and `tools/raw/mosey_ref.png` are the

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Optimises tools/raw/*.png and packages them into TRexTimesTrouble/Assets.xcassets.
+"""Optimises tools/raw/*.png and packages them into PrehistoricTimes/Assets.xcassets.
 
 Sprites are trimmed to their painted area, scaled down and palette-compressed; scenery
 becomes JPEG. Requires ImageMagick (`magick`) and `pngquant` (both from Homebrew).
@@ -9,7 +9,7 @@ import json, pathlib, shutil, subprocess, sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RAW = ROOT / "tools/raw"
-CATALOG = ROOT / "TRexTimesTrouble/Assets.xcassets"
+CATALOG = ROOT / "PrehistoricTimes/Assets.xcassets"
 
 # Longest edge in pixels for each family of sprite.
 LIMITS = {"otter": 760, "mosey": 900, "duo": 1000, "guardian": 900, "island": 560, "fg": 1536, "logo": 1200,

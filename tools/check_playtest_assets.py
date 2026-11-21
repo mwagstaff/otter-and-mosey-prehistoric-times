@@ -3,7 +3,7 @@
 import hashlib, json, os
 from pathlib import Path
 root = Path(__file__).resolve().parent.parent
-source = root / "TRexTimesTrouble"
+source = root / "PrehistoricTimes"
 dest = root / "web/dist-playtest/assets"
 pairs = []
 for manifest in (source / "Assets.xcassets").glob("*.imageset/Contents.json"):
@@ -21,7 +21,7 @@ for path, copy in pairs:
     assert copy.exists(), f"Missing packaged asset: {copy}"
     assert hashlib.sha256(copy.read_bytes()).hexdigest() == digest, f"Stale packaged asset: {copy}"
     manifest[str(path.relative_to(root))] = digest
-for path in (root / "Packages/TimesTroubleCore/Sources/TimesTroubleCore/Resources").glob("*.json"):
+for path in (root / "Packages/PrehistoricTimesCore/Sources/PrehistoricTimesCore/Resources").glob("*.json"):
     manifest[str(path.relative_to(root))] = hashlib.sha256(path.read_bytes()).hexdigest()
 Path(os.environ["PLAYTEST_OUTPUT"], "content-manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True))
 print(f"Verified {len(pairs)} bundled media files; recorded content hashes.")

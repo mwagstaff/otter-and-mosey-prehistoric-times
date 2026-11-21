@@ -33,12 +33,12 @@ def run(name, command, cwd=root, timeout=900):
     return code == 0
 try:
     if args.only in (None, "core"):
-        core = run("swift-core", ["swift", "test"], root / "Packages/TimesTroubleCore")
+        core = run("swift-core", ["swift", "test"], root / "Packages/PrehistoricTimesCore")
         if has_web:
             if core: run("web-core-parity", ["npm", "test"], root / "web")
             else: results.append(dict(check="web-core-parity", status="not run", reason="Swift contract export failed"))
     if args.only in (None, "browser") and has_web:
-        if run("web-build", ["npm", "run", "build", "--", "--mode", "playtest", "--outDir", "dist-playtest", "--base", "/play/t-rex-times-trouble/"], root / "web"):
+        if run("web-build", ["npm", "run", "build", "--", "--mode", "playtest", "--outDir", "dist-playtest", "--base", "/play/prehistoric-times/"], root / "web"):
             run("asset-parity", [sys.executable, "tools/check_playtest_assets.py"])
             run("browser-playthroughs", ["npx", "playwright", "test"], root / "web", 3600 if args.full else 1200)
     if args.only in (None, "simulator"):
@@ -48,9 +48,9 @@ try:
             for family in ["iPhone", "iPad"]:
                 template = next((d for d in devices if family in d["name"]), None)
                 if not template: raise RuntimeError(f"No available {family} simulator")
-                clone = subprocess.check_output(["xcrun", "simctl", "create", "Times Trouble Playtest", template["deviceTypeIdentifier"], template["runtime"]], timeout=60).decode().strip()
+                clone = subprocess.check_output(["xcrun", "simctl", "create", "Prehistoric Times Playtest", template["deviceTypeIdentifier"], template["runtime"]], timeout=60).decode().strip()
                 try:
-                    run(f"simulator-{family}", ["xcodebuild", "-project", "TRexTimesTrouble.xcodeproj", "-scheme", "TRexTimesTrouble", "-parallel-testing-enabled", "NO", "-destination", f"platform=iOS Simulator,id={clone}", "-resultBundlePath", str(out / f"{family}.xcresult"), "-skip-testing:TRexTimesTroubleUITests/PlaythroughTests/" + ("testHatchlingHollowThroughControls" if args.full else "testAllLevelsThroughControls"), "test"], timeout=3600 if args.full else 1200)
+                    run(f"simulator-{family}", ["xcodebuild", "-project", "PrehistoricTimes.xcodeproj", "-scheme", "PrehistoricTimes", "-parallel-testing-enabled", "NO", "-destination", f"platform=iOS Simulator,id={clone}", "-resultBundlePath", str(out / f"{family}.xcresult"), "-skip-testing:PrehistoricTimesUITests/PlaythroughTests/" + ("testHatchlingHollowThroughControls" if args.full else "testAllLevelsThroughControls"), "test"], timeout=3600 if args.full else 1200)
                 finally:
                     subprocess.run(["xcrun", "simctl", "shutdown", clone], capture_output=True, timeout=30)
                     subprocess.run(["xcrun", "simctl", "delete", clone], capture_output=True, timeout=30)
@@ -65,6 +65,6 @@ finally:
     report = dict(status=("passed" if completed and results and all(r["status"] == "passed" for r in results) else "failed" if any(r["status"] == "failed" for r in results) else "incomplete"), scope=args.only or "all", full=args.full, checks=results, deferred=([] if has_web else ["web version (milestone M8)"]) + ["physical devices", "actual Safari", "campaign UI journey", "additional learning-rule parity scenarios", "visual baselines", "additional recovery UI journeys"])
     (out / "report.json").write_text(json.dumps(report, indent=2))
     rows = "".join(f"<tr><td>{html.escape(r['check'])}</td><td>{html.escape(r['status'])}</td><td>{r.get('seconds', '')}</td><td>{html.escape(r.get('reason', ''))}</td><td>" + (f"<a href=\"{r['log']}\">Log</a>" if 'log' in r else "") + "</td></tr>" for r in results)
-    (out / "index.html").write_text("<!doctype html><meta charset=utf-8><title>T-Rex Times Trouble regression report</title><style>body{font:16px system-ui;max-width:1000px;margin:40px auto;padding:20px}td,th{padding:12px;text-align:left;border-bottom:1px solid #ddd}</style><h1>T-Rex Times Trouble regression report</h1><p>Scope: " + html.escape(args.only or "all") + (" · Full" if args.full else " · Normal") + "</p><table><tr><th>Check</th><th>Result</th><th>Seconds</th><th>Reason</th><th>Evidence</th></tr>" + rows + "</table><h2>Coverage still deferred</h2><ul>" + "".join("<li>"+html.escape(x)+"</li>" for x in report["deferred"]) + "</ul><p><a href=report.json>JSON report</a></p>")
+    (out / "index.html").write_text("<!doctype html><meta charset=utf-8><title>Prehistoric Times regression report</title><style>body{font:16px system-ui;max-width:1000px;margin:40px auto;padding:20px}td,th{padding:12px;text-align:left;border-bottom:1px solid #ddd}</style><h1>Prehistoric Times regression report</h1><p>Scope: " + html.escape(args.only or "all") + (" · Full" if args.full else " · Normal") + "</p><table><tr><th>Check</th><th>Result</th><th>Seconds</th><th>Reason</th><th>Evidence</th></tr>" + rows + "</table><h2>Coverage still deferred</h2><ul>" + "".join("<li>"+html.escape(x)+"</li>" for x in report["deferred"]) + "</ul><p><a href=report.json>JSON report</a></p>")
     print(f"Report: {out / 'index.html'}")
 sys.exit(0 if results and all(r["status"] == "passed" for r in results) else 1)

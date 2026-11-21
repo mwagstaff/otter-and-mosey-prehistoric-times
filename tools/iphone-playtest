@@ -4,12 +4,12 @@ set -euo pipefail
 
 project_dir="$(cd "$(dirname "$0")/.." && pwd)"
 device="${PLAYTEST_DEVICE:-Mike’s iPhone}"
-build_dir="$HOME/Library/Developer/Xcode/DerivedData/TRexTimesTrouble-iPhone"
+build_dir="$HOME/Library/Developer/Xcode/DerivedData/PrehistoricTimes-iPhone"
 
-xcodebuild -project "$project_dir/TRexTimesTrouble.xcodeproj" -scheme TRexTimesTrouble \
+xcodebuild -project "$project_dir/PrehistoricTimes.xcodeproj" -scheme PrehistoricTimes \
   -configuration Debug -destination 'generic/platform=iOS' -derivedDataPath "$build_dir" \
   -allowProvisioningUpdates build
 xcrun devicectl device install app --device "$device" \
-  "$build_dir/Build/Products/Debug-iphoneos/TRexTimesTrouble.app"
+  "$build_dir/Build/Products/Debug-iphoneos/PrehistoricTimes.app"
 xcrun devicectl device process launch --device "$device" --terminate-existing \
   otter-and-mosey-t-rex-times-trouble.dev.skynolimit -- -debugTour "$@"

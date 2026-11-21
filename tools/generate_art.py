@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Development-time art generator for Otter & Mosey: T-Rex Times Trouble.
+"""Development-time art generator for Otter & Mosey: Prehistoric Times.
 
 Reads tools/art_manifest.json and calls the OpenAI Images API for any asset whose raw
 output is missing from tools/raw/. Nothing here runs inside the app, and the API key is

@@ -62,19 +62,19 @@ const characters = {
     description: "A British voice actor performing a small, shy, lonely shadow creature in a family animated film. Very soft, breathy, hesitant and quiet, sad but gentle and sweet, slowly warming with hope. Sympathetic, never frightening. Clean studio recording.",
     text: "Go away. Shadows do not have friends. You came all this way for a crystal? I did not mean to. I only wanted to hold something bright. Why are you being kind to me? It makes me feel warm. I would like that. Here. I kept it safe for you.",
   },
-  // T-Rex Times Trouble: the dinosaur bosses. Fierce in a cartoon way while chasing, kind once befriended.
+  // Prehistoric Times: the dinosaur bosses. Fierce in a cartoon way while chasing, kind once befriended.
   maia: {
-    name: "Mama Maia (Times Trouble)",
+    name: "Mama Maia (Prehistoric Times)",
     description: "A middle-aged British woman performing a fussy, flustered, over-protective mother dinosaur in a family animated film. Warm, motherly and a little breathless, fretting and tutting, with comic honking exclamations. Kind underneath, never frightening. Clean studio recording.",
     text: "Oh my, oh my! Who's that creeping round my nest? Shoo! Shoo! That's my egg, the shiniest egg I've ever laid, and it goes tick-tock, tick-tock. Oh. Oh dear. It isn't an egg at all, is it? Well, I never! Here, take it, you clever little things, and mind how you go.",
   },
   trevor: {
-    name: "Trevor (Times Trouble)",
+    name: "Trevor (Prehistoric Times)",
     description: "A British man performing a grumpy, gruff but soft-hearted triceratops in a family animated film. Low, chunky and huffy, full of snorts and grumbles, like a cross old uncle having a bad day. Funny, never frightening. Clean studio recording.",
     text: "Hmph! Go away. I'm busy being cross. Something's stuck on my horn and it boings every time I nod. Boing! See? Don't laugh. Three horns, and not one of them can reach it. Wait... you got it off? Well. Thank you. I suppose I could be a tiny bit less grumpy now.",
   },
   rex: {
-    name: "Rex (Times Trouble)",
+    name: "Rex (Prehistoric Times)",
     description: "A British man in his fifties with a very deep, big, booming, rumbly voice performing a huge but secretly soft-hearted T-Rex in a family animated film. Loud and blustery when grumpy, with comic roaring exclamations, then warm, sleepy and contented, like a giant teddy bear. Funny, never frightening. Clean studio recording.",
     text: "ROAR! Everybody out of my valley! I'm in a very, very bad mood today. Something on my back goes tick-tock, tick-tock, and it itches! And my arms are far too short to reach it. Oh. Oh! You'll scratch it for me? A little to the left. Aaah. That's the spot. Best scratch ever. Friends?",
   },

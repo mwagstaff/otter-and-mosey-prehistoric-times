@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Builds the JSON content bundled with TimesTroubleCore from tools/content.
+"""Builds the JSON content bundled with PrehistoricTimesCore from tools/content.
 
 Run from the repository root:  python3 tools/build_content.py
 The JSON files are the cross-platform source of truth for web and Android ports.
@@ -7,7 +7,7 @@ The JSON files are the cross-platform source of truth for web and Android ports.
 import json, pathlib, re, sys
 
 root = pathlib.Path(__file__).resolve().parent.parent
-out = root / "Packages/TimesTroubleCore/Sources/TimesTroubleCore/Resources"
+out = root / "Packages/PrehistoricTimesCore/Sources/PrehistoricTimesCore/Resources"
 out.mkdir(parents=True, exist_ok=True)
 # The narrator's script: clip key -> exactly what is said. tools/sfx/narrate.mjs records these,
 # and the app plays the clip whose key matches a question's `audioKey`.

@@ -17,7 +17,7 @@ import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const rawDir = join(here, "raw");
-const bundleDir = join(here, "../../TRexTimesTrouble/Resources/Audio");
+const bundleDir = join(here, "../../PrehistoricTimes/Resources/Audio");
 const sounds = JSON.parse(readFileSync(join(here, "sounds.json"), "utf8"));
 
 const args = process.argv.slice(2);
@@ -42,7 +42,7 @@ async function generate(name, spec) {
 // Trim silence from both ends, set a consistent level, add tiny fades so nothing clicks,
 // and encode as mono AAC for the app. Uses macOS afconvert for decoding and encoding.
 function install(name, spec) {
-  const wav = join(tmpdir(), `times-trouble-${name}.wav`);
+  const wav = join(tmpdir(), `prehistoric-times-${name}.wav`);
   execFileSync("afconvert", ["-f", "WAVE", "-d", "LEI16@44100", "-c", "1", join(rawDir, `${name}.mp3`), wav]);
   const file = readFileSync(wav);
   const dataAt = file.indexOf("data") + 8;

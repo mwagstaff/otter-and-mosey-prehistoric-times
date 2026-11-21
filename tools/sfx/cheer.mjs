@@ -4,7 +4,7 @@
 //   cd tools/sfx && npm run cheer            # record any missing takes, then mix
 //   npm run cheer -- --force                 # record every take again
 //
-// Takes are kept in ./raw/cheer; the mix goes to TRexTimesTrouble/Resources/Audio/cheer.m4a, which
+// Takes are kept in ./raw/cheer; the mix goes to PrehistoricTimes/Resources/Audio/cheer.m4a, which
 // web/scripts/sync-assets.mjs copies to the web game like every other sound effect.
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 import { execFileSync } from "node:child_process";
@@ -15,7 +15,7 @@ import { fileURLToPath } from "node:url";
 const here = dirname(fileURLToPath(import.meta.url));
 const config = JSON.parse(readFileSync(join(here, "narration.config.json"), "utf8"));
 const takes = join(here, "raw", "cheer");
-const output = join(here, "../../TRexTimesTrouble/Resources/Audio/cheer.m4a");
+const output = join(here, "../../PrehistoricTimes/Resources/Audio/cheer.m4a");
 const force = process.argv.includes("--force");
 mkdirSync(takes, { recursive: true });
 

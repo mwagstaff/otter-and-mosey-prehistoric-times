@@ -21,10 +21,10 @@ import { fileURLToPath } from "node:url";
 const here = dirname(fileURLToPath(import.meta.url));
 const config = JSON.parse(readFileSync(join(here, "narration.config.json"), "utf8"));
 const script = JSON.parse(readFileSync(
-  join(here, "../../Packages/TimesTroubleCore/Sources/TimesTroubleCore/Resources/narration.json"), "utf8"));
-const resources = join(here, "../../Packages/TimesTroubleCore/Sources/TimesTroubleCore/Resources");
+  join(here, "../../Packages/PrehistoricTimesCore/Sources/PrehistoricTimesCore/Resources/narration.json"), "utf8"));
+const resources = join(here, "../../Packages/PrehistoricTimesCore/Sources/PrehistoricTimesCore/Resources");
 const dialogue = JSON.parse(readFileSync(join(resources, "dialogue.json"), "utf8"));
-const speechDir = join(here, "../../TRexTimesTrouble/Resources/Speech");
+const speechDir = join(here, "../../PrehistoricTimes/Resources/Speech");
 const args = process.argv.slice(2);
 const flags = new Set(args.filter((arg) => arg.startsWith("--")));
 const wanted = args.filter((arg, index) => !arg.startsWith("--") && args[index - 1] !== "--dialogue" && args[index - 1] !== "--speaker");

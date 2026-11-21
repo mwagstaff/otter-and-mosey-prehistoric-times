@@ -17,7 +17,7 @@ import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const rawDir = join(here, "raw");
-const bundleDir = join(here, "../../TRexTimesTrouble/Resources/Audio");
+const bundleDir = join(here, "../../PrehistoricTimes/Resources/Audio");
 const config = JSON.parse(readFileSync(join(here, "music.json"), "utf8"));
 
 const args = process.argv.slice(2);
@@ -44,7 +44,7 @@ async function compose(name, track) {
 // first few, so the end of the file runs straight into its start.
 function install(name) {
   const rate = 44100;
-  const wav = join(tmpdir(), `times-trouble-${name}.wav`);
+  const wav = join(tmpdir(), `prehistoric-times-${name}.wav`);
   execFileSync("afconvert", ["-f", "WAVE", "-d", `LEI16@${rate}`, "-c", "2", join(rawDir, `${name}.mp3`), wav]);
   const file = readFileSync(wav);
   const dataAt = file.indexOf("data") + 8;

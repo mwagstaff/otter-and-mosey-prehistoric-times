@@ -17,7 +17,7 @@ const out = join(here, "samples/singalong-test");
 const clips = join(out, "clips");
 mkdirSync(clips, { recursive: true });
 const voices = JSON.parse(readFileSync(join(here, "narration.config.json"), "utf8"));
-const crack = join(here, "../../TRexTimesTrouble/Resources/Audio/crack.m4a");
+const crack = join(here, "../../PrehistoricTimes/Resources/Audio/crack.m4a");
 const mixOnly = process.argv.includes("--mix");
 const client = mixOnly ? null : new ElevenLabsClient();
 

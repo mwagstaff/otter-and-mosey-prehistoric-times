@@ -7,7 +7,7 @@
 //   node --env-file=../../.env.local sing.mjs --count    # what would be recorded, spending nothing
 //   node --env-file=../../.env.local sing.mjs --loop     # cut the loop again from tools/sfx/raw
 //
-// The keys match SongPlan.callKey and SongPlan.answerKey in TimesTroubleCore. The delivery tags
+// The keys match SongPlan.callKey and SongPlan.answerKey in PrehistoricTimesCore. The delivery tags
 // are the ones chosen in the audio test (singalong-test.mjs).
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 import { execFileSync } from "node:child_process";
@@ -17,8 +17,8 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const speechDir = join(here, "../../TRexTimesTrouble/Resources/Speech");
-const audioDir = join(here, "../../TRexTimesTrouble/Resources/Audio");
+const speechDir = join(here, "../../PrehistoricTimes/Resources/Speech");
+const audioDir = join(here, "../../PrehistoricTimes/Resources/Audio");
 const rawDir = join(here, "raw");
 mkdirSync(rawDir, { recursive: true });
 const voices = JSON.parse(readFileSync(join(here, "narration.config.json"), "utf8"));

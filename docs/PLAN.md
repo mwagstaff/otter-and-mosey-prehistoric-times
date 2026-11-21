@@ -1,4 +1,4 @@
-# Otter & Mosey: T-Rex Times Trouble — game plan
+# Otter & Mosey: Prehistoric Times — game plan
 
 Status: **plan only, nothing built yet.** The four main design decisions are confirmed (section 13);
 smaller open questions are collected at the end.
@@ -334,7 +334,7 @@ Confirmed: **fork Lost Islands into this folder** and rename it, rather than bui
 library both games use. It's the fastest route, keeps the finished Lost Islands untouched, and
 the shared pieces can be pulled into an "Otter & Mosey kit" later if a third game comes along.
 
-- `git init` here; Xcode project `TRexTimesTrouble`; core package `TimesTroubleCore` (Foundation
+- `git init` here; Xcode project `PrehistoricTimes`; core package `PrehistoricTimesCore` (Foundation
   only, no UIKit, SwiftUI or SpriteKit, so the web port stays straightforward).
 - Bundle ID following the existing pattern: `otter-and-mosey-t-rex-times-trouble.dev.skynolimit`.
 - Swift 6, SwiftUI for menus and grown-ups, SpriteKit for scenes, iOS / iPadOS 26+, landscape.
@@ -386,7 +386,7 @@ the shared pieces can be pulled into an "Otter & Mosey kit" later if a third gam
 
 The same approach Lost Islands is already using: TypeScript, Vite and PixiJS, with:
 
-- `web/src/core`: a TypeScript port of `TimesTroubleCore`, with its tests ported too, and
+- `web/src/core`: a TypeScript port of `PrehistoricTimesCore`, with its tests ported too, and
   cross-language contract tests so star, trophy, fact-state and planner rules can't drift.
 - Content JSON imported straight from the Swift package; art and audio copied in by
   `sync-assets.mjs`; saves in the same JSON shape.
@@ -576,7 +576,7 @@ Same pipeline and references (`tools/generate_art.py`), about 10 images, under $
 
 ### Technical approach
 
-**Core (`TimesTroubleCore`, Foundation only, so the web port stays mechanical):**
+**Core (`PrehistoricTimesCore`, Foundation only, so the web port stays mechanical):**
 
 - `SongPlan`: the table, the lines (1 to the highest multiplier), the rounds, and a timeline in
   beats of every cue: which clip plays, what is hidden and when it is revealed. Pure and fully

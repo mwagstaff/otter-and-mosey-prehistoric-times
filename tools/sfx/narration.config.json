@@ -99,7 +99,7 @@
     },
     "maia": {
       "voiceId": "196bR92osaTJVRObkpkJ",
-      "voiceName": "Mama Maia (Times Trouble)",
+      "voiceName": "Mama Maia (Prehistoric Times)",
       "deliveryTag": "[flustered] ",
       "befriendedTag": "[warmly] ",
       "voiceSettings": {
@@ -109,7 +109,7 @@
     },
     "trevor": {
       "voiceId": "QTo5mc34t7Zm4rMrFOAw",
-      "voiceName": "Trevor (Times Trouble)",
+      "voiceName": "Trevor (Prehistoric Times)",
       "deliveryTag": "[grumpy] ",
       "befriendedTag": "[relieved, happily] ",
       "voiceSettings": {
@@ -119,7 +119,7 @@
     },
     "rex": {
       "voiceId": "DFyOc5MvJkgfqLuhzL92",
-      "voiceName": "Rex (Times Trouble)",
+      "voiceName": "Rex (Prehistoric Times)",
       "deliveryTag": "[booming, grumpy] ",
       "befriendedTag": "[contented, warmly] ",
       "voiceSettings": {
