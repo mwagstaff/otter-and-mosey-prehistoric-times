@@ -466,9 +466,21 @@ choices are confirmed (section 13, items 5–10). Mock-ups, made from the game's
   what's coming ("Warm-up: the 2s song · Sing with us! · Then on to Fern Dash"); afterwards, "On to
   Fern Dash!". Unstarred and can't be failed; a Skip button appears once the level has stars. A
   grown-up can switch level songs off. Play-testing from the grown-ups' area skips them.
-- **Crash Camp:** a campfire band (log drum, ukulele, maracas) beside the fire opens the shelf.
+- **Crash Camp:** a campfire band (log drum, ukulele, maracas) stands on the dirt beside the fire,
+  a fixed obstacle the pets walk round, and opens the shelf. The shelf lists the songs in number
+  order; "Next up!" marks the easiest one whose friend hasn't been met.
+- **Song friends** (added 21 Nov 2026): every table's song has its own baby dinosaur musician,
+  met the first time the song is sung right through: Ding (1, triangle), Toot (2, trumpet),
+  Tambo (3, tambourine), Plink (4, xylophone), Bongo (5, bongos), Flutey (6, flute), Oompah (7,
+  tuba), Strum (8, guitar), Shaka (9, maracas), Roary (10, microphone), Thump (11, big drum) and
+  Fiddle (12, violin). Until then the shelf shows a dark shape. Singing again moves a friend on:
+  sparkling after 4 plays (songs sung through, ladders filled and shuffles done) and crowned after
+  8. The shelf and the level's start card say what's next ("2 more to make Tambo sparkle"), the
+  reward screens announce each step, met friends are the first to come and sing in every song,
+  and two trophies go with them: The Whole Band (meet every shelf friend) and Encore! (crown one).
 - **Friends join in:** a baby dinosaur or friend arrives for every line sung and every right
-  answer, standing in a front row that fills in from both ends, with a count at the top, a banner
+  answer, standing in a front row that fills in from both ends, then a middle and a back row (42
+  on screen; any more show as "+N", so the count at the top always matches), with a banner
   at the end of each round ("Round 1 done! 12 friends are singing with you!") and a line-up on the
   level's "on to" screen.
 
@@ -483,7 +495,7 @@ a minute for each round of 12 lines.
 | --- | --- | --- | --- | --- |
 | 1. Sing with us | 🐢 about 88 bpm | Otter: "Four times three is…" | Mosey: "twelve!" | The whole line, lit word by word with a hopping footprint |
 | 2. You finish it | 🦕 about 100 bpm | Otter: "Seven times three is…" | The child sings; on beat 3 the egg hatches and Mosey says "twenty-one!" | The answer is an egg that wobbles for a beat |
-| 3. Rex speed! | 🦖 about 112 bpm | Beat only: the child sings the line | As round 2 | "9 × 3 = 🥚": only the answer is hidden |
+| 3. Rex speed! | 🦖 about 112 bpm | Otter: "Nine times three is…", everyone sings along | Mosey: "twenty-seven!" as the egg cracks | "9 × 3 = 🥚": the answer stays in its egg until it's sung, so the child has to know it to keep up |
 
 - **The ladder:** a panel listing the whole table, building up as it is sung, so the child sees
   the pattern (3, 6, 9, 12 …). In rounds 2 and 3 the answers still to come are eggs.
@@ -491,8 +503,9 @@ a minute for each round of 12 lines.
   on drums, Steggy plays her tail spikes like a xylophone, the Swoop Squad are backing singers
   ("backing *pterosaurs*, actually"), the Snatch Pack on shakers, and Rex stomps the big drum with
   his feet because his arms don't reach.
-- **Stomp drum:** a big button to tap along with the beat. A tap on the beat gives a sparkle and a
-  haptic tick. Nothing is scored.
+- **Stomp drum:** a big button to tap along with the beat: a heavy stomp sound (`stomp_big`), a
+  thump you can feel, the screen shakes, every friend hops, and "BOOM!" (bigger, with a sparkle,
+  on the beat). Nothing is scored. Reduced motion keeps the sound but not the shake.
 - Grown-ups can set the number of rounds (1–3, default 3) and switch the speed-up off. Reduced
   motion stops the bouncing and dancing; the words still light up.
 - No microphone: the game never listens. Otter's "Your turn!" is all the prompting.
@@ -505,8 +518,8 @@ a minute for each round of 12 lines.
   **Second miss:** the answer appears, and the line comes back once more after the last one.
 - **Stars** from first-try accuracy, using the usual rule (85% for 3, 55% for 2, finishing always
   earns 1).
-- **Shuffle challenge** afterwards (offered, not forced): six facts from the same table in random
-  order. Chanting in order tends to teach children to count up from the start ("1 × 3 is 3,
+- **Shuffle challenge** straight after the ladder, with no menu in between ("Ladder done! Now all
+  mixed up!"): six facts from the same table in random order. One results screen covers both. Chanting in order tends to teach children to count up from the start ("1 × 3 is 3,
   2 × 3 is 6 … 7 × 3 is 21") instead of recalling the fact; mixing the order breaks that habit.
   The levels then carry on asking the table in random order.
 - **Learning record:** in-order answers are easier (each one follows from the last), so they

@@ -56,9 +56,11 @@ import Testing
         let finish = plan.cues(.finish)
         #expect(finish.filter { if case .call = $0.sound { true } else { false } }.count == 4)
         #expect(finish.contains { $0.sound == .answer("singa_6") && $0.beat == 12 + 4 + 2 })
+        // Rex speed sings every line through, cracking each egg as its answer is sung.
         let whole = plan.cues(.whole)
-        #expect(!whole.contains { if case .call = $0.sound { true } else { false } })
+        #expect(whole.filter { if case .call = $0.sound { true } else { false } }.count == 4)
         #expect(whole.filter { $0.sound == .crack }.count == 4)
+        #expect(whole.contains { $0.sound == .answer("singa_6") && $0.beat == 12 + 4 })
     }
 
     @Test func cuesOnlyMoveForwardAndFitTheRound() {
@@ -86,7 +88,8 @@ import Testing
         #expect(plan.moment(atBeat: 4 + 8 * 6 + 6.1, in: .finish).showsAnswer)
 
         let whole = plan.moment(atBeat: 4 + 8 * 8 + 1, in: .whole)
-        #expect(whole.showsCall && !whole.showsAnswer, "only the answer is hidden")
+        #expect(whole.phase == .call && whole.showsCall && !whole.showsAnswer, "only the answer is hidden")
+        #expect(plan.moment(atBeat: 4 + 8 * 8 + 4.1, in: .whole).showsAnswer)
         #expect(plan.moment(atBeat: Double(plan.beatsPerRound) - 1, in: .whole).phase == .finished)
     }
 
@@ -169,8 +172,8 @@ import Testing
 @Suite struct SingAlongProfileTests {
     @Test func shelfHoldsTheSwitchedOnTablesEasiestFirst() {
         let profile = Profile(nickname: "Sky")
-        #expect(SingAlong.shelf(profile.parent) == [10, 2, 5, 3, 4, 8])
-        #expect(SingAlong.nextUp(profile) == 10)
+        #expect(SingAlong.shelf(profile.parent) == [2, 3, 4, 5, 8, 10], "in number order")
+        #expect(SingAlong.nextUp(profile) == 10, "the easiest one still to sing is suggested")
     }
 
     @Test func everyLevelOpensWithItsTablesSong() {
@@ -241,6 +244,31 @@ import Testing
         let summary = SingAlong.finish(quiz, learner: learner, profile: &profile)
         #expect(Set(summary.trophies.map(\.id)) == ["songs-1", "rex-speed"])
         #expect(profile.pendingTrophies.starts(with: ["days-2", "days-5"]))
+    }
+
+    @Test func eachSongHasItsOwnFriendWhoGrowsWithReplays() {
+        #expect(SongFriend.all.map(\.table) == Array(1...12))
+        #expect(Set(SongFriend.all.map(\.name)).count == 12 && Set(SongFriend.all.map(\.instrument)).count == 12)
+        var profile = Profile(nickname: "Sky")
+        #expect(SingAlong.friendTier(3, in: profile) == .unmet)
+        SingAlong.sang(3, through: .together, finished: false, profile: &profile)
+        #expect(SingAlong.friendTier(3, in: profile) == .unmet, "met when the song is sung right through")
+        SingAlong.sang(3, through: .whole, finished: true, profile: &profile)
+        #expect(SingAlong.friendTier(3, in: profile) == .met)
+        #expect(SongFriendTier.playsToNext(SingAlong.record(3, in: profile)) == 3)
+        #expect(SingAlong.friendsMet(profile).map(\.name) == ["Tambo"])
+        var record = SingAlong.record(3, in: profile)
+        record.quizzes = 2
+        record.shuffles = 1
+        profile.songs["3"] = record
+        #expect(SingAlong.friendTier(3, in: profile) == .sparkling)
+        record.quizzes = 6
+        profile.songs["3"] = record
+        #expect(SingAlong.friendTier(3, in: profile) == .crowned)
+        #expect(SongFriendTier.playsToNext(record) == nil)
+        profile.trophiesReady = true
+        let won = Trophies.awardOutsideLevel(&profile).map(\.id) + profile.pendingTrophies
+        #expect(won.contains("crowned-friend"))
     }
 
     @Test func goldRecordWhenTheTableIsSecure() {

@@ -168,5 +168,10 @@
     "seconds": 1.6,
     "gain": -7,
     "text": "A pack of small fluffy cartoon raptors giving quick excited clucking chirps and cheeky giggly squawks, like angry chickens, comical for a children's game, not scary"
+  },
+  "stomp_big": {
+    "seconds": 1.0,
+    "gain": -3,
+    "text": "One single enormous cartoon dinosaur stomp: a deep, punchy boom of a giant foot hitting the ground, with a short rumble and a rattle of pebbles, fun and powerful, not scary"
   }
 }

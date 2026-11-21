@@ -339,7 +339,7 @@ SINGALONG = {
               "m:We'll sing it three times. A little faster every time!"],
     "warmUp": ["m:Before we explore, let's learn a times-table song. It'll help us later!"],
     "round2": ["o:Your turn! We sing the start, and you sing the answer."],
-    "round3": ["m:Rex speed! Can you sing the whole line before we do?"],
+    "round3": ["m:Rex speed! Sing the whole line with us, super fast!"],
     "quiz": ["o:Now let's fill the ladder! Type each answer, in order.",
              "m:Take your time. The band will wait for you."],
     "shuffle": ["m:Now the tricky bit. The same times table, all mixed up!"],

@@ -23,6 +23,12 @@ struct CampGround: Equatable {
         }
     }
 
+    /// The campfire band (the way into the Sing-Along) stands on the dirt just past the stump by
+    /// the fire: the middle of its base, how tall it is drawn, and the ground it takes up.
+    static let bandBase = CGPoint(x: 332, y: 447)
+    static let bandHeight: CGFloat = 100
+    static let bandFootprint = CGRect(x: 297, y: 421, width: 70, height: 27)
+
     func painting(_ point: CGPoint) -> CGPoint {
         CGPoint(x: (point.x - offset.x) / scale, y: (point.y - offset.y) / scale)
     }
@@ -37,6 +43,7 @@ struct CampGround: Equatable {
             CGRect(x: 0, y: 300, width: 147, height: 155),     // tent and stools
             CGRect(x: 145, y: 350, width: 108, height: 98),   // fire ring
             CGRect(x: 239, y: 385, width: 47, height: 48),    // stump
+            Self.bandFootprint,                                 // the campfire band
             CGRect(x: 683, y: 315, width: 217, height: 129),  // workbench
             CGRect(x: 781, y: 427, width: 119, height: 39),   // crate and rope
             CGRect(x: 0, y: 450, width: 125, height: 150),

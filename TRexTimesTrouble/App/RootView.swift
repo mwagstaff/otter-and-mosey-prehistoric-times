@@ -7,7 +7,11 @@ struct RootView: View {
     @Environment(AppModel.self) private var model
     @Environment(\.scenePhase) private var scenePhase
     private let clock = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
+    #if DEBUG
+    @State private var showDedication = !AppModel.debugTour
+    #else
     @State private var showDedication = true
+    #endif
 
     var body: some View {
         @Bindable var model = model
@@ -27,6 +31,38 @@ struct RootView: View {
                     .zIndex(10)
             }
         }
+        #if DEBUG
+        .overlay(alignment: .leading) {
+            if AppModel.debugTour {
+                Menu {
+                    ForEach(model.catalog.islands) { island in
+                        Menu(island.name) {
+                            ForEach(island.levels) { level in
+                                Button(level.title + " · " + level.mode.title) { model.replay(level.id) }
+                            }
+                            Button("Fix-It Workshop") { model.route = .workshop(island.id) }
+                        }
+                    }
+                    Menu("Explore") {
+                        Button("Map") { model.route = .map }
+                        Button("Song shelf") { model.route = .songShelf }
+                        Button("Crash Camp") { model.route = .home }
+                        Button("Collection") { model.route = .collection }
+                        Button("Trophies") { model.openTrophies() }
+                        Button("Fossil Museum") { model.route = .museum }
+                        Button("Opening story") { model.route = .intro }
+                        Button("Ending") { model.route = .ending }
+                    }
+                } label: {
+                    Label("Playtest", systemImage: "hammer.fill")
+                        .labelStyle(.iconOnly)
+                        .font(.caption.bold()).frame(width: 44, height: 44)
+                        .background(.regularMaterial, in: Capsule())
+                }
+                .accessibilityIdentifier("debug-tour")
+            }
+        }
+        #endif
         .animation(model.settings.reducedMotion ? nil : .easeInOut(duration: 0.35), value: routeKey)
         .animation(.easeInOut(duration: 0.2), value: model.showSettings)
         .animation(.easeInOut(duration: 0.7), value: showDedication)

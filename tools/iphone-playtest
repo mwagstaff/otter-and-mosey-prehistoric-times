@@ -1,0 +1,15 @@
+#!/bin/bash
+# Build the working tree and start a disposable playtest on a connected iPhone.
+set -euo pipefail
+
+project_dir="$(cd "$(dirname "$0")/.." && pwd)"
+device="${PLAYTEST_DEVICE:-Mike’s iPhone}"
+build_dir="$HOME/Library/Developer/Xcode/DerivedData/TRexTimesTrouble-iPhone"
+
+xcodebuild -project "$project_dir/TRexTimesTrouble.xcodeproj" -scheme TRexTimesTrouble \
+  -configuration Debug -destination 'generic/platform=iOS' -derivedDataPath "$build_dir" \
+  -allowProvisioningUpdates build
+xcrun devicectl device install app --device "$device" \
+  "$build_dir/Build/Products/Debug-iphoneos/TRexTimesTrouble.app"
+xcrun devicectl device process launch --device "$device" --terminate-existing \
+  otter-and-mosey-t-rex-times-trouble.dev.skynolimit -- -debugTour "$@"

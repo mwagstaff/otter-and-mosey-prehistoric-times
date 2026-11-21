@@ -2,6 +2,25 @@ import XCTest
 import TimesTroubleCore
 
 nonisolated final class PlaythroughTests: XCTestCase {
+    @MainActor func testDebugTourShowsAnswersAndSwitchesLevels() {
+        continueAfterFailure = false
+        XCUIDevice.shared.orientation = .landscapeLeft
+        let app = XCUIApplication()
+        app.launchArguments = ["-debugTour", "-debugRoute", "song:3", "-debugQuiz", "-debugAutomation", "-debugSkipIntro"]
+        app.launch()
+        let answer = app.staticTexts["Answer: 3"]
+        XCTAssertTrue(answer.waitForExistence(timeout: 15))
+        app.buttons["3"].tap()
+        XCTAssertTrue(app.staticTexts["Answer: 6"].waitForExistence(timeout: 8))
+        app.buttons["debug-tour"].tap()
+        let island = Catalog.shared.islands.last!
+        app.buttons[island.name].tap()
+        let level = island.levels.first!
+        app.buttons[level.title + " · " + level.mode.title].tap()
+        let caption = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "· Answer: ")).firstMatch
+        XCTAssertTrue(caption.waitForExistence(timeout: 20))
+    }
+
     @MainActor func testGrownUpKeypadAcceptsTapsAcrossEachKey() {
         continueAfterFailure = false
         XCUIDevice.shared.orientation = .landscapeLeft
@@ -81,7 +100,7 @@ nonisolated final class PlaythroughTests: XCTestCase {
         }
     }
 
-    /// A short Campfire Sing-Along (three lines, three rounds), then its quiz typed on the number pad.
+    /// A short Campfire Sing-Along (three lines, three rounds), then its ladder and the shuffle challenge typed on the number pad.
     @MainActor func testSingAlongThroughControls() throws {
         continueAfterFailure = false
         XCUIDevice.shared.orientation = .landscapeLeft
@@ -96,14 +115,18 @@ nonisolated final class PlaythroughTests: XCTestCase {
             let skip = app.buttons["Skip"]
             if skip.exists && skip.isHittable { skip.tap(); continue }
             if app.staticTexts["You learned the 3s song!"].exists { break }
-            if app.staticTexts["Type the answer. The band will wait!"].exists, typed < 3 {
+            // The ladder, then the shuffle challenge straight after it: read the question and answer it.
+            let waiting = app.staticTexts["Type the answer. The band will wait!"].exists || app.staticTexts["All mixed up! Take your time."].exists
+            let prompt = app.staticTexts.matching(NSPredicate(format: "label ENDSWITH %@", "× 3 =")).firstMatch
+            if waiting, prompt.exists, let multiplier = Int(prompt.label.split(separator: " ").first ?? "") {
                 typed += 1
-                for digit in String(3 * typed) { app.buttons[String(digit)].tap() }
+                for digit in String(3 * multiplier) { app.buttons[String(digit)].tap() }
+                RunLoop.current.run(until: Date().addingTimeInterval(1.2))
             }
         }
         XCTAssertTrue(app.staticTexts["You learned the 3s song!"].waitForExistence(timeout: 10))
-        XCTAssertEqual(typed, 3)
-        XCTAssertTrue(app.buttons["Shuffle challenge"].exists)
+        XCTAssertEqual(typed, 6, "three lines in order, then the same three mixed up")
+        XCTAssertFalse(app.buttons["Shuffle challenge"].exists, "the shuffle isn't an optional extra any more")
     }
 
     /// A level opens with a short piece of its table's song, then goes on into the level.

@@ -49,6 +49,8 @@ public enum TrophyRule: Equatable, Sendable {
     case firstSteps, pets(Int), allPets, allHats, decorations(Int), allTreasures
     /// Sing-along: sing a song through its fastest round; any gold record; every switched-on song sung.
     case rexSpeed, goldRecord, songbook
+    /// Sing-along: meet every song friend on the shelf; crown any song friend.
+    case songFriends, crownedFriend
     case comeback, neverGiveUp, pearlPerfect, hatTrick, oldFriends, backForMore, weekend, noHints, rainbowDay
 
     /// Won by one particular run rather than by something that stays true. These have to be
@@ -210,7 +212,9 @@ public enum Trophies {
         list += [
             Trophy("rex-speed", "Rex Speed", "Sing a whole song right through its Rex-speed round.", group: .learning, art: "badge_sing", rule: .rexSpeed),
             Trophy("gold-record", "Gold Record", "Earn a gold record by learning every fact in a times table.", group: .learning, art: "badge_sing", rule: .goldRecord),
-            Trophy("songbook", "Whole Songbook", "Sing every times-table song on the campfire shelf.", group: .learning, art: "badge_sing", rule: .songbook),
+            Trophy("songbook", "Whole Songbook", "Fill the ladder for every times-table song on the campfire shelf.", group: .learning, art: "badge_sing", rule: .songbook),
+            Trophy("song-friends", "The Whole Band", "Meet every song friend on the campfire shelf.", group: .collections, art: "songfriend_10", rule: .songFriends),
+            Trophy("crowned-friend", "Encore!", "Sing one song so often its friend gets a crown.", group: .collections, art: "songfriend_2", rule: .crownedFriend),
         ]
         let secrets: [(String, String, String, String, TrophyRule)] = [
             ("comeback", "Comeback Kid", "Get a question right after two wrong tries.", "Try, try and try again…", .comeback),
@@ -261,6 +265,8 @@ public enum Trophies {
         case .allHats: (hatsTried(profile, catalog), catalog.rewards.filter { $0.kind == .accessory }.count)
         case let .decorations(needed): (min(profile.decorations.count, needed), needed)
         case .songbook:
+            (SingAlong.shelf(profile.parent).filter { SingAlong.record($0, in: profile).quizzes > 0 }.count, SingAlong.shelf(profile.parent).count)
+        case .songFriends:
             (SingAlong.shelf(profile.parent).filter { SingAlong.record($0, in: profile).sung > 0 }.count, SingAlong.shelf(profile.parent).count)
         case .allTreasures: (catalog.rewards.filter { profile.has($0.id) }.count, catalog.rewards.count)
         case let .champion(island):
@@ -301,7 +307,9 @@ public enum Trophies {
         case .hatTrick: return profile.stats.hatStreak >= 3
         case .rexSpeed: return profile.songs.values.contains { $0.bestRound >= SongRound.whole.rawValue && $0.sung > 0 }
         case .goldRecord: return profile.songs.keys.contains { Int($0).map { SingAlong.level($0, in: profile) == .gold } ?? false }
-        case .songbook: return SingAlong.shelf(profile.parent).allSatisfy { SingAlong.record($0, in: profile).sung > 0 }
+        case .songbook: return SingAlong.shelf(profile.parent).allSatisfy { SingAlong.record($0, in: profile).quizzes > 0 }
+        case .songFriends: return SingAlong.shelf(profile.parent).allSatisfy { SingAlong.record($0, in: profile).sung > 0 }
+        case .crownedFriend: return profile.songs.values.contains { SongFriendTier.of($0) == .crowned }
         case .backForMore: return profile.levels.values.contains { $0.plays >= 3 }
         case .weekend: return Set(profile.stats.weekendDays).isSuperset(of: [1, 7])
         case .rainbowDay: return profile.stats.trophyDayIslands.count >= 3
@@ -346,7 +354,7 @@ public enum Trophies {
             case let .superstar(level) where level == run.levelID: 1
             case let .flawless(level) where level == run.levelID: 1
             // A sing-along's own trophies come first after a song.
-            case .count(.songs, _), .rexSpeed, .goldRecord, .songbook: run.levelID.isEmpty ? 1 : 4
+            case .count(.songs, _), .rexSpeed, .goldRecord, .songbook, .songFriends, .crownedFriend: run.levelID.isEmpty ? 1 : 4
             default: trophy.rule.isMoment ? 2 : 4
             }
         }

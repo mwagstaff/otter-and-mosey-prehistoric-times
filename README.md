@@ -37,7 +37,9 @@ What plays today:
 - **Campfire Sing-Along:** Otter and Mosey chant a times table over a campfire beat, three rounds
   that get faster and leave more for the child to sing, then "Fill the ladder" (the table typed in
   order) and an optional shuffle challenge. Every level opens with about a minute of its table's
-  song, moving on level by level (each round in turn, then the ladder, then a mix). Baby dinosaurs
+  song, moving on level by level (each round in turn, then the ladder, then a mix). Each song has
+  its own baby dinosaur musician to meet, who sparkles and then wins a crown as the song is sung
+  again. Baby dinosaurs
   and friends join in, one per line sung and per right answer. A record for each table on the song
   shelf (reached from the campfire band at Crash Camp or the map's camp card), and grown-up
   settings for rounds, speed-up and level songs. See section 14 of the plan.
@@ -127,4 +129,19 @@ Nothing in the app talks to the network, and no key is ever bundled.
 | `-debugPlaytest bay-1` | Play-test a level as if started from the grown-ups' area (nothing is saved). |
 | `-debugUnlock` | Treat every level as cleared for this launch. |
 | `-debugShort` | Limit levels to three questions, and sing-along songs to three lines. |
+| `-debugCrowd 30` | Start a sing-along with 30 friends already singing. |
+| `-debugQuiz` | With `-debugRoute song:3`, go straight to filling the ladder. |
 | `-debugBefriend` | In a Big Escape, skip the chase and go straight to the boss making friends. |
+| `-debugTour` | Open the map with a hammer menu for every level, every zone’s Fix-It Workshop, songs, camp, collection, trophies, museum, opening story and ending. Includes answer cues. |
+| `-debugAnswers` | Show the exact choice or digits in every level, sing-along quiz and workshop. Combine with a direct route for a layout check without the hammer menu. |
+| `-debugResults` | Open a level directly on its perfect-run rewards screen. |
+
+**On Mike’s iPhone**, run `./tools/iphone-playtest -debugShort` from this game’s directory. It builds the current Debug sources, installs the app, and starts the tour. Use the hammer at the left edge to change activities mid-session. The tour and answer-cue switches start with a fresh in-memory player on each launch. Add `-debugUnlock` to explore cleared-game rewards and collections. Set `PLAYTEST_DEVICE` to target a different device by name or UDID.
+
+| To check | Arguments to add to `./tools/iphone-playtest` |
+| --- | --- |
+| Short level, including normal gestures, mistakes and hints | `-debugLevel hollow-1 -debugSkipIntro -debugShort` |
+| Boss friendship and part collection | `-debugLevel hollow-5 -debugSkipIntro -debugBefriend` |
+| Trophy collection and reward navigation | `-debugLevel hollow-1 -debugResults` |
+| Song ladder, shuffled questions and song reward | `-debugRoute song:3 -debugQuiz -debugShort` |
+| Populated camp and trophy cabinet | `-debugUnlock -debugRoute home` |

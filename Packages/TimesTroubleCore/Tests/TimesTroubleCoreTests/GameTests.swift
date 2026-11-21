@@ -426,14 +426,14 @@ import Testing
                            score: 100, bestCombo: right, correctFirstTry: right, total: level.count)
     }
 
-    @Test func thereAre146TrophiesWithUniqueIDsAndArt() {
+    @Test func thereAre148TrophiesWithUniqueIDsAndArt() {
         let all = Trophies.all(catalog)
-        #expect(all.count == 146)
+        #expect(all.count == 148)
         #expect(Set(all.map(\.id)).count == all.count)
         #expect(all.filter { $0.group == .islands }.count == 72)
         #expect(all.filter { $0.group == .milestones }.count == 40)
         #expect(all.filter { $0.group == .learning }.count == 19)
-        #expect(all.filter { $0.group == .collections }.count == 6)
+        #expect(all.filter { $0.group == .collections }.count == 8)
         #expect(all.filter { $0.group == .secret }.count == 9)
         #expect(all.allSatisfy { !$0.art.isEmpty && !$0.detail.isEmpty })
     }

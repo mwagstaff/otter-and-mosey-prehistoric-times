@@ -10,7 +10,8 @@ public enum SongRound: Int, CaseIterable, Codable, Comparable, Sendable {
     case together = 1
     /// Otter calls; the child sings the answer before the egg hatches.
     case finish
-    /// Beat only: the child sings the whole line before it appears.
+    /// Fast: everyone sings the whole line together, and the answer stays hidden in its egg until
+    /// Mosey sings it, so the child has to know it to keep up.
     case whole
 
     public static func < (lhs: SongRound, rhs: SongRound) -> Bool { lhs.rawValue < rhs.rawValue }
@@ -165,8 +166,12 @@ public struct SongPlan: Equatable, Sendable {
             case .together:
                 cues.append(SongCue(beat: start, sound: .call(callKey), line: line, volume: 1))
                 cues.append(SongCue(beat: answerBar, sound: .answer(answerKey), line: line, volume: 1))
-            case .finish, .whole:
-                if round == .finish { cues.append(SongCue(beat: start, sound: .call(callKey), line: line, volume: 1)) }
+            case .whole:
+                cues.append(SongCue(beat: start, sound: .call(callKey), line: line, volume: 1))
+                cues.append(SongCue(beat: answerBar - 0.1, sound: .crack, line: line, volume: 0.5))
+                cues.append(SongCue(beat: answerBar, sound: .answer(answerKey), line: line, volume: 1))
+            case .finish:
+                cues.append(SongCue(beat: start, sound: .call(callKey), line: line, volume: 1))
                 let reveal = answerBar + Double(Self.revealBeat)
                 cues.append(SongCue(beat: reveal - 0.1, sound: .crack, line: line, volume: 0.5))
                 cues.append(SongCue(beat: reveal, sound: .answer(answerKey), line: line, volume: 0.85))
@@ -198,9 +203,9 @@ public struct SongPlan: Equatable, Sendable {
             return SongMoment(phase: inCall ? .call : (revealed ? .answer : .yourTurn), line: line, beatInBar: beatInBar,
                               wordsSung: inCall ? min(Int(inLine) + 1, 4) : 4, showsCall: true, showsAnswer: revealed)
         case .whole:
-            // The question stays on screen; only the answer is the child's to find.
-            return SongMoment(phase: inCall ? .call : (revealed ? .answer : .yourTurn), line: line, beatInBar: beatInBar,
-                              wordsSung: revealed ? 4 : 0, showsCall: true, showsAnswer: revealed)
+            // Sung through like the first round, only faster, with the answer in its egg until it's sung.
+            return SongMoment(phase: inCall ? .call : .answer, line: line, beatInBar: beatInBar,
+                              wordsSung: inCall ? min(Int(inLine) + 1, 4) : 4, showsCall: true, showsAnswer: !inCall)
         }
     }
 
@@ -342,6 +347,9 @@ public struct SongRecord: Codable, Equatable, Sendable {
 
     public init() {}
 
+    /// Every finished piece of the song: sung to the end, the ladder filled or a shuffle done.
+    public var plays: Int { sung + quizzes + shuffles }
+
     public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         sung = c.value(.sung, default: 0)
@@ -367,10 +375,79 @@ public struct LevelSong: Equatable, Sendable {
     public let segment: SongSegment
 }
 
+/// Each times table's song has its own friend: a baby dinosaur with its own instrument, met the
+/// first time the song is sung right through, who then comes to sing in every song.
+public struct SongFriend: Equatable, Sendable {
+    public let table: Int
+    public let name: String
+    /// "baby Parasaurolophus"
+    public let kind: String
+    public let instrument: String
+    public var art: String { "songfriend_\(table)" }
+
+    public static let all: [SongFriend] = [
+        SongFriend(table: 1, name: "Ding", kind: "baby Ankylosaurus", instrument: "triangle"),
+        SongFriend(table: 2, name: "Toot", kind: "baby Parasaurolophus", instrument: "trumpet"),
+        SongFriend(table: 3, name: "Tambo", kind: "baby Triceratops", instrument: "tambourine"),
+        SongFriend(table: 4, name: "Plink", kind: "baby Stegosaurus", instrument: "xylophone"),
+        SongFriend(table: 5, name: "Bongo", kind: "baby Iguanodon", instrument: "bongos"),
+        SongFriend(table: 6, name: "Flutey", kind: "baby Pteranodon", instrument: "flute"),
+        SongFriend(table: 7, name: "Oompah", kind: "baby Diplodocus", instrument: "tuba"),
+        SongFriend(table: 8, name: "Strum", kind: "baby Spinosaurus", instrument: "guitar"),
+        SongFriend(table: 9, name: "Shaka", kind: "baby Velociraptor", instrument: "maracas"),
+        SongFriend(table: 10, name: "Roary", kind: "baby T-Rex", instrument: "microphone"),
+        SongFriend(table: 11, name: "Thump", kind: "baby Pachycephalosaurus", instrument: "big drum"),
+        SongFriend(table: 12, name: "Fiddle", kind: "baby Plesiosaurus", instrument: "violin"),
+    ]
+
+    public static func of(_ table: Int) -> SongFriend? { all.first { $0.table == table } }
+}
+
+/// How far a song's friend has come: met, then sparkling, then crowned, the more often the song
+/// is sung. Singing a song again always has something to work towards.
+public enum SongFriendTier: Int, Comparable, Sendable {
+    /// Not met yet: sing the song right through once.
+    case unmet
+    case met
+    /// Sung (or quizzed) four times.
+    case sparkling
+    /// Eight times.
+    case crowned
+
+    public static let sparkleAt = 4
+    public static let crownAt = 8
+
+    public static func < (lhs: SongFriendTier, rhs: SongFriendTier) -> Bool { lhs.rawValue < rhs.rawValue }
+
+    public static func of(_ record: SongRecord) -> SongFriendTier {
+        guard record.sung > 0 else { return .unmet }
+        if record.plays >= crownAt { return .crowned }
+        if record.plays >= sparkleAt { return .sparkling }
+        return .met
+    }
+
+    /// Plays still needed for the next tier, or nil when crowned (or before the friend is met,
+    /// when what's needed is one song sung right through).
+    public static func playsToNext(_ record: SongRecord) -> Int? {
+        switch of(record) {
+        case .unmet, .crowned: nil
+        case .met: sparkleAt - record.plays
+        case .sparkling: crownAt - record.plays
+        }
+    }
+}
+
 /// The sing-along's rules that touch the player's profile.
 public enum SingAlong {
-    /// The tables with songs on the shelf: every table the grown-up has switched on, easiest first.
-    public static func shelf(_ settings: ParentSettings) -> [Int] { ZonePlan.ordered(settings.usableTables) }
+    /// The tables with songs on the shelf: every table the grown-up has switched on, in number order.
+    public static func shelf(_ settings: ParentSettings) -> [Int] { settings.usableTables.sorted() }
+
+    public static func friendTier(_ table: Int, in profile: Profile) -> SongFriendTier { .of(record(table, in: profile)) }
+
+    /// The song friends met so far, in table order.
+    public static func friendsMet(_ profile: Profile) -> [SongFriend] {
+        SongFriend.all.filter { friendTier($0.table, in: profile) > .unmet }
+    }
 
     public static func record(_ table: Int, in profile: Profile) -> SongRecord { profile.songs[String(table)] ?? SongRecord() }
 
@@ -379,9 +456,9 @@ public enum SingAlong {
         return record(table, in: profile).bestStars > 0 ? .silver : .none
     }
 
-    /// The song suggested next on the shelf: the easiest table not yet sung and quizzed.
+    /// The song suggested next on the shelf: the easiest table whose friend hasn't been met yet.
     public static func nextUp(_ profile: Profile) -> Int? {
-        shelf(profile.parent).first { record($0, in: profile).quizzes == 0 }
+        ZonePlan.ordered(profile.parent.usableTables).first { friendTier($0, in: profile) == .unmet }
     }
 
     /// The song a level opens with, or nil when the grown-up has switched level songs off. The

@@ -172,19 +172,24 @@ struct HomeIslandView: View {
                 .position(x: geometry.size.width * 0.88, y: geometry.size.height * 0.4)
                 .accessibilityLabel("Trophy cabinet")
                 .zIndex(2)
-                // The campfire band: the way into the Campfire Sing-Along.
+                // The campfire band, the way into the Campfire Sing-Along, stands on the dirt by the
+                // fire. Pets walk round it and pass in front of or behind it by depth.
+                let bandFoot = ground.screen(CampGround.bandBase)
+                let bandSize = CampGround.bandHeight * ground.scale
                 Button(action: tapped { model.route = .songShelf }) {
-                    VStack(spacing: 2) {
-                        Image("camp_band").resizable().scaledToFit().frame(height: itemSize * 2)
-                        IconLabel("Sing-Along", emoji: "🎵", size: compact ? 13 : 18).font(.game(compact ? 13 : 18)).foregroundStyle(Palette.ink)
-                            .padding(.horizontal, 10).padding(.vertical, 3).panel(fill: Palette.gold, radius: 12)
-                    }
+                    Image("camp_band").resizable().scaledToFit().frame(width: bandSize, height: bandSize)
+                        .overlay(alignment: .bottom) {
+                            IconLabel("Sing-Along", emoji: "🎵", size: compact ? 12 : 17).font(.game(compact ? 12 : 17)).foregroundStyle(Palette.ink)
+                                .padding(.horizontal, 10).padding(.vertical, 3).panel(fill: Palette.gold, radius: 12)
+                                .fixedSize()
+                                .offset(y: bandSize * 0.06)
+                        }
                 }
                 .buttonStyle(.plain)
-                // On the ground beside the campfire.
-                .position(x: geometry.size.width * 0.38, y: geometry.size.height * 0.6)
+                // The picture's grass ends about 85% of the way down, which is where it meets the ground.
+                .position(x: bandFoot.x, y: bandFoot.y - bandSize * 0.35)
                 .accessibilityLabel("Sing-Along")
-                .zIndex(2)
+                .zIndex(Double(bandFoot.y / max(geometry.size.height, 1)))
                 VStack {
                     // Everything sits along the top, so the ground is free for decorations.
                     HStack(alignment: .top, spacing: 10) {

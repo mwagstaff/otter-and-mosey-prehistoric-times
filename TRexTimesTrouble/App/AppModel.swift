@@ -56,7 +56,11 @@ final class AppModel {
 
     init(store: SaveStore = .applicationSupport()) {
         self.store = store
+        #if DEBUG
+        save = Self.debugAnswers ? SaveFile() : store.load()
+        #else
         save = store.load()
+        #endif
         prepareTrophies()
         applySettings()
         #if DEBUG
@@ -68,6 +72,9 @@ final class AppModel {
     /// Development shortcuts: `-debugUnlock` clears every level, `-debugLevel bay-1` opens a level,
     /// `-debugRoute map|collection|home|museum|workshop|parent|parent-ending|check|setup|ending|island:hollow` opens a screen (the parent
     /// dashboard without its gate), `-debugPlaytest bay-1` play-tests a level from the dashboard.
+    static let debugTour = ProcessInfo.processInfo.arguments.contains("-debugTour")
+    static let debugAnswers = debugTour || ProcessInfo.processInfo.arguments.contains("-debugAnswers")
+
     private func applyDebugArguments() {
         let arguments = ProcessInfo.processInfo.arguments
         func value(after flag: String) -> String? {
@@ -90,6 +97,7 @@ final class AppModel {
             }
         }
         save.activeProfile = profile
+        if Self.debugTour { route = .map }
         if let level = value(after: "-debugLevel"), catalog.level(level) != nil { route = .play(level) }
         if let level = value(after: "-debugPlaytest") {
             parentUnlocked = true
@@ -153,7 +161,12 @@ final class AppModel {
 
     // MARK: - Saving
 
-    func persist() { SaveWriter.write(save, to: store) }
+    func persist() {
+        #if DEBUG
+        if Self.debugAnswers { return }
+        #endif
+        SaveWriter.write(save, to: store)
+    }
 
     func persistNow() {
         persist()

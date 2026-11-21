@@ -15,6 +15,8 @@ enum SFX: String, CaseIterable {
     case roarRaptors = "roar_raptors", roarRex = "roar_rex", stomp
     case machineWhirr = "machine_whirr", machineCrash = "machine_crash"
     case snore, splash, ratchet, tiptoe
+    /// One big punchy stomp, for the sing-along's stomp drum.
+    case stompBig = "stomp_big"
 }
 
 /// Plays music and effects. Uses the ambient audio session, so the ring/silent switch
@@ -265,6 +267,7 @@ final class Haptics {
     private var engine: CHHapticEngine?
     private let light = UIImpactFeedbackGenerator(style: .light)
     private let soft = UIImpactFeedbackGenerator(style: .soft)
+    private let heavy = UIImpactFeedbackGenerator(style: .heavy)
     private let notify = UINotificationFeedbackGenerator()
 
     private init() {
@@ -276,6 +279,8 @@ final class Haptics {
     func tap() { if enabled { light.impactOccurred() } }
     func nudge() { if enabled { soft.impactOccurred(intensity: 0.7) } }
     func success() { if enabled { notify.notificationOccurred(.success) } }
+    /// A big heavy thud, for stomping.
+    func thump() { if enabled { heavy.impactOccurred(intensity: 1) } }
 
     /// A rising rumble for Friendship Power and big finales.
     func crescendo() {

@@ -20,7 +20,9 @@ import Testing
             #expect(a.x < 274 && b.x > 683)
             #expect(!area.contains(CGPoint(x: 200, y: 415)))
             #expect(!area.contains(CGPoint(x: 770, y: 412)))
-            let start = CGPoint(x: 352, y: 426), end = CGPoint(x: 560, y: 426)
+            // The campfire band stands on the dirt by the stump, and nobody can walk through it.
+            #expect(!area.contains(CGPoint(x: CampGround.bandFootprint.midX, y: CampGround.bandFootprint.midY)))
+            let start = CGPoint(x: 408, y: 426), end = CGPoint(x: 560, y: 426)
             #expect(!area.clear(from: start, to: end))
             let path = try #require(area.route(from: start, to: end))
             #expect(path.points.count > 2)
@@ -137,7 +139,9 @@ import Testing
         missing += SongPlan.allAnswers.map(SongPlan.answerKey).filter { Narrator.clipURL($0) == nil }
         #expect(missing.isEmpty, "\(missing.count) sing-along clips missing, e.g. \(missing.prefix(5))")
         #expect(Bundle.main.url(forResource: "sing_beat", withExtension: "m4a") != nil)
-        for name in ["otter_sing", "otter_listen", "mosey_sing", "badge_sing", "egg"] { #expect(Art.hasAsset(name), "missing art: \(name)") }
+        for name in ["otter_sing", "otter_listen", "mosey_sing", "badge_sing", "egg", "camp_band", "icon_1f451", "icon_2728"] + SongFriend.all.map(\.art) {
+            #expect(Art.hasAsset(name), "missing art: \(name)")
+        }
         #expect(Catalog.shared.singAlong?.intro.isEmpty == false)
     }
 

@@ -159,6 +159,12 @@ class GameScene: SKScene {
         questionStart = Date()
         bridge.hintText = nil
         bridge.caption = caption(for: question)
+        #if DEBUG
+        if AppModel.debugAnswers {
+            let answer = question.format == .typed ? question.typingTarget : question.correctChoice
+            bridge.caption += " · Answer: " + answer
+        }
+        #endif
         bridge.ruledOut = []
         bridge.keyboard = keyboard(for: question)
         let spoken = shouldSpeak(question)

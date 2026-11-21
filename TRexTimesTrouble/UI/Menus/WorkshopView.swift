@@ -180,6 +180,11 @@ struct WorkshopView: View {
     }
 
     private func instruction(_ puzzle: WorkshopPuzzle, full: Bool) -> String {
+        #if DEBUG
+        if AppModel.debugAnswers, !solved, full || puzzle.kind == .family {
+            return "Answer: " + puzzle.question.correctChoice
+        }
+        #endif
         switch puzzle.kind {
         case .array:
             if !full {

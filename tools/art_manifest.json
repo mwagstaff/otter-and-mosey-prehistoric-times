@@ -694,6 +694,66 @@
    "style": "sprite",
    "quality": "high",
    "prompt": "A cheerful prehistoric campfire band stand for a children's game: a big hollow-log drum with a stretched hide top and two bone drumsticks resting on it, a little wooden ukulele leaning against it, and a pair of gourd maracas beside it, all on a small patch of grass, seen from slightly above and to the front."
+  },
+  {
+   "name": "songfriend_1",
+   "style": "icon",
+   "prompt": "An adorable chubby cartoon baby dinosaur musician for a children's game: a baby Ankylosaurus, sandy yellow with a little club tail, happily dinging a shiny silver triangle. Big sparkly happy eyes, full body, sitting or standing."
+  },
+  {
+   "name": "songfriend_2",
+   "style": "icon",
+   "prompt": "An adorable chubby cartoon baby dinosaur musician for a children's game: a baby Parasaurolophus, soft purple with a long curved head crest, joyfully playing a little golden trumpet. Big sparkly happy eyes, full body, sitting or standing."
+  },
+  {
+   "name": "songfriend_3",
+   "style": "icon",
+   "prompt": "An adorable chubby cartoon baby dinosaur musician for a children's game: a baby Triceratops, bright orange with three small horns, shaking a tambourine with jingles. Big sparkly happy eyes, full body, sitting or standing."
+  },
+  {
+   "name": "songfriend_4",
+   "style": "icon",
+   "prompt": "An adorable chubby cartoon baby dinosaur musician for a children's game: a baby Stegosaurus, mint green with rounded back plates, tapping a little wooden xylophone with two mallets. Big sparkly happy eyes, full body, sitting or standing."
+  },
+  {
+   "name": "songfriend_5",
+   "style": "icon",
+   "prompt": "An adorable chubby cartoon baby dinosaur musician for a children's game: a baby Iguanodon, sky blue, drumming on a pair of bongo drums. Big sparkly happy eyes, full body, sitting or standing."
+  },
+  {
+   "name": "songfriend_6",
+   "style": "icon",
+   "prompt": "An adorable chubby cartoon baby dinosaur musician for a children's game: a baby Pteranodon, coral pink with little wings, playing a small wooden flute. Big sparkly happy eyes, full body, sitting or standing."
+  },
+  {
+   "name": "songfriend_7",
+   "style": "icon",
+   "prompt": "An adorable chubby cartoon baby dinosaur musician for a children's game: a baby Diplodocus, lime green with a long neck, puffing out its cheeks blowing a shiny brass tuba. Big sparkly happy eyes, full body, sitting or standing."
+  },
+  {
+   "name": "songfriend_8",
+   "style": "icon",
+   "prompt": "An adorable chubby cartoon baby dinosaur musician for a children's game: a baby Spinosaurus, teal with a small sail on its back, strumming a tiny acoustic guitar. Big sparkly happy eyes, full body, sitting or standing."
+  },
+  {
+   "name": "songfriend_9",
+   "style": "icon",
+   "prompt": "An adorable chubby cartoon baby dinosaur musician for a children's game: a baby Velociraptor, fluffy and feathered in red and yellow, shaking two colourful maracas. Big sparkly happy eyes, full body, sitting or standing."
+  },
+  {
+   "name": "songfriend_10",
+   "style": "icon",
+   "prompt": "An adorable chubby cartoon baby dinosaur musician for a children's game: a baby Tyrannosaurus rex, warm brown-green with tiny arms, singing proudly into a vintage microphone. Big sparkly happy eyes, full body, sitting or standing."
+  },
+  {
+   "name": "songfriend_11",
+   "style": "icon",
+   "prompt": "An adorable chubby cartoon baby dinosaur musician for a children's game: a baby Pachycephalosaurus, dusky blue with a round dome head, banging a big bass drum. Big sparkly happy eyes, full body, sitting or standing."
+  },
+  {
+   "name": "songfriend_12",
+   "style": "icon",
+   "prompt": "An adorable chubby cartoon baby dinosaur musician for a children's game: a baby Plesiosaurus, deep ocean blue with flippers, playing a little violin. Big sparkly happy eyes, full body, sitting or standing."
   }
  ]
 }
