@@ -69,6 +69,14 @@ struct RootView: View {
         case .workshop(let id):
             if let island = model.catalog.island(id) { WorkshopView(island: island) } else { MapView() }
         case .museum: MuseumView()
+        case .songShelf: SongShelfView()
+        case .song(let table): SingAlongView(table: table)
+        case .levelSong(let id):
+            if let profile = model.profile, let song = SingAlong.levelSong(id, profile: profile, catalog: model.catalog) {
+                SingAlongView(table: song.table, level: id)
+            } else {
+                MapView()
+            }
         }
     }
 
@@ -86,6 +94,8 @@ struct RootView: View {
             }
         // The story starts on Rainbow Island, to Lost Islands' theme; the jump back in time switches tune.
         case .intro: AudioManager.shared.playMusic("music_title")
+        // The sing-along plays its own beat.
+        case .song, .levelSong: AudioManager.shared.playMusic("none")
         default: AudioManager.shared.playMusic("music_main")
         }
     }

@@ -10,6 +10,7 @@ struct GameView: View {
 
     private enum Stage { case intro, playing, outro, results }
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(AppModel.self) private var model
     @State private var bridge = GameBridge()
     @State private var scene: GameScene?
@@ -26,6 +27,9 @@ struct GameView: View {
             ZStack {
                 if let scene {
                     SpriteView(scene: scene, isPaused: paused, preferredFramesPerSecond: 60)
+                        .onChange(of: reduceMotion || model.settings.reducedMotion, initial: true) { _, reduced in
+                            scene.backdrop?.reduceMotion = reduced
+                        }
                         .ignoresSafeArea()
                 }
                 if stage == .playing || stage == .outro {
@@ -528,10 +532,11 @@ struct LevelCompleteView: View {
                 Button(action: tapped { replay() }) { IconLabel("Again", symbol: "arrow.counterclockwise", size: compact ? 17 : 22) }
                     .buttonStyle(ChunkyButtonStyle(fill: Palette.cream, size: compact ? 17 : 22))
                 if summary.gameComplete, model.playtest == nil {
-                    Button(action: tapped { model.route = .ending }) { IconLabel("The ending!", emoji: "🌈", size: compact ? 20 : 26) }
+                    // The last part: fit it at Crash Camp, and the finale follows.
+                    Button(action: tapped { model.route = .workshop(island.id) }) { IconLabel("Fit the last part!", emoji: "🔧", size: compact ? 20 : 26) }
                         .buttonStyle(ChunkyButtonStyle(fill: Palette.teal, ink: .white, size: compact ? 20 : 26))
                 } else if let next {
-                    Button(action: tapped { model.route = .play(next.id) }) { IconLabel("Next", symbol: "play.fill", size: compact ? 20 : 26, trailing: true) }
+                    Button(action: tapped { model.playtest == nil ? model.startLevel(next.id) : (model.route = .play(next.id)) }) { IconLabel("Next", symbol: "play.fill", size: compact ? 20 : 26, trailing: true) }
                         .buttonStyle(ChunkyButtonStyle(fill: Palette.teal, ink: .white, size: compact ? 20 : 26, minWidth: 150))
                 } else if summary.crystalIsland != nil, model.playtest == nil {
                     // A part won back: off to Crash Camp to fit it, then on to the next zone.

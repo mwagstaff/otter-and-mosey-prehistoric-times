@@ -73,6 +73,11 @@ const characters = {
     description: "A British man performing a grumpy, gruff but soft-hearted triceratops in a family animated film. Low, chunky and huffy, full of snorts and grumbles, like a cross old uncle having a bad day. Funny, never frightening. Clean studio recording.",
     text: "Hmph! Go away. I'm busy being cross. Something's stuck on my horn and it boings every time I nod. Boing! See? Don't laugh. Three horns, and not one of them can reach it. Wait... you got it off? Well. Thank you. I suppose I could be a tiny bit less grumpy now.",
   },
+  rex: {
+    name: "Rex (Times Trouble)",
+    description: "A British man in his fifties with a very deep, big, booming, rumbly voice performing a huge but secretly soft-hearted T-Rex in a family animated film. Loud and blustery when grumpy, with comic roaring exclamations, then warm, sleepy and contented, like a giant teddy bear. Funny, never frightening. Clean studio recording.",
+    text: "ROAR! Everybody out of my valley! I'm in a very, very bad mood today. Something on my back goes tick-tock, tick-tock, and it itches! And my arms are far too short to reach it. Oh. Oh! You'll scratch it for me? A little to the left. Aaah. That's the spot. Best scratch ever. Friends?",
+  },
 };
 
 // Median pitch and how much it moves, from a simple autocorrelation. A rough, objective

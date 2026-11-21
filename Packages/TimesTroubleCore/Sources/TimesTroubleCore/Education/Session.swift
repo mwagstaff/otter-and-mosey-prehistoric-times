@@ -102,15 +102,10 @@ public struct ChallengeSession: Sendable {
     public static let slipsBeforeHelp = 4
     /// Tricky questions in a row after which two slips on the next one are enough.
     public static let trickyStreakBeforeHelp = 3
-    /// A missed fact comes back this many questions later, if the level is still going.
-    public static let reaskAfter = 2
 
     private var rng: SeededGenerator
     private var planner: QuestionPlanner
     private var usedTexts: Set<String> = []
-    /// Missed facts waiting to come back in this level: the key, its kind of question and when.
-    private var reasks: [(key: String, skill: Skill, at: Int)] = []
-    private var reasked: Set<String> = []
     /// When answers are recorded; tests set it to check the two-day rule.
     public var clock: Date?
 
@@ -124,8 +119,13 @@ public struct ChallengeSession: Sendable {
         self.learner = learner
         self.settings = settings
         self.inputProfile = inputProfile
-        let focus = focus ?? ZonePlan.focus(zone: catalog.zoneIndex(of: level.id) ?? 0, settings: settings)
-        planner = QuestionPlanner(focus: focus, tables: settings.usableTables, multipliers: settings.usableMultipliers)
+        // A level about one table ("counting up in threes") sticks to it, review included.
+        if let table = level.table, focus == nil, settings.usableTables.contains(table) {
+            planner = QuestionPlanner(focus: [table], tables: [table], multipliers: settings.usableMultipliers)
+        } else {
+            let focus = focus ?? ZonePlan.focus(zone: catalog.zoneIndex(of: level.id) ?? 0, settings: settings)
+            planner = QuestionPlanner(focus: focus, tables: settings.usableTables, multipliers: settings.usableMultipliers)
+        }
         self.focus = planner.focus
         rng = SeededGenerator(seed: seed)
     }
@@ -151,15 +151,6 @@ public struct ChallengeSession: Sendable {
         slipsOnQuestion = 0
         suggestedHelpThisQuestion = false
 
-        // A fact missed earlier in this level comes back.
-        if let index = reasks.firstIndex(where: { $0.at <= asked }) {
-            let reask = reasks.remove(at: index)
-            if let (_, fact) = Fact.parse(reask.key) {
-                planner.noteAsked(fact)
-                return make(fact, skill: reask.skill)
-            }
-        }
-
         let skills = activeSkills
         let skill = skills[(asked - 1 + Int.random(in: 0..<skills.count, using: &rng)) % skills.count]
         guard let kind = skill.factKind else { return sequence() }
@@ -176,14 +167,17 @@ public struct ChallengeSession: Sendable {
     /// Counting in multiples of one of the focus tables.
     private mutating func sequence() -> Question {
         var question: Question!
-        for _ in 0..<8 {
+        for _ in 0..<24 {
             let table = focus.randomElement(using: &rng)!
             question = MathsGenerator.question(for: Fact(table: table, multiplier: 1), skill: .sequences,
                                                format: format(for: .sequences, fact: nil), level: learner.level(for: .sequences), using: &rng)
-            if !usedTexts.contains(question.prompt) { break }
+            if !usedTexts.contains(question.prompt) {
+                usedTexts.insert(question.prompt)
+                return question
+            }
         }
-        usedTexts.insert(question.prompt)
-        return question
+        // Every pattern has been used: a times-table question instead, so nothing repeats.
+        return make(planner.next(kind: .multiply, learner: learner, using: &rng), skill: .multiplication)
     }
 
     /// Picked or typed. Modes that can do both follow the grown-up's choice; adaptively, a fact
@@ -224,11 +218,8 @@ public struct ChallengeSession: Sendable {
         if firstTry, let table = Self.table(of: question.key) { tableFirstTry[String(table), default: 0] += 1 }
         learner.record(key: question.key, skill: question.skill, correct: firstTry, seconds: seconds, usedHint: usedHint,
                        typed: question.format == .typed, on: clock ?? Date())
-        // A missed fact comes back a couple of questions later, once.
-        if !firstTry, Fact.parse(question.key) != nil, !reasked.contains(question.key), asked < total {
-            reasked.insert(question.key)
-            reasks.append((question.key, question.skill, min(asked + Self.reaskAfter, total)))
-        }
+        // A missed fact is not asked again in this level (no question repeats); the learner
+        // model brings it back as due review in a later one.
         let points: Int
         if firstTry {
             correctFirstTry += 1

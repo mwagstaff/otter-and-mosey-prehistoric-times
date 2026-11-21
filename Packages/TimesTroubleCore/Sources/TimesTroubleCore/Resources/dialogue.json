@@ -94,6 +94,56 @@
 "scene": "workshop",
 "text": "One step closer to home."
 },
+"line_e9faf786": {
+"speaker": "otter",
+"scene": "singalong",
+"text": "Campfire sing-along! We sing, you sing with us, and you can stomp along on the drum."
+},
+"line_3439ce30": {
+"speaker": "mosey",
+"scene": "singalong",
+"text": "We'll sing it three times. A little faster every time!"
+},
+"line_d8745864": {
+"speaker": "mosey",
+"scene": "singalong",
+"text": "Before we explore, let's learn a times-table song. It'll help us later!"
+},
+"line_27b3564f": {
+"speaker": "otter",
+"scene": "singalong",
+"text": "Your turn! We sing the start, and you sing the answer."
+},
+"line_1fd33fe0": {
+"speaker": "mosey",
+"scene": "singalong",
+"text": "Rex speed! Can you sing the whole line before we do?"
+},
+"line_aabad790": {
+"speaker": "otter",
+"scene": "singalong",
+"text": "Now let's fill the ladder! Type each answer, in order."
+},
+"line_40e61fa6": {
+"speaker": "mosey",
+"scene": "singalong",
+"text": "Take your time. The band will wait for you."
+},
+"line_346dbbaf": {
+"speaker": "mosey",
+"scene": "singalong",
+"text": "Now the tricky bit. The same times table, all mixed up!"
+},
+"line_4c0a985e": {
+"speaker": "otter",
+"scene": "singalong",
+"text": "You sang the whole song!"
+},
+"line_eb27150b": {
+"speaker": "mosey",
+"scene": "singalong",
+"text": "That's another times table you know by heart."
+},
 "line_821832a9": {
 "speaker": "otter",
 "scene": "help",
@@ -265,6 +315,877 @@
 "speaker": "maia",
 "scene": "hollow-5",
 "text": "Here, take it, dears. And come back when my real babies hatch!",
+"mood": "befriended"
+},
+"line_d9a0a256": {
+"speaker": "trevor",
+"scene": "meadow-1",
+"text": "Hmph! Who's rustling about in my meadow?"
+},
+"line_886bfe06": {
+"speaker": "mosey",
+"scene": "meadow-1",
+"text": "This grass is taller than me, and I'm quite tall."
+},
+"line_b82b46b4": {
+"speaker": "otter",
+"scene": "meadow-1",
+"text": "It's Trevor! Run, Mosey, run!"
+},
+"line_fa074ce2": {
+"speaker": "otter",
+"scene": "meadow-1",
+"text": "Phew! He's stopped to eat a fern."
+},
+"line_388a57bc": {
+"speaker": "mosey",
+"scene": "meadow-1",
+"text": "And to grumble at it."
+},
+"line_46502498": {
+"speaker": "otter",
+"scene": "meadow-2",
+"text": "A river! And the stepping stones count up in threes."
+},
+"line_c6bf880c": {
+"speaker": "mosey",
+"scene": "meadow-2",
+"text": "Three, six, nine… every stone is in the three times table."
+},
+"line_2a631485": {
+"speaker": "otter",
+"scene": "meadow-2",
+"text": "Then hop, hop, hop!"
+},
+"line_63f5644f": {
+"speaker": "mosey",
+"scene": "meadow-2",
+"text": "Three by three, all the way across."
+},
+"line_28e75c40": {
+"speaker": "mosey",
+"scene": "meadow-3",
+"text": "Shh. More eggs, hidden in the long grass."
+},
+"line_4cbbbfec": {
+"speaker": "otter",
+"scene": "meadow-3",
+"text": "Triceratops eggs! Answer the sums to help them hatch."
+},
+"line_5809270d": {
+"speaker": "mosey",
+"scene": "meadow-3",
+"text": "Look, Otter. Their horns are tiny."
+},
+"line_90c2a28a": {
+"speaker": "otter",
+"scene": "meadow-3",
+"text": "Three little horns each!"
+},
+"line_6dd358d5": {
+"speaker": "mosey",
+"scene": "meadow-3",
+"text": "Then let's count them in threes."
+},
+"line_dbea8475": {
+"speaker": "otter",
+"scene": "meadow-4",
+"text": "Trevor's having a nap. Listen to him snore!"
+},
+"line_815ca7c8": {
+"speaker": "mosey",
+"scene": "meadow-4",
+"text": "And there's our Spring, still stuck on his horn."
+},
+"line_f0e8ea17": {
+"speaker": "otter",
+"scene": "meadow-4",
+"text": "Tiptoe closer. Right answers only!"
+},
+"line_a3371e2b": {
+"speaker": "otter",
+"scene": "meadow-4",
+"text": "I can't reach it without waking him."
+},
+"line_890b3c98": {
+"speaker": "mosey",
+"scene": "meadow-4",
+"text": "Then we'll have to try when he's awake. Gulp."
+},
+"line_41d269a7": {
+"speaker": "trevor",
+"scene": "meadow-5",
+"text": "Hmph! You again! Leave me alone with my bad mood!"
+},
+"line_eed9c2cb": {
+"speaker": "otter",
+"scene": "meadow-5",
+"text": "We can help you, Trevor! Hold still!"
+},
+"line_e1bb94fd": {
+"speaker": "mosey",
+"scene": "meadow-5",
+"text": "He's lowering his horns. Answer fast!"
+},
+"line_42e84a0f": {
+"speaker": "otter",
+"scene": "meadow-5",
+"text": "Two parts back. Four to go!"
+},
+"line_7c46a9df": {
+"speaker": "mosey",
+"scene": "meadow-5",
+"text": "And Trevor even gave us a smile."
+},
+"line_0b524b46": {
+"speaker": "trevor",
+"scene": "meadow-5",
+"text": "Hmph! Off my meadow! I'm far too busy being cross!"
+},
+"line_62a64f5c": {
+"speaker": "trevor",
+"scene": "meadow-5",
+"text": "Boing! Boing! Every time I nod, this thing goes boing!"
+},
+"line_f9609889": {
+"speaker": "trevor",
+"scene": "meadow-5",
+"text": "Three horns, and not one of them can reach it. Hmph!"
+},
+"line_3263d7a9": {
+"speaker": "otter",
+"scene": "meadow-5",
+"text": "Hold still, Trevor. One, two, three… pop! The Spring's off!",
+"mood": "befriended"
+},
+"line_5830cccf": {
+"speaker": "trevor",
+"scene": "meadow-5",
+"text": "My horn! It's stopped boinging! Oh, that's much better.",
+"mood": "befriended"
+},
+"line_4299d82e": {
+"speaker": "trevor",
+"scene": "meadow-5",
+"text": "Take your bouncy thing. And, er… thank you. Hmph.",
+"mood": "befriended"
+},
+"line_6d606106": {
+"speaker": "mosey",
+"scene": "swamp-1",
+"text": "Water! At last, something I'm good at."
+},
+"line_49e1ffa6": {
+"speaker": "otter",
+"scene": "swamp-1",
+"text": "Swim through the gaps with the right answers!"
+},
+"line_3cdba577": {
+"speaker": "mosey",
+"scene": "swamp-1",
+"text": "Hold on tight. Mosasaurs are very fast swimmers."
+},
+"line_b9554b21": {
+"speaker": "otter",
+"scene": "swamp-1",
+"text": "That was brilliant, Mosey!"
+},
+"line_fcfe46b3": {
+"speaker": "mosey",
+"scene": "swamp-1",
+"text": "I'm a mosasaur. It's what we do."
+},
+"line_7002b9a3": {
+"speaker": "otter",
+"scene": "swamp-2",
+"text": "Lily pads! Counting up in fours."
+},
+"line_247b969b": {
+"speaker": "mosey",
+"scene": "swamp-2",
+"text": "Four, eight, twelve… double the twos, then double again."
+},
+"line_ba0f1325": {
+"speaker": "otter",
+"scene": "swamp-2",
+"text": "Hop on the right ones. The wrong ones sink!"
+},
+"line_22afd859": {
+"speaker": "otter",
+"scene": "swamp-2",
+"text": "Four by four, and dry paws!"
+},
+"line_eb2e90df": {
+"speaker": "mosey",
+"scene": "swamp-3",
+"text": "Eggs, tucked in the warm mud."
+},
+"line_79df1591": {
+"speaker": "otter",
+"scene": "swamp-3",
+"text": "Let's help them hatch!"
+},
+"line_4e1461df": {
+"speaker": "mosey",
+"scene": "swamp-3",
+"text": "Gently, Otter. No splashing."
+},
+"line_ee6c697f": {
+"speaker": "otter",
+"scene": "swamp-3",
+"text": "Look at their little back plates!"
+},
+"line_1457be17": {
+"speaker": "mosey",
+"scene": "swamp-3",
+"text": "Tiny stegosauruses. Very spiky, very sweet."
+},
+"line_c7c04448": {
+"speaker": "otter",
+"scene": "swamp-4",
+"text": "Steggy's asleep in the reeds."
+},
+"line_b16cf0db": {
+"speaker": "mosey",
+"scene": "swamp-4",
+"text": "And the Propeller's spinning on her tail. Whirr, whirr."
+},
+"line_3508db27": {
+"speaker": "otter",
+"scene": "swamp-4",
+"text": "Tiptoe closer. Don't wake her!"
+},
+"line_d91c427e": {
+"speaker": "mosey",
+"scene": "swamp-4",
+"text": "Every time it spins, her tail twitches."
+},
+"line_fabd61fa": {
+"speaker": "otter",
+"scene": "swamp-4",
+"text": "We need a plan. And a snack."
+},
+"line_37e8fcd6": {
+"speaker": "steggy",
+"scene": "swamp-5",
+"text": "Who's there? Careful, darlings, my tail is out of control!"
+},
+"line_6ac8200b": {
+"speaker": "otter",
+"scene": "swamp-5",
+"text": "We can stop it spinning, Steggy!"
+},
+"line_c534332f": {
+"speaker": "mosey",
+"scene": "swamp-5",
+"text": "Duck, Otter! Here comes that tail!"
+},
+"line_0eba889b": {
+"speaker": "otter",
+"scene": "swamp-5",
+"text": "Three parts back. Halfway home!"
+},
+"line_4bd91acb": {
+"speaker": "mosey",
+"scene": "swamp-5",
+"text": "And Steggy's walking in straight lines again."
+},
+"line_5dda75e1": {
+"speaker": "steggy",
+"scene": "swamp-5",
+"text": "Darlings, keep back! My tail has a mind of its own today!"
+},
+"line_9c4caeb8": {
+"speaker": "steggy",
+"scene": "swamp-5",
+"text": "Whirr! Whirr! It keeps spinning me round in circles!"
+},
+"line_09898a0a": {
+"speaker": "steggy",
+"scene": "swamp-5",
+"text": "Four spikes and one silly spinner. Somebody stop it!"
+},
+"line_3d21f234": {
+"speaker": "mosey",
+"scene": "swamp-5",
+"text": "Hold your tail still, Steggy. Otter, now!",
+"mood": "befriended"
+},
+"line_8bce79e8": {
+"speaker": "steggy",
+"scene": "swamp-5",
+"text": "Oh! It's stopped! I can walk in a straight line again!",
+"mood": "befriended"
+},
+"line_c792655b": {
+"speaker": "steggy",
+"scene": "swamp-5",
+"text": "Take your spinny thing, darlings. And do visit again!",
+"mood": "befriended"
+},
+"line_b4dc5c35": {
+"speaker": "mosey",
+"scene": "peaks-1",
+"text": "Something just swooped over my head."
+},
+"line_3de9d42c": {
+"speaker": "swoop",
+"scene": "peaks-1",
+"text": "Swoop! Swoop! Look at the funny furry one!"
+},
+"line_0158fb57": {
+"speaker": "otter",
+"scene": "peaks-1",
+"text": "Pterodactyls! Run!"
+},
+"line_b7c5cdf4": {
+"speaker": "swoop",
+"scene": "peaks-1",
+"text": "We're pterosaurs, actually!"
+},
+"line_c9b77e9e": {
+"speaker": "mosey",
+"scene": "peaks-1",
+"text": "I know exactly how they feel."
+},
+"line_66f65191": {
+"speaker": "otter",
+"scene": "peaks-2",
+"text": "Rocky ledges, counting up in eights."
+},
+"line_89a5e565": {
+"speaker": "mosey",
+"scene": "peaks-2",
+"text": "Eight, sixteen, twenty-four. Double, double, double!"
+},
+"line_237bcd06": {
+"speaker": "otter",
+"scene": "peaks-2",
+"text": "Don't look down!"
+},
+"line_2f8466a7": {
+"speaker": "mosey",
+"scene": "peaks-2",
+"text": "I looked down."
+},
+"line_443e0f0d": {
+"speaker": "otter",
+"scene": "peaks-2",
+"text": "Me too. Let's never do that again."
+},
+"line_96b3b252": {
+"speaker": "mosey",
+"scene": "peaks-3",
+"text": "A nest full of eggs, right on the edge."
+},
+"line_180aebad": {
+"speaker": "otter",
+"scene": "peaks-3",
+"text": "Little pterosaurs! Let's help them hatch."
+},
+"line_cab76da6": {
+"speaker": "mosey",
+"scene": "peaks-3",
+"text": "They'll be flying in no time."
+},
+"line_fab31bd1": {
+"speaker": "otter",
+"scene": "peaks-3",
+"text": "Look, they're flapping already!"
+},
+"line_c267faa2": {
+"speaker": "mosey",
+"scene": "peaks-3",
+"text": "And telling everyone they're not dinosaurs."
+},
+"line_3ba7a526": {
+"speaker": "otter",
+"scene": "peaks-4",
+"text": "The Swoop Squad is asleep in their nest."
+},
+"line_731ba1ee": {
+"speaker": "mosey",
+"scene": "peaks-4",
+"text": "And the Bell is right in the middle."
+},
+"line_bf4b2a53": {
+"speaker": "otter",
+"scene": "peaks-4",
+"text": "Tiptoe up. If it rings, they'll wake!"
+},
+"line_4d0669b3": {
+"speaker": "narrator",
+"scene": "peaks-4",
+"text": "Ding-a-ling! The Bell rang on the hour."
+},
+"line_4f7463e5": {
+"speaker": "otter",
+"scene": "peaks-4",
+"text": "Uh-oh. They're awake!"
+},
+"line_fbd13f1c": {
+"speaker": "swoop",
+"scene": "peaks-5",
+"text": "Hands off our shiny! Squad, swoop!"
+},
+"line_3a5eb46c": {
+"speaker": "otter",
+"scene": "peaks-5",
+"text": "It's not yours! It's our time machine's Bell!"
+},
+"line_021de813": {
+"speaker": "mosey",
+"scene": "peaks-5",
+"text": "Here they come. Answer fast!"
+},
+"line_7cb31b49": {
+"speaker": "otter",
+"scene": "peaks-5",
+"text": "Four parts back. Only two to go!"
+},
+"line_2b9634f8": {
+"speaker": "mosey",
+"scene": "peaks-5",
+"text": "And a lot of very sleepy pterosaurs."
+},
+"line_5a5dda6e": {
+"speaker": "swoop",
+"scene": "peaks-5",
+"text": "Ooh, shiny! Mine! No, mine! It's the Squad's!"
+},
+"line_e20f6f28": {
+"speaker": "swoop",
+"scene": "peaks-5",
+"text": "Ding-a-ling! Ding-a-ling! Best bell ever!"
+},
+"line_ba330db3": {
+"speaker": "swoop",
+"scene": "peaks-5",
+"text": "Wait. It rings every hour and wakes us all up!"
+},
+"line_16b79691": {
+"speaker": "otter",
+"scene": "peaks-5",
+"text": "It's the Bell from our time machine. It rings every hour!",
+"mood": "befriended"
+},
+"line_73b704e5": {
+"speaker": "swoop",
+"scene": "peaks-5",
+"text": "No wonder we've had no sleep! You have it, please!",
+"mood": "befriended"
+},
+"line_f9f6c6cd": {
+"speaker": "swoop",
+"scene": "peaks-5",
+"text": "And just so you know, we're pterosaurs, not dinosaurs!",
+"mood": "befriended"
+},
+"line_475586e8": {
+"speaker": "mosey",
+"scene": "ridge-1",
+"text": "Why is that bush clucking?"
+},
+"line_3f07f3ed": {
+"speaker": "raptors",
+"scene": "ridge-1",
+"text": "Snatch Pack, go! Go! Go!"
+},
+"line_655dfc75": {
+"speaker": "otter",
+"scene": "ridge-1",
+"text": "Raptors! They're like angry chickens! Run!"
+},
+"line_af1ca1a0": {
+"speaker": "otter",
+"scene": "ridge-1",
+"text": "They're fast. But we're faster."
+},
+"line_92c408d0": {
+"speaker": "mosey",
+"scene": "ridge-1",
+"text": "Only because you know your sharing facts."
+},
+"line_e2b2f5d3": {
+"speaker": "mosey",
+"scene": "ridge-2",
+"text": "Eggs on a warm rock, all cosy."
+},
+"line_aa9bc29c": {
+"speaker": "otter",
+"scene": "ridge-2",
+"text": "Share out the numbers to hatch them!"
+},
+"line_0b10fd54": {
+"speaker": "mosey",
+"scene": "ridge-2",
+"text": "Fluffy baby raptors. Oh dear."
+},
+"line_a30f63d2": {
+"speaker": "otter",
+"scene": "ridge-2",
+"text": "They're chirping at me!"
+},
+"line_9db1914c": {
+"speaker": "mosey",
+"scene": "ridge-2",
+"text": "I think they want your snack."
+},
+"line_1f85897d": {
+"speaker": "otter",
+"scene": "ridge-3",
+"text": "Warm rocks, all in a row!"
+},
+"line_54081308": {
+"speaker": "mosey",
+"scene": "ridge-3",
+"text": "Hop on the right numbers and we'll get across."
+},
+"line_c49826aa": {
+"speaker": "otter",
+"scene": "ridge-3",
+"text": "Toasty toes!"
+},
+"line_0d410b95": {
+"speaker": "otter",
+"scene": "ridge-3",
+"text": "Toasty, but safe!"
+},
+"line_163b872c": {
+"speaker": "mosey",
+"scene": "ridge-3",
+"text": "Next time, let's find a bridge."
+},
+"line_2f788a4b": {
+"speaker": "otter",
+"scene": "ridge-4",
+"text": "Shh. The Snatch Pack is having a nap."
+},
+"line_48302295": {
+"speaker": "mosey",
+"scene": "ridge-4",
+"text": "The Dial is tucked under the biggest one's chin."
+},
+"line_a61d3eed": {
+"speaker": "otter",
+"scene": "ridge-4",
+"text": "Tiptoe closer. Don't step on a feather!"
+},
+"line_03b2de09": {
+"speaker": "mosey",
+"scene": "ridge-4",
+"text": "One of them's opening an eye."
+},
+"line_af05ae8f": {
+"speaker": "otter",
+"scene": "ridge-4",
+"text": "Time to go!"
+},
+"line_d1ff5b3c": {
+"speaker": "raptors",
+"scene": "ridge-5",
+"text": "Keep-away! You'll never get it back!"
+},
+"line_df49eb24": {
+"speaker": "otter",
+"scene": "ridge-5",
+"text": "We will, if we share it out right!"
+},
+"line_fde5f3c4": {
+"speaker": "mosey",
+"scene": "ridge-5",
+"text": "Here they come. Quick sums, Otter!"
+},
+"line_a33e767b": {
+"speaker": "otter",
+"scene": "ridge-5",
+"text": "Five parts back! Just one to go."
+},
+"line_89494252": {
+"speaker": "mosey",
+"scene": "ridge-5",
+"text": "And I know exactly who has it."
+},
+"line_e618dd50": {
+"speaker": "raptors",
+"scene": "ridge-5",
+"text": "Keep-away! Keep-away! You can't catch us!"
+},
+"line_1b598042": {
+"speaker": "raptors",
+"scene": "ridge-5",
+"text": "Throw it to me! No, me! Over here!"
+},
+"line_630ded03": {
+"speaker": "raptors",
+"scene": "ridge-5",
+"text": "Hey, why does it go up to twelve? We can only count to three!"
+},
+"line_75e97583": {
+"speaker": "otter",
+"scene": "ridge-5",
+"text": "It's our Dial. It counts all the way to twelve. Want to learn?",
+"mood": "befriended"
+},
+"line_8481510c": {
+"speaker": "raptors",
+"scene": "ridge-5",
+"text": "Yes! Teach us! Sharing is more fun than keep-away!",
+"mood": "befriended"
+},
+"line_9cc90cc5": {
+"speaker": "raptors",
+"scene": "ridge-5",
+"text": "Here's your Dial. Can we count to twelve together?",
+"mood": "befriended"
+},
+"line_b0f0b464": {
+"speaker": "mosey",
+"scene": "rex-1",
+"text": "Otter. Look at the size of those footprints."
+},
+"line_4c6a97df": {
+"speaker": "otter",
+"scene": "rex-1",
+"text": "And listen to the size of that snore. It's Rex!"
+},
+"line_df5f8e8c": {
+"speaker": "mosey",
+"scene": "rex-1",
+"text": "Tiptoe past. Very, very quietly."
+},
+"line_cc752ae7": {
+"speaker": "otter",
+"scene": "rex-1",
+"text": "The Times Core is stuck on his back!"
+},
+"line_8048f860": {
+"speaker": "mosey",
+"scene": "rex-1",
+"text": "No wonder he's grumpy. It's ticking right between his shoulders."
+},
+"line_d885f2be": {
+"speaker": "mosey",
+"scene": "rex-2",
+"text": "These eggs are enormous!"
+},
+"line_885f6769": {
+"speaker": "otter",
+"scene": "rex-2",
+"text": "Baby T-Rexes! Answer the sums to hatch them."
+},
+"line_2e44da6d": {
+"speaker": "mosey",
+"scene": "rex-2",
+"text": "I hope they're friendlier than their dad."
+},
+"line_fa4814f7": {
+"speaker": "otter",
+"scene": "rex-2",
+"text": "They're adorable! Look at their tiny arms!"
+},
+"line_4ead7224": {
+"speaker": "mosey",
+"scene": "rex-2",
+"text": "Everything here has tiny arms. I have flippers."
+},
+"line_c760bf9d": {
+"speaker": "otter",
+"scene": "rex-3",
+"text": "Giant footprints, full of muddy water."
+},
+"line_de77831e": {
+"speaker": "mosey",
+"scene": "rex-3",
+"text": "Hop across on the right numbers."
+},
+"line_d6c7dd29": {
+"speaker": "otter",
+"scene": "rex-3",
+"text": "Rex must be enormous."
+},
+"line_d97997e1": {
+"speaker": "mosey",
+"scene": "rex-3",
+"text": "He is. And he's coming this way."
+},
+"line_cf16e0fc": {
+"speaker": "rex",
+"scene": "rex-4",
+"text": "ROAR! Who's been hatching my babies?"
+},
+"line_92876325": {
+"speaker": "otter",
+"scene": "rex-4",
+"text": "Run, Mosey! Fastest answers ever!"
+},
+"line_f3b0d5fd": {
+"speaker": "mosey",
+"scene": "rex-4",
+"text": "I'm a mosasaur! I'm not built for running!"
+},
+"line_c64385e5": {
+"speaker": "otter",
+"scene": "rex-4",
+"text": "We made it to the volcano!"
+},
+"line_0076fb1c": {
+"speaker": "mosey",
+"scene": "rex-4",
+"text": "One part left. And it's on his back."
+},
+"line_28eab721": {
+"speaker": "rex",
+"scene": "rex-5",
+"text": "ROAR! You can't hide from me forever!"
+},
+"line_c765bd74": {
+"speaker": "otter",
+"scene": "rex-5",
+"text": "We don't want to hide. We want to help!"
+},
+"line_79585aa5": {
+"speaker": "mosey",
+"scene": "rex-5",
+"text": "Here he comes! Every right answer counts!"
+},
+"line_d45a2021": {
+"speaker": "otter",
+"scene": "rex-5",
+"text": "Six parts! The Times Machine is complete!"
+},
+"line_dc9f3b1f": {
+"speaker": "mosey",
+"scene": "rex-5",
+"text": "We can go home, Otter. But let's say goodbye first."
+},
+"line_6cadf52a": {
+"speaker": "rex",
+"scene": "rex-5",
+"text": "ROAR! Everybody run! I'm in a very bad mood!"
+},
+"line_44a760cb": {
+"speaker": "rex",
+"scene": "rex-5",
+"text": "ROAR! It ticks and it tocks and it itches!"
+},
+"line_091bb762": {
+"speaker": "rex",
+"scene": "rex-5",
+"text": "My arms are too short! I can't reach the itch! ROAR!"
+},
+"line_d24f68c5": {
+"speaker": "otter",
+"scene": "rex-5",
+"text": "Rex, the itch is our Times Core! Bend down, and I'll climb up!",
+"mood": "befriended"
+},
+"line_51154c37": {
+"speaker": "rex",
+"scene": "rex-5",
+"text": "Oh. Oh! That's the spot! A little to the left! Aaah!",
+"mood": "befriended"
+},
+"line_d5612a6d": {
+"speaker": "rex",
+"scene": "rex-5",
+"text": "Best scratch ever. Here, take your ticking thing. Friends?",
+"mood": "befriended"
+},
+"line_007efd23": {
+"speaker": "narrator",
+"scene": "finale",
+"text": "The six parts are back where they belong…"
+},
+"line_3ba09969": {
+"speaker": "narrator",
+"scene": "finale",
+"text": "The Times Machine is whole again!"
+},
+"line_8d56bff3": {
+"speaker": "narrator",
+"scene": "finale",
+"text": "Every dinosaur came to say goodbye!"
+},
+"line_463819c9": {
+"speaker": "otter",
+"scene": "finale",
+"text": "We couldn't have done any of this without you!"
+},
+"line_6ef91606": {
+"speaker": "mosey",
+"scene": "finale",
+"text": "All those times tables, and you never gave up!"
+},
+"line_1a408b07": {
+"speaker": "otter",
+"scene": "finale",
+"text": "Three cheers for our champion! Hip hip…"
+},
+"line_4905b29a": {
+"speaker": "mosey",
+"scene": "finale",
+"text": "Everyone squeeze in for a photo! Say cheese!"
+},
+"line_a4c3241f": {
+"speaker": "otter",
+"scene": "finale",
+"text": "Three!"
+},
+"line_26414be5": {
+"speaker": "otter",
+"scene": "finale",
+"text": "Two!"
+},
+"line_0d1182e3": {
+"speaker": "otter",
+"scene": "finale",
+"text": "One!"
+},
+"line_7b639a2f": {
+"speaker": "otter",
+"scene": "finale",
+"text": "Every zone's open now, so you can play any level again, whenever you like!"
+},
+"line_bf21d787": {
+"speaker": "mosey",
+"scene": "finale",
+"text": "And there are still trophies hiding out there, and stars to win, and pets to find!"
+},
+"line_c103a097": {
+"speaker": "maia",
+"scene": "finale",
+"text": "Goodbye, my dears! Come back when my babies hatch!",
+"mood": "befriended"
+},
+"line_872228e5": {
+"speaker": "trevor",
+"scene": "finale",
+"text": "Hmph. I'll miss you. A tiny bit. Don't tell anyone.",
+"mood": "befriended"
+},
+"line_493bf790": {
+"speaker": "steggy",
+"scene": "finale",
+"text": "Goodbye, darlings! Look, I can walk in a straight line!",
+"mood": "befriended"
+},
+"line_1471ea78": {
+"speaker": "swoop",
+"scene": "finale",
+"text": "Bye! And remember, we're pterosaurs!",
+"mood": "befriended"
+},
+"line_c8a4b699": {
+"speaker": "raptors",
+"scene": "finale",
+"text": "One, two, three… all the way to twelve! Bye!",
+"mood": "befriended"
+},
+"line_a8e3026e": {
+"speaker": "rex",
+"scene": "finale",
+"text": "Thank you, little friends. Best scratch ever.",
 "mood": "befriended"
 }
 }

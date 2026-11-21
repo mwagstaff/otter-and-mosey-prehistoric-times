@@ -46,6 +46,26 @@
       "seconds": 60,
       "prompt": "Comic, bouncy cartoon chase music for two friends running away from a fussy dinosaur. Plucky pizzicato strings, tuba and bassoon stomping on the beat, quick xylophone runs, bongos and a cheeky clarinet melody. Exciting and silly but never scary, about 132 bpm, D minor with a cheeky lift.",
       "style": "Instrumental background music for a children's game, ages 7 to 8. Lively and exciting but friendly, never scary, with a clear catchy melody. Steady tempo and even loudness from the first second to the last: no intro build-up, no breakdown, no big finish, no fade-out, so it can repeat as a loop. No vocals, no spoken words, no sound effects."
+    },
+    "music_meadow": {
+      "seconds": 60,
+      "prompt": "Bouncy, sunny prehistoric meadow tune with a grumpy-but-lovable plodding bass. Plucked banjo and ukulele, tuba on the beat, wooden block percussion, a whistling flute melody over swaying long grass. Cheerful and a little comical, about 100 bpm in three-four feel, D major."
+    },
+    "music_swamp": {
+      "seconds": 60,
+      "prompt": "Warm, steamy prehistoric swamp tune. Gentle bubbling marimba, slide guitar, soft muted trumpet, frog-like wooden guiro and light hand drums, a lazy, glamorous clarinet melody. Playful and a little mysterious, never gloomy, about 90 bpm, E flat major."
+    },
+    "music_peaks": {
+      "seconds": 60,
+      "prompt": "Breezy, soaring mountain-top tune high above the clouds. Bright pizzicato strings, flutes and piccolo like swooping birds, a chiming bell-like glockenspiel, light snare and a heroic little horn melody. Airy, exciting and cheeky, about 112 bpm, A major."
+    },
+    "music_ridge": {
+      "seconds": 60,
+      "prompt": "Quick, clever, sneaky cartoon tune for a pack of mischievous little raptors on warm red rocks. Tiptoeing pizzicato bass, plucky marimba, cheeky clarinet and oboe runs, rattling shakers and claves. Playful keep-away energy, never scary, about 120 bpm, G minor with a cheeky lift."
+    },
+    "music_rex": {
+      "seconds": 60,
+      "prompt": "Big, bold, friendly prehistoric adventure theme for the land of a huge but soft-hearted T-Rex. Booming taiko and timpani stomps, deep tuba and low brass, bold French horns with a heroic melody, marimba and log drums, a distant volcano rumble feel. Epic and exciting but warm and fun, never scary, about 104 bpm, C minor lifting to C major."
     }
   }
 }

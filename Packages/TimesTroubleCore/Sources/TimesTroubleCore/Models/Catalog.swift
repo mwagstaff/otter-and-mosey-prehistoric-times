@@ -106,6 +106,9 @@ public struct LevelDef: Codable, Equatable, Identifiable, Sendable {
     /// Reward id granted the first time the level is cleared.
     public let reward: String?
     public let blurb: String
+    /// The one times table this level's story is about ("the stones count up in threes"). When
+    /// the grown-up has it switched on, every question in the level uses it.
+    public var table: Int? = nil
 }
 
 public struct GuardianDef: Codable, Equatable, Sendable {
@@ -157,6 +160,19 @@ public struct Catalog: Codable, Sendable {
     public var finale: Finale? = nil
     /// What Otter and Mosey say in the Fix-It Workshop after each Big Escape.
     public var workshop: Workshop? = nil
+    /// What Otter and Mosey say at the Campfire Sing-Along.
+    public var singAlong: SingAlongLines? = nil
+
+    public struct SingAlongLines: Codable, Sendable {
+        public let intro: [DialogueLine]
+        /// Before a zone's warm-up song.
+        public let warmUp: [DialogueLine]
+        public let round2: [DialogueLine]
+        public let round3: [DialogueLine]
+        public let quiz: [DialogueLine]
+        public let shuffle: [DialogueLine]
+        public let done: [DialogueLine]
+    }
 
     public struct Workshop: Codable, Sendable {
         public let intro: [DialogueLine]

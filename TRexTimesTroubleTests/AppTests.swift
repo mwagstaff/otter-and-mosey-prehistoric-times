@@ -8,6 +8,66 @@ import Testing
 /// Run one at a time: several tests use the shared narrator, and would cut each other off.
 @MainActor
 @Suite(.serialized) struct AppTests {
+    @Test func campWalksStayOnClearGroundAcrossPhoneAndTabletCrops() throws {
+        for size in [CGSize(width: 956, height: 440), CGSize(width: 1024, height: 768)] {
+            let frame = CGRect(origin: .zero, size: size)
+            let empty = CampGround(paintingFrame: frame, viewport: frame, decorations: [], propSize: 60)
+            let fire = empty.screen(CGPoint(x: 450, y: 428))
+            let ground = CampGround(paintingFrame: frame, viewport: frame, decorations: [fire], propSize: 44)
+            let area = ground.walkingArea(width: 44, height: 44)
+            let a = try #require(area.nearest(CGPoint(x: 170, y: 480)))
+            let b = try #require(area.nearest(CGPoint(x: 765, y: 480)))
+            #expect(a.x < 274 && b.x > 683)
+            #expect(!area.contains(CGPoint(x: 200, y: 415)))
+            #expect(!area.contains(CGPoint(x: 770, y: 412)))
+            let start = CGPoint(x: 352, y: 426), end = CGPoint(x: 560, y: 426)
+            #expect(!area.clear(from: start, to: end))
+            let path = try #require(area.route(from: start, to: end))
+            #expect(path.points.count > 2)
+            for distance in stride(from: CGFloat.zero, through: path.length, by: 2) {
+                #expect(area.contains(path.sample(distance).point))
+            }
+            #expect(area.route(from: a, to: b) != nil)
+        }
+    }
+
+    @Test func bothDinosaursCanWalkPastFountainFireAndPalmOnLandscapePhone() throws {
+        let frame = CGRect(x: -62, y: 0, width: 956, height: 440)
+        let props = [CGPoint(x: 1269, y: 1052), CGPoint(x: 1618, y: 1140), CGPoint(x: 1928, y: 1010)]
+            .map { CGPoint(x: $0.x / 3 - 62, y: $0.y / 3) }
+        let ground = CampGround(paintingFrame: frame, viewport: frame, decorations: props, propSize: 67.5)
+        let map = ground.walkingArea(width: 45.9 / ground.scale, height: 45.9 / ground.scale)
+        for start in [CGPoint(x: 278, y: 458), CGPoint(x: 310, y: 434)] {
+            let origin = try #require(map.nearest(start))
+            let route = try #require(map.route(from: origin, to: CGPoint(x: 744, y: 478)))
+            for d in stride(from: CGFloat.zero, through: route.length, by: 2) {
+                #expect(map.contains(route.sample(d).point))
+            }
+        }
+    }
+
+    @Test func wildlifeTapFindsRunnerAndCroppedSwimmer() {
+        let wildlife = IslandWildlife()
+        let runner = SKSpriteNode()
+        runner.name = "wild-runner"
+        runner.position = CGPoint(x: 150, y: 170)
+        wildlife.addChild(runner)
+        #expect(wildlife.greet(at: runner.position))
+        #expect(runner.isPaused)
+        let pond = SKCropNode()
+        pond.position = CGPoint(x: 450, y: 270)
+        pond.setScale(0.65)
+        wildlife.addChild(pond)
+        let fish = SKSpriteNode()
+        fish.name = "wild-swimmer"
+        pond.addChild(fish)
+        fish.position.y = -20
+        #expect(!wildlife.greet(at: pond.position))
+        fish.position.y = 18
+        #expect(wildlife.greet(at: CGPoint(x: 450, y: 282)))
+        #expect(!wildlife.greet(at: CGPoint(x: 800, y: 400)))
+    }
+
     @Test func everyArtAssetTheGameNamesIsBundled() {
         var names = ["logo", "bg_title", "bg_map", "bg_camp", "fg_camp", "bg_ending", "duo_ride", "pearl", "ring", "cliff",
                      "machine_whole", "machine_wrecked", "stone", "bolt", "bone", "otter_fix", "otter_scared", "mosey_dash", "mosey_scared"]
@@ -36,6 +96,9 @@ import Testing
         #expect(themes[0].boss("boss_maia", facingLeft: true) === Art.texture("boss_maia"))
         #expect(themes[0].boss("boss_maia", facingLeft: false) !== Art.texture("boss_maia"))
         #expect(themes[1].boss("boss_trevor", facingLeft: true) === Art.texture("boss_trevor"))
+        // Every zone has its own boss, background, music and babies, and every boss can be found asleep.
+        #expect(Set(themes.map(\.guardian)).count == 6 && Set(themes.map(\.background)).count == 6 && Set(themes.map(\.music)).count == 6)
+        #expect(themes.allSatisfy { $0.guardianSleep != nil && !$0.friends.isEmpty })
         #expect(Art.fishBiscuits.size() == CGSize(width: 160, height: 200))
     }
 
@@ -43,7 +106,8 @@ import Testing
         for effect in SFX.allCases {
             #expect(Bundle.main.url(forResource: effect.rawValue, withExtension: "m4a") != nil, "missing sound: \(effect.rawValue)")
         }
-        for track in ["music_main", "music_hollow", "music_chase", "music_title", "music_bay", "music_dragon", "music_cloud"] {
+        let zones = Catalog.shared.islands.map { IslandTheme.island($0.id).music }
+        for track in ["music_main", "music_chase", "music_title"] + zones {
             #expect(Bundle.main.url(forResource: track, withExtension: "m4a") != nil, "missing music: \(track)")
         }
     }
@@ -58,8 +122,38 @@ import Testing
 
     @Test func everyCharacterLineHasARecording() {
         let missing = Catalog.voicedLines.filter { Narrator.clipURL($0.key) == nil }.map(\.value.text).sorted()
-        #expect(Catalog.voicedLines.count == 53, "the opening, the workshop, Hatchling Hollow and the grown-up lines")
+        #expect(Catalog.voicedLines.count == 233, "the opening, the workshop, the sing-along, all six zones, the finale and the grown-up lines")
+        #expect(Catalog.shared.islands.allSatisfy { $0.ready }, "every zone is playable")
         #expect(missing.isEmpty, "\(missing.count) character lines missing a recording, e.g. \(missing.prefix(3))")
+    }
+
+    @Test func everySingAlongSongIsRecorded() {
+        var missing: [String] = []
+        for table in 1...12 {
+            for multiplier in 1...12 where Narrator.clipURL(SongPlan.callKey(table: table, multiplier: multiplier)) == nil {
+                missing.append(SongPlan.callKey(table: table, multiplier: multiplier))
+            }
+        }
+        missing += SongPlan.allAnswers.map(SongPlan.answerKey).filter { Narrator.clipURL($0) == nil }
+        #expect(missing.isEmpty, "\(missing.count) sing-along clips missing, e.g. \(missing.prefix(5))")
+        #expect(Bundle.main.url(forResource: "sing_beat", withExtension: "m4a") != nil)
+        for name in ["otter_sing", "otter_listen", "mosey_sing", "badge_sing", "egg"] { #expect(Art.hasAsset(name), "missing art: \(name)") }
+        #expect(Catalog.shared.singAlong?.intro.isEmpty == false)
+    }
+
+    @Test func theSongPlayerLoadsItsLoopAndKeepsTime() async throws {
+        let player = SongPlayer()
+        #expect(player.hasLoop)
+        var settings = AppSettings()
+        settings.muted = true
+        player.apply(settings)
+        let plan = SongPlan(table: 3, maxMultiplier: 2)
+        player.play(plan, round: .whole)
+        try await Task.sleep(for: .milliseconds(400))
+        let beat = try #require(player.currentBeat)
+        #expect(beat > 0 && beat < 2, "about half a second in at 112 bpm, so under a beat or two: \(beat)")
+        player.shutDown()
+        #expect(player.currentBeat == nil)
     }
 
     @Test func speakingALineDrivesTheSpeechStage() async throws {

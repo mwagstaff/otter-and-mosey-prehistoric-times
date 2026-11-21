@@ -11,8 +11,8 @@ network calls. A web version follows once the iOS game is finished.
 
 ## Status
 
-**M0 to M3 are done: Hatchling Hollow is a playable vertical slice.** The other five zones are on the
-map as "Coming soon" until M4. See [docs/PLAN.md](docs/PLAN.md) for what comes next.
+**M0 to M4 are done: all six zones and the finale can be played from start to finish.** Rewards,
+grown-ups' extras and polish (M5 to M7) come next. See [docs/PLAN.md](docs/PLAN.md).
 
 What plays today:
 
@@ -34,6 +34,13 @@ What plays today:
   sharing out the grown-up's tables, at most three new facts a level, missed facts coming back,
   picking answers while a fact is new and typing once it is getting there. See
   `TimesTroubleCore/Education`.
+- **Campfire Sing-Along:** Otter and Mosey chant a times table over a campfire beat, three rounds
+  that get faster and leave more for the child to sing, then "Fill the ladder" (the table typed in
+  order) and an optional shuffle challenge. Every level opens with about a minute of its table's
+  song, moving on level by level (each round in turn, then the ladder, then a mix). Baby dinosaurs
+  and friends join in, one per line sung and per right answer. A record for each table on the song
+  shelf (reached from the campfire band at Crash Camp or the map's camp card), and grown-up
+  settings for rounds, speed-up and level songs. See section 14 of the plan.
 - **Music:** a prehistoric main theme, a jungle tune for Hatchling Hollow and a bouncy chase.
 - **Grown-ups:** year-group presets, tables 1 to 12 with focus stars, multipliers, question kinds,
   answer style and chase pace (Calm, Exciting or Gentle dinosaurs).
@@ -116,7 +123,8 @@ Nothing in the app talks to the network, and no key is ever bundled.
 | Argument | Effect |
 | --- | --- |
 | `-debugLevel bay-1` | Open a level directly. |
-| `-debugRoute map` | Open a screen: `map`, `collection`, `home`, `parent` (skips the grown-ups' gate), `ending`, `intro`, `island:woods`. |
+| `-debugRoute map` | Open a screen: `map`, `collection`, `home`, `parent` (skips the grown-ups' gate), `ending`, `intro`, `island:woods`, `shelf` (the song shelf), `song:3` (the 3s song), `levelsong:hollow-1` (a level's opening song). |
 | `-debugPlaytest bay-1` | Play-test a level as if started from the grown-ups' area (nothing is saved). |
 | `-debugUnlock` | Treat every level as cleared for this launch. |
-| `-debugShort` | Limit levels to three questions. |
+| `-debugShort` | Limit levels to three questions, and sing-along songs to three lines. |
+| `-debugBefriend` | In a Big Escape, skip the chase and go straight to the boss making friends. |

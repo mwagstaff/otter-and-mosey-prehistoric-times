@@ -6,12 +6,13 @@ import UIKit
 
 /// Every sound effect in the game. Raw values are file names in Resources/Audio.
 enum SFX: String, CaseIterable {
-    case tap, nav, correct, combo, wrong, pop, crystal, star, jump, swim, crack, chirp
+    case glub, tap, nav, correct, combo, wrong, pop, crystal, star, jump, swim, crack, chirp
     case portal, guardian, friendship, levelComplete, unlock, victory, key, whoosh, plank
     /// The whole cast shouting "Hooray!" together, for the finale's three cheers.
     case cheer
     // T-Rex Times Trouble
-    case roarMaia = "roar_maia", roarTrevor = "roar_trevor", roarRex = "roar_rex", stomp
+    case roarMaia = "roar_maia", roarTrevor = "roar_trevor", roarSteggy = "roar_steggy", roarSwoop = "roar_swoop"
+    case roarRaptors = "roar_raptors", roarRex = "roar_rex", stomp
     case machineWhirr = "machine_whirr", machineCrash = "machine_crash"
     case snore, splash, ratchet, tiptoe
 }

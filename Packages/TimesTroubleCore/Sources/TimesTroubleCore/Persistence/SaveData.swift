@@ -67,6 +67,12 @@ public struct PlacedDecoration: Codable, Equatable, Identifiable, Sendable {
     }
 }
 
+public struct CampSpot: Codable, Equatable, Sendable {
+    public var x: Double
+    public var y: Double
+    public init(x: Double, y: Double) { self.x = x; self.y = y }
+}
+
 /// One child's local profile. Holds a nickname and progress only: no personal details.
 public struct Profile: Codable, Equatable, Identifiable, Sendable {
     public var id = UUID()
@@ -94,10 +100,13 @@ public struct Profile: Codable, Equatable, Identifiable, Sendable {
     public var seenIntro = false
     /// Set once a grown-up has looked over this player's settings on the check before their first adventure.
     public var grownUpChecked = false
+    public var campPetSpots: [String: CampSpot] = [:]
     public var decorations: [PlacedDecoration] = []
     public var lastLevelID: String?
     public var bestCombo = 0
     public var friendshipPowers = 0
+    /// The Campfire Sing-Along's songs, keyed by times table ("3").
+    public var songs: [String: SongRecord] = [:]
 
     public init(nickname: String, avatar: String = "🦦") {
         self.nickname = nickname
@@ -120,6 +129,7 @@ public struct Profile: Codable, Equatable, Identifiable, Sendable {
         dailyPlaySeconds = c.value(.dailyPlaySeconds, default: [:])
         seenIntro = c.value(.seenIntro, default: false)
         grownUpChecked = c.value(.grownUpChecked, default: false)
+        campPetSpots = c.value(.campPetSpots, default: [:])
         decorations = c.value(.decorations, default: [])
         lastLevelID = c.value(.lastLevelID, default: nil)
         bestCombo = c.value(.bestCombo, default: 0)
@@ -128,6 +138,7 @@ public struct Profile: Codable, Equatable, Identifiable, Sendable {
         trophiesReady = c.value(.trophiesReady, default: false)
         trophiesSeen = c.value(.trophiesSeen, default: 0)
         stats = c.value(.stats, default: PlayerStats())
+        songs = c.value(.songs, default: [:])
     }
 
     public var totalStars: Int { levels.values.reduce(0) { $0 + $1.stars } }

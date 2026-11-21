@@ -54,6 +54,8 @@ struct WorkshopView: View {
     private var puzzle: WorkshopPuzzle? { puzzles.indices.contains(index) ? puzzles[index] : nil }
     private var talking: Bool { stage == .intro || stage == .done }
     private var zone: Int { model.catalog.islands.firstIndex { $0.id == island.id } ?? 0 }
+    /// True once every part is back: fitting this one completes the Times Machine.
+    private var lastPart: Bool { (model.profile?.crystals.count ?? 0) >= model.catalog.islands.count }
 
     var body: some View {
         GeometryReader { geometry in
@@ -81,8 +83,13 @@ struct WorkshopView: View {
                         if let puzzle { board(puzzle, size: geometry.size, compact: compact) }
                     case .fitted:
                         machine(compact: compact)
-                        Button(action: tapped(leave)) { IconLabel("Back to Crash Camp", symbol: "map.fill", size: compact ? 20 : 26, trailing: true) }
-                            .buttonStyle(ChunkyButtonStyle(fill: Palette.teal, ink: .white, size: compact ? 20 : 26))
+                        if lastPart {
+                            Button(action: tapped { model.route = .ending }) { IconLabel("Time to go home!", emoji: "🌈", size: compact ? 20 : 26) }
+                                .buttonStyle(ChunkyButtonStyle(fill: Palette.teal, ink: .white, size: compact ? 20 : 26))
+                        } else {
+                            Button(action: tapped(leave)) { IconLabel("Back to Crash Camp", symbol: "map.fill", size: compact ? 20 : 26, trailing: true) }
+                                .buttonStyle(ChunkyButtonStyle(fill: Palette.teal, ink: .white, size: compact ? 20 : 26))
+                        }
                     }
                     Spacer(minLength: 0)
                 }
@@ -125,8 +132,10 @@ struct WorkshopView: View {
     /// The Times Machine, with the part flying into place once every puzzle is done.
     private func machine(compact: Bool) -> some View {
         ZStack {
-            Image("machine_wrecked").resizable().scaledToFit().frame(height: compact ? 150 : 300)
+            Image(fitted && lastPart ? "machine_whole" : "machine_wrecked").resizable().scaledToFit().frame(height: compact ? 150 : 300)
+                .animation(.easeInOut(duration: 0.6).delay(0.7), value: fitted)
             Image("part_\(island.part)").resizable().scaledToFit()
+                .opacity(fitted && lastPart ? 0 : 1)
                 .frame(width: compact ? 56 : 110, height: compact ? 56 : 110)
                 .offset(x: fitted ? 0 : (compact ? 160 : 320), y: fitted ? 0 : (compact ? -80 : -160))
                 .scaleEffect(fitted ? 1 : 1.3)

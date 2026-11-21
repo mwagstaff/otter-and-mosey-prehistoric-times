@@ -164,6 +164,7 @@ narration) already exist.
 | **Sky Snatch** | Pteranodons fly past carrying number stones; tap every one in the 8 times table, or the answer to the question shown. Missed ones loop back. | Tap | Word Blaster's bubbles |
 | **Big Escape** (boss) | Three-phase chase. Right answers charge **Friendship Power**; when full, Otter and Mosey pull a team move (mud splash, banana-skin slide, tail swish…) and the chase moves on. Ends with the boss befriended. | Type | Guardian encounter |
 | **Fix-It Workshop** (interlude) | Calm repair at Crash Camp: drag bolts into rows to build "3 rows of 8", slot the four fact-family gears into the part, watch it fit into the machine. | Drag | New, simple |
+| **Campfire Sing-Along** (planned) | Otter and Mosey chant a times table over a beat, three rounds that leave more for the child to sing each time, then a quiz that fills the table in order. See section 14. | Sing, then type | New |
 
 **Chase pressure** (grown-up setting), whichever is chosen, a level can't be failed:
 - **Calm** (the default, confirmed): the chaser only moves closer after a wrong answer.
@@ -372,7 +373,8 @@ the shared pieces can be pulled into an "Otter & Mosey kit" later if a third gam
 | M1 | **Learning engine** ✅ (19 Nov 2026) | Fact tracking, planner, zone mapping, answer styles, grown-up settings model, with tests. |
 | M2 | **Look and sound check** ✅ made, awaiting your review (19 Nov 2026) | Times Machine, new Otter / Mosey poses, Mama Maia and Trevor references, two zone backgrounds, first roars and dinosaur voice previews. **You review these before more is generated:** [docs/m2-review/index.html](m2-review/index.html). |
 | M3 | **Vertical slice** ✅ built (19 Nov 2026) | Opening story and crash, Crash Camp map, Hatchling Hollow complete (4 levels, Big Escape, Fix-It Workshop), stars, first trophies, Fossil Museum, dinosaur music. **Play-test with a child here.** |
-| M4 | **Zones 2–6** | All art, voices, music and levels; finale. Note: the ElevenLabs Starter plan allows 10 custom voices and 9 are in use, so the four remaining bosses need some finished Lost Islands guardian voices removed (their lines are all recorded) or a plan upgrade. |
+| M4 | **Zones 2–6** ✅ built (20 Nov 2026) | All five zones written, drawn, voiced and scored: 25 more levels, four new bosses (Steggy, the Swoop Squad, the Snatch Pack, Rex) with chase, happy and sleeping poses, five backgrounds and foregrounds, five zone tunes, three new roars, four baby-dinosaur pets, a new group photo, and the finale moved to Crash Camp. Voices: Rex is a designed voice (the account's last free slot); Steggy (Lily), the Swoop Squad (Callum) and the Snatch Pack (Laura) use ElevenLabs premade voices, which take no slot, so no Lost Islands voices had to be deleted. Sky Snatch and the Raptor Race are left for M5. |
+| M5a | **Campfire Sing-Along** ✅ built (21 Nov 2026) | Section 14: song plan and quiz rules with tests, 203 song clips and the dialogue recorded, an 8-bar backing loop cut from the approved test beat, the AVAudioEngine song player, the sing-along screen, the song shelf, zone warm-ups, rewards, trophies, grown-up settings, new art (Otter singing and listening, Mosey singing, the sing-along badge) and a UI play-through test. Instrument props for the band are still emoji. |
 | M5 | **Rewards** | Dino Nursery, hats, Crash Camp decorating, full trophy cabinet, Dino Fact cards. |
 | M6 | **Grown-ups** | Presets, the 12 × 12 report, MTC practice, new gate, Gentle dinosaurs. |
 | M7 | **Polish and QA** | Every device size, performance, accessibility pass, play-test runner green. |
@@ -419,6 +421,17 @@ Decided on 19 November 2026:
 3. **Code:** fork Lost Islands into this folder; extract a shared kit later if a third game needs it.
 4. **First release:** 30 levels across 6 zones, plus a Fix-It Workshop after each zone.
 
+Decided on 20 November 2026, for the sing-along (section 14):
+
+5. **Where:** both a song shelf at Crash Camp and a one-off warm-up song at the start of zones 1–4.
+6. **Audio:** a chant over a beat, using the existing Otter and Mosey voices, built while
+   playing so it works for any table and any highest multiplier.
+7. **Wording:** "Four times three is twelve", matching the game's narration ("4 times 3").
+8. **Quiz:** "Fill the ladder": in order, typed, untimed. "Beat Catch" is not built.
+9. **Learning record:** in-order quiz answers count as practice only; the shuffled challenge
+   counts in full.
+10. **Microphone:** none.
+
 Still open, no rush:
 
 - Should the boss dinosaurs talk (designed voices), or only roar while Otter and Mosey do the
@@ -428,3 +441,187 @@ Still open, no rush:
   The App Store's Kids category has extra rules on gates and data, which the design already meets.
 - Include ×0 facts? (Not in the Year 3 curriculum or the MTC; proposed: no.)
 - Where will the web version be hosted? (Lost Islands builds for `/play/lost-islands/`.)
+
+---
+
+## 14. Campfire Sing-Along (planned 20 November 2026)
+
+Learning a times table by heart through a song: Otter and Mosey chant it with the child round a
+campfire, the child sings more of it each time, then fills it in on the number pad. The design
+choices are confirmed (section 13, items 5–10). Mock-ups, made from the game's own art:
+[docs/singalong-review/index.html](singalong-review/index.html).
+
+### Where it lives
+
+- **Song shelf at Crash Camp.** A "Sing-Along" button on the Crash Camp card opens a shelf with
+  one record for each table the grown-up has switched on. Any song can be sung any time, as often
+  as the child likes. A record is black until the song has been sung and its quiz finished, then
+  silver, then gold once the table's skeleton in the Fossil Museum is complete (every fact secure),
+  so the shelf and the museum always agree. It shows the best quiz stars.
+- **A song before every level** (changed from zone warm-ups after play-testing, 21 Nov 2026).
+  Each level opens with about a minute of its table's song: the level's own table if it has one,
+  otherwise the zone's focus tables taking turns level by level. What is sung moves on as the
+  child does: round 1, then round 2, then Rex speed, then filling the ladder, then the fastest
+  round, the shuffle challenge and the ladder in turn (`SingAlong.nextSegment`). A start card says
+  what's coming ("Warm-up: the 2s song · Sing with us! · Then on to Fern Dash"); afterwards, "On to
+  Fern Dash!". Unstarred and can't be failed; a Skip button appears once the level has stars. A
+  grown-up can switch level songs off. Play-testing from the grown-ups' area skips them.
+- **Crash Camp:** a campfire band (log drum, ukulele, maracas) beside the fire opens the shelf.
+- **Friends join in:** a baby dinosaur or friend arrives for every line sung and every right
+  answer, standing in a front row that fills in from both ends, with a count at the top, a banner
+  at the end of each round ("Round 1 done! 12 friends are singing with you!") and a line-up on the
+  level's "on to" screen.
+
+### The song
+
+The table is sung from 1 × up to the grown-up's highest multiplier (`usableMultipliers.max()`,
+normally 12). Every line takes two bars of 4/4 over a backing beat, in call and response: Otter
+sings the question ("Four times three is…") and Mosey sings the answer ("twelve!"). That is about
+a minute for each round of 12 lines.
+
+| Round | Speed | Bar 1 | Bar 2 | On screen |
+| --- | --- | --- | --- | --- |
+| 1. Sing with us | 🐢 about 88 bpm | Otter: "Four times three is…" | Mosey: "twelve!" | The whole line, lit word by word with a hopping footprint |
+| 2. You finish it | 🦕 about 100 bpm | Otter: "Seven times three is…" | The child sings; on beat 3 the egg hatches and Mosey says "twenty-one!" | The answer is an egg that wobbles for a beat |
+| 3. Rex speed! | 🦖 about 112 bpm | Beat only: the child sings the line | As round 2 | "9 × 3 = 🥚": only the answer is hidden |
+
+- **The ladder:** a panel listing the whole table, building up as it is sung, so the child sees
+  the pattern (3, 6, 9, 12 …). In rounds 2 and 3 the answers still to come are eggs.
+- **The band:** each befriended boss joins as their zone is cleared: Mama Maia on maracas, Trevor
+  on drums, Steggy plays her tail spikes like a xylophone, the Swoop Squad are backing singers
+  ("backing *pterosaurs*, actually"), the Snatch Pack on shakers, and Rex stomps the big drum with
+  his feet because his arms don't reach.
+- **Stomp drum:** a big button to tap along with the beat. A tap on the beat gives a sparkle and a
+  haptic tick. Nothing is scored.
+- Grown-ups can set the number of rounds (1–3, default 3) and switch the speed-up off. Reduced
+  motion stops the bouncing and dancing; the words still light up.
+- No microphone: the game never listens. Otter's "Your turn!" is all the prompting.
+
+### The quiz: "Fill the ladder"
+
+- The same lines **in order**, typed on the game's number pad, with the ladder on the left
+  filling in. The band plays a soft one-bar loop and waits: there is no timer.
+- **First miss:** the band sings that line again as the hint, then the child tries again.
+  **Second miss:** the answer appears, and the line comes back once more after the last one.
+- **Stars** from first-try accuracy, using the usual rule (85% for 3, 55% for 2, finishing always
+  earns 1).
+- **Shuffle challenge** afterwards (offered, not forced): six facts from the same table in random
+  order. Chanting in order tends to teach children to count up from the start ("1 × 3 is 3,
+  2 × 3 is 6 … 7 × 3 is 21") instead of recalling the fact; mixing the order breaks that habit.
+  The levels then carry on asking the table in random order.
+- **Learning record:** in-order answers are easier (each one follows from the last), so they
+  count as **practice only**: a new `FactStats.recordPractice(correct:)` can move a fact from New
+  to Getting there but never further, and adds no streak days or timings. A miss counts as a
+  normal miss. The shuffled challenge records answers in full, like any level.
+
+### Rewards
+
+- Stars and the record's colour on the shelf.
+- The table's fossil appears beside the quiz; its bones glow as answers go in. Bones are still
+  only *placed* in the museum when a fact becomes secure, as now.
+- Trophies: a **Sing-Along Star** ladder (1, 5 and 20 songs sung), **Rex Speed** (finish a
+  round 3), **Gold Record** (first gold record) and **Whole Songbook** (every switched-on song
+  sung). The two-per-level limit and waiting list apply.
+- The reward screen: "You learned the 3s song!", stars, the spinning record, the fossil doing a
+  dance, then **Sing again**, **Shuffle challenge** or **Back to camp**.
+
+### Audio
+
+All ElevenLabs, as for the rest of the game.
+
+| Item | Detail | Size |
+| --- | --- | --- |
+| Backing loop | One instrumental campfire stomp at 100 bpm in 4/4 (log drums, ukulele, marimba, tuba), cut to an exact number of bars so it loops on the beat. The quiz's waiting loop is the same track, filtered and quieter. | 1 track, about 60 s |
+| Otter's calls | "*N* times *T* is…" for every table 1–12 and multiplier 1–12, in a rhythmic, chanting delivery. | 144 clips, about 2,900 characters |
+| Mosey's answers | Every product in the 12 × 12 table ("twelve!", "twenty-one!"), shared by all tables. | 59 clips, about 600 characters |
+| Dialogue | Song intros, "Your turn!", "Faster!", "Rex speed!", the outro and quiz praise, for the content pipeline as usual. | About 25 lines, about 1,000 characters |
+
+About 4,500 characters of speech in all: a fraction of a month's plan. New keys: `sing_q_3x4`,
+`sing_a_12`, generated by `tools/build_content.py` and recorded by `narrate.mjs`; the backing
+loop goes in `music.json`.
+
+**Audio test first.** Before recording everything: two or three lines of the 3s over a short test
+beat, in two deliveries (rhythmic speech and half-sung), at the three speeds, for you to listen
+to. This settles how chant-like the voices can sound and how fast each round should be. It also
+decides whether a short sung chorus with no numbers in it (option C from the review) is worth
+adding.
+
+**Audio test done (20 November 2026): the chant was chosen** over the half-sung delivery. Tags:
+Otter `[excited, chanting rhythmically]`, Mosey `[chanting rhythmically, cheerful]`. ElevenLabs
+Music came out at exactly 100 bpm, starting on the beat, so the loop can be cut to whole bars.
+The test is `tools/sfx/singalong-test.mjs` (recording, beat detection) and
+`tools/sfx/singalong-render.swift` (an offline AVAudioEngine render, the song player's
+prototype); its output is in the git-ignored `tools/sfx/samples/singalong-test`.
+
+### Art
+
+Same pipeline and references (`tools/generate_art.py`), about 10 images, under $1:
+
+- Otter singing, Otter cupping an ear ("Your turn!"), Mosey singing.
+- Instrument props for the six bosses, layered over their existing happy poses.
+- Records, the ladder, the lyric card and the drum are drawn in code; the stage is `bg_camp`.
+
+### Technical approach
+
+**Core (`TimesTroubleCore`, Foundation only, so the web port stays mechanical):**
+
+- `SongPlan`: the table, the lines (1 to the highest multiplier), the rounds, and a timeline in
+  beats of every cue: which clip plays, what is hidden and when it is revealed. Pure and fully
+  testable; the app just plays it.
+- `SongQuiz`: an in-order session with the hint, second-miss and re-ask rules, and the stars.
+  The shuffled challenge reuses the normal `Session` with a single table.
+- `FactStats.recordPractice(correct:)`, as above.
+- Save data: `Profile.songs: [Int: SongRecord]` (times sung, rounds finished, best stars, last
+  sung), defaulting to empty so existing saves load unchanged.
+- Trophy rules for the new trophies; `Fossils` provides the gold-record test.
+- Contract tests so the web port can't drift.
+
+**App:**
+
+- `SongPlayer`: the current `AudioManager` uses `AVAudioPlayer`, which can't keep clips on the
+  beat. The new player uses `AVAudioEngine`: the backing loop and the voices on their own
+  `AVAudioPlayerNode`s, each clip scheduled at an exact sample time, and an `AVAudioUnitTimePitch`
+  so the speed-ups don't make anyone sound like a chipmunk. The words, the footprint and the band
+  follow the player's clock, not a timer. It respects the music and voice volumes and pauses
+  cleanly.
+- `SingAlongView` (SwiftUI, like the Fix-It Workshop): the stage, Otter, Mosey and the band
+  bobbing on the beat, the lyric card, the ladder, the drum and the quiz's number pad, all driven
+  by the song player's clock.
+- `SongShelfView` (SwiftUI), new routes for the shelf and a song, the Crash Camp button and the
+  warm-up stop on the zone screen.
+- Grown-ups' area: rounds, speed-up on or off, zone warm-ups on or off. The progress report
+  lists songs sung.
+- Debug: `-debugRoute song:3` opens the 3s song; `-debugShort` cuts a song to three lines.
+
+**Web version:** the Web Audio API schedules clips against `AudioContext.currentTime` the same
+way, so the song player ports directly.
+
+### Testing
+
+- Core: the plan stops at the highest multiplier (×10 gives 10 lines; any set of multipliers
+  uses its highest), each round hides the right parts, cue times only move forward, the quiz order
+  and re-asks, stars, practice answers never make a fact secure, and old saves load.
+- App: the song scene builds and plays a whole round silently; every `sing_` clip for tables
+  1–12 is bundled (`check_playtest_assets.py`); a UI play-through of a short song and its quiz on
+  iPhone and iPad through `tools/playtest`.
+
+### Steps
+
+All done on 21 November 2026 except the boss instrument props (the band holds emoji for now).
+Recording used about 4,100 ElevenLabs credits (delivery tags are not charged) and the art $0.20.
+
+1. Audio test, for your approval.
+2. Core rules and tests.
+3. Record the clips and the backing loop; draw the new poses.
+4. Song player, sing-along scene and song shelf.
+5. Quiz, shuffle challenge and rewards.
+6. Zone warm-ups, grown-up settings, trophies, play-test on both simulators.
+
+### Risks
+
+| Risk | Mitigation |
+| --- | --- |
+| Spoken clips sound stiff rather than musical | The audio test comes first; rhythmic delivery tags; a sung chorus as a fallback. |
+| Clips drifting off the beat | Sample-accurate scheduling on one audio clock; every clip trimmed of leading silence when recorded. |
+| Learning the order rather than the facts | The shuffle challenge, practice-only credit for in-order answers, and the levels' random order. |
+| Too long for some children | Rounds set by grown-ups; about a minute per round; can leave any time and start again. |

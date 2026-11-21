@@ -75,6 +75,8 @@ public struct LearnerModel: Codable, Equatable, Sendable {
     public func factStats(_ fact: Fact, _ kind: FactKind) -> FactStats { facts[fact.key(kind)] ?? FactStats() }
     public func factState(_ fact: Fact, _ kind: FactKind) -> FactState { factStats(fact, kind).state }
 
+    mutating func setFactStats(_ stats: FactStats, for key: String) { facts[key] = stats }
+
     /// Facts due for spaced review, most overdue first.
     public func dueFacts(_ kind: FactKind) -> [Fact] {
         items.filter { $0.key.hasPrefix(kind.rawValue + ":") && $0.value.dueAt <= answerCount }

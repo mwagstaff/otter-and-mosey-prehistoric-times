@@ -5,12 +5,13 @@ import Foundation
 /// Roughly a quarter of questions revisit facts that are due for spaced review, about one in
 /// seven keeps a secure fact warm, and the rest practise the zone's focus tables: facts still
 /// being learnt first, with no more than `newFactsPerLevel` brand-new facts brought in a level
-/// (easiest first). A fact comes up at most twice in a level, and never twice in a row.
+/// (easiest first). A fact is asked at most once in a level, so no question repeats; it only
+/// comes round again when the level asks more questions than there are facts to choose from.
 public struct QuestionPlanner: Sendable {
     public static let newFactsPerLevel = 3
     public static let reviewShare = 0.25
     public static let secureShare = 0.15
-    public static let maxPerLevel = 2
+    public static let maxPerLevel = 1
 
     public let focus: [Int]
     public let tables: [Int]
@@ -38,7 +39,9 @@ public struct QuestionPlanner: Sendable {
             pick = everything.filter { available($0) && learner.factState($0, kind) >= .secure }.randomElement(using: &rng)
         }
         if pick == nil { pick = practise(kind: kind, learner: learner, using: &rng) }
-        let fact = pick ?? everything.filter { $0 != last }.randomElement(using: &rng) ?? everything[0]
+        let fact = pick
+            ?? everything.filter(available).randomElement(using: &rng)
+            ?? leastAsked(everything).randomElement(using: &rng) ?? everything[0]
         noteAsked(fact)
         return fact
     }
@@ -47,6 +50,13 @@ public struct QuestionPlanner: Sendable {
     public mutating func noteAsked(_ fact: Fact) {
         askedCount[fact, default: 0] += 1
         last = fact
+    }
+
+    /// Every fact has had its turn: the ones asked least, other than the last.
+    private func leastAsked(_ facts: [Fact]) -> [Fact] {
+        let others = facts.count > 1 ? facts.filter { $0 != last } : facts
+        let fewest = others.map { askedCount[$0, default: 0] }.min() ?? 0
+        return others.filter { askedCount[$0, default: 0] == fewest }
     }
 
     func available(_ fact: Fact) -> Bool { fact != last && askedCount[fact, default: 0] < Self.maxPerLevel }

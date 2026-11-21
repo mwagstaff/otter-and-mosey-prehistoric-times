@@ -4,6 +4,7 @@ import SwiftUI
 
 /// The archipelago. Tap an island to see it, then explore.
 struct MapView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(AppModel.self) private var model
     @State private var scene = WorldMapScene()
     @State private var selected: String?
@@ -28,6 +29,9 @@ struct MapView: View {
             let compact = geometry.size.height < 480
             ZStack {
                 SceneBackdrop(scene: scene, extraTop: compact ? 50 : 80, extraBottom: compact ? 84 : 130)
+                    .onChange(of: !reduceMotion && !model.settings.reducedMotion, initial: true) { _, active in
+                        scene.cover.shader = active ? IslandAtmosphere.shader(for: "bg_map") : nil
+                    }
                 VStack(spacing: 0) {
                     HStack(spacing: compact ? 8 : 12) {
                         RoundButton(symbol: "house.fill", label: "Title screen") { model.route = .title }
@@ -136,10 +140,19 @@ struct MapView: View {
                     .font(.game(compact ? 14 : 18, weight: .bold)).foregroundStyle(Palette.ink.opacity(0.7))
             }
             Spacer(minLength: 8)
-            Button(action: tapped { model.route = .museum }) { IconLabel("Museum", emoji: "🦴", size: compact ? 17 : 22) }
-                .buttonStyle(ChunkyButtonStyle(fill: Palette.cream, size: compact ? 17 : 22))
-            Button(action: tapped { model.route = .home }) { IconLabel("Visit camp", emoji: "🏕", size: compact ? 20 : 26) }
-                .buttonStyle(ChunkyButtonStyle(fill: Palette.teal, ink: .white, size: compact ? 20 : 26))
+            // Three ways in: the camp itself first, then the sing-along and the museum beneath it.
+            VStack(alignment: .trailing, spacing: compact ? 6 : 12) {
+                Button(action: tapped { model.route = .home }) { IconLabel("Visit camp", emoji: "🏕", size: compact ? 18 : 24) }
+                    .buttonStyle(ChunkyButtonStyle(fill: Palette.teal, ink: .white, size: compact ? 18 : 24))
+                HStack(spacing: compact ? 6 : 12) {
+                    Button(action: tapped { model.route = .songShelf }) { IconLabel("Sing-Along", emoji: "🎵", size: compact ? 15 : 20) }
+                        .buttonStyle(ChunkyButtonStyle(fill: Palette.gold, size: compact ? 15 : 20))
+                        .accessibilityIdentifier("sing-along")
+                    Button(action: tapped { model.route = .museum }) { IconLabel("Museum", emoji: "🦴", size: compact ? 15 : 20) }
+                        .buttonStyle(ChunkyButtonStyle(fill: Palette.cream, size: compact ? 15 : 20))
+                }
+            }
+            .fixedSize()
         }
         .padding(.horizontal, compact ? 14 : 22)
         .padding(.vertical, compact ? 8 : 14)
@@ -245,7 +258,9 @@ struct IslandView: View {
                 }
                 .padding(compact ? 8 : 24)
             }
-            .screenBackground(theme.background)
+            .background {
+                IslandScenery(art: theme.background, calmerMotion: model.settings.reducedMotion)
+            }
             .environment(\.compact, compact)
         }
     }
@@ -256,7 +271,7 @@ struct IslandView: View {
         let stars = profile?.stars(for: level.id) ?? 0
         let isNext = unlocked && stars == 0
         let size: CGFloat = compact ? 74 : 118 * scale
-        return Button(action: tapped { if unlocked { model.route = .play(level.id) } }) {
+        return Button(action: tapped { if unlocked { model.startLevel(level.id) } }) {
             VStack(spacing: compact ? 2 : 6) {
                 ZStack {
                     Circle().fill(Palette.ink).offset(y: 5)

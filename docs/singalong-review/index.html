@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sing-Along Mock-ups</title>
+<style>
+@font-face { font-family: Game; src: local('SF Pro Rounded'), url('file:///System/Library/Fonts/SFNSRounded.ttf'); font-weight: 1 1000; }
+:root { --ink:#0E3B43; --cream:#FFF6E0; --gold:#FFC83D; --coral:#FF6B5E; --teal:#17B8A6; --sky:#3DB8FF; --pink:#FF7EB6; --leaf:#1E9E52; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 32px; background: #241b14; font-family: Game, 'Arial Rounded MT Bold', system-ui, sans-serif; color: var(--ink); }
+h1 { color: var(--cream); font-size: 34px; margin: 0 0 8px; }
+.intro { color: #e9dcc4; font-size: 18px; max-width: 1180px; margin: 0 0 28px; line-height: 1.45; }
+figure { margin: 0 0 44px; }
+figcaption { color: var(--cream); font-size: 20px; font-weight: 800; margin: 0 0 10px; max-width: 1180px; }
+figcaption small { display: block; font-weight: 600; color: #d8c9ae; font-size: 16px; margin-top: 4px; }
+body.single { padding: 0; background: #000; }
+body.single h1, body.single .intro, body.single figcaption { display: none; }
+body.single figure { margin: 0; }
+
+.screen { position: relative; width: 1180px; height: 820px; overflow: hidden; background-size: cover; background-position: center; border-radius: 6px; }
+body.single .screen { border-radius: 0; }
+.shade { position: absolute; inset: 0; pointer-events: none; }
+.sprite { position: absolute; filter: drop-shadow(0 6px 0 rgba(0,0,0,.18)); }
+.panel { background: var(--cream); border: 3.5px solid var(--ink); border-radius: 22px; box-shadow: 0 5px 0 rgba(0,0,0,.25); }
+.topbar { position: absolute; left: 16px; right: 16px; top: 14px; display: flex; gap: 12px; align-items: center; z-index: 5; }
+.sp { flex: 1; }
+.round { width: 62px; height: 62px; border-radius: 50%; display: grid; place-items: center; font-size: 26px; font-weight: 900; background: var(--cream); border: 3.5px solid var(--ink); box-shadow: 0 5px 0 var(--ink); flex: none; }
+.round.gold { background: var(--gold); }
+.chip { display: inline-flex; align-items: center; gap: 8px; background: var(--cream); border: 3.5px solid var(--ink); border-radius: 999px; padding: 9px 20px; font-size: 22px; font-weight: 900; box-shadow: 0 4px 0 rgba(0,0,0,.25); white-space: nowrap; }
+.chip.gold { background: var(--gold); }
+.chip.teal { background: var(--teal); color: #fff; }
+.chip.coral { background: var(--coral); color: #fff; }
+.chip.small { font-size: 17px; padding: 6px 14px; }
+.tempo span { opacity: .28; font-size: 24px; }
+.tempo span.on { opacity: 1; font-size: 32px; }
+.btn { display: inline-flex; align-items: center; gap: 10px; font-weight: 900; font-size: 26px; padding: 13px 28px; border-radius: 999px; border: 3.5px solid var(--ink); box-shadow: 0 6px 0 var(--ink); background: var(--gold); color: var(--ink); white-space: nowrap; }
+.btn.teal { background: var(--teal); color: #fff; }
+.btn.cream { background: var(--cream); }
+
+.bubble { position: absolute; background: var(--cream); border: 3.5px solid var(--ink); border-radius: 22px; padding: 12px 18px; font-size: 22px; font-weight: 800; line-height: 1.2; box-shadow: 0 4px 0 rgba(0,0,0,.25); z-index: 4; }
+.bubble::after { content: ''; position: absolute; width: 22px; height: 22px; background: var(--cream); border-right: 3.5px solid var(--ink); border-bottom: 3.5px solid var(--ink); bottom: -13px; left: var(--tail, 40px); transform: rotate(45deg); }
+.bubble.gold, .bubble.gold::after { background: var(--gold); }
+
+.note { position: absolute; font-size: 50px; font-weight: 900; color: var(--gold); -webkit-text-stroke: 2.5px var(--ink); z-index: 3; }
+.inst { position: absolute; font-size: 44px; z-index: 3; filter: drop-shadow(0 3px 0 rgba(0,0,0,.25)); }
+
+/* The times ladder */
+.ladder { position: absolute; padding: 12px 12px 14px; z-index: 4; }
+.ladder h3 { margin: 2px 0 8px; font-size: 21px; text-align: center; }
+.row { display: grid; grid-template-columns: 1.25fr .35fr 1fr; align-items: center; font-size: 25px; font-weight: 900; padding: 0 12px; border-radius: 12px; height: 40px; margin: 2px 0; border: 3px solid transparent; }
+.row .eq { opacity: .55; text-align: center; } .row .ans { text-align: right; }
+.row.done .ans { color: var(--leaf); }
+.row.now { background: var(--gold); border-color: var(--ink); transform: scale(1.07); box-shadow: 0 3px 0 rgba(0,0,0,.25); }
+.row.next { opacity: .33; }
+.row.hide .ans, .row.hide .mul { opacity: .9; }
+.row img.e { height: 30px; vertical-align: middle; }
+.row .tick { color: var(--leaf); font-size: 22px; margin-left: 6px; }
+.row .box { display: inline-block; min-width: 62px; height: 34px; line-height: 30px; padding: 0 8px; background: #fff; border: 3px solid var(--ink); border-radius: 9px; text-align: left; }
+.row .box i { display: inline-block; width: 3px; height: 24px; background: var(--coral); vertical-align: middle; margin-left: 2px; }
+
+/* The lyric card */
+.lyric { position: absolute; z-index: 4; text-align: center; padding: 12px 20px 14px; }
+.sum { font-size: 84px; font-weight: 900; line-height: 1; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 18px; }
+.sum img { height: 92px; }
+.sum .ans { color: var(--coral); }
+.words { margin-top: 30px; font-size: 32px; font-weight: 800; display: flex; justify-content: center; gap: 12px; }
+.words span { position: relative; opacity: .35; }
+.words .sung { opacity: 1; color: var(--ink); }
+.words .cur { opacity: 1; color: var(--coral); }
+.words .hop::before { content: '🐾'; position: absolute; top: -36px; left: 50%; transform: translateX(-50%) rotate(-12deg); font-size: 28px; }
+.beats { position: absolute; z-index: 4; display: flex; gap: 18px; align-items: center; }
+.beats span { font-size: 30px; opacity: .22; }
+.beats span.on { opacity: 1; font-size: 44px; filter: drop-shadow(0 0 10px #ffd85c); }
+
+.stomp { position: absolute; z-index: 4; width: 136px; height: 136px; border-radius: 50%; background: var(--coral); border: 4px solid var(--ink); box-shadow: 0 7px 0 var(--ink); display: grid; place-items: center; text-align: center; color: #fff; font-size: 19px; font-weight: 900; line-height: 1.05; }
+.stomp b { display: block; font-size: 54px; line-height: 1; }
+
+/* Records */
+.disc { position: relative; width: 140px; height: 140px; border-radius: 50%; margin: 0 auto; border: 3.5px solid var(--ink); background: repeating-radial-gradient(circle, #2d3436 0 2px, #3d4648 2px 4px); display: grid; place-items: center; box-shadow: 0 5px 0 rgba(0,0,0,.25); }
+.disc::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 20deg, transparent 0 40deg, rgba(255,255,255,.22) 50deg, transparent 70deg 220deg, rgba(255,255,255,.15) 230deg, transparent 250deg); }
+.disc.gold { background: repeating-radial-gradient(circle, #f6c445 0 3px, #dfa425 3px 6px); }
+.disc.silver { background: repeating-radial-gradient(circle, #e3e8ea 0 3px, #b9c3c7 3px 6px); }
+.disc .lab { width: 64px; height: 64px; border-radius: 50%; border: 3px solid var(--ink); display: grid; place-items: center; font-size: 25px; font-weight: 900; color: #fff; z-index: 1; text-shadow: 0 2px 0 rgba(0,0,0,.3); }
+.shelf { position: absolute; left: 330px; top: 108px; width: 830px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; z-index: 4; }
+.card { position: relative; padding: 16px 12px 14px; text-align: center; height: 286px; }
+.card h4 { margin: 12px 0 4px; font-size: 27px; }
+.card .st { font-size: 26px; letter-spacing: 2px; color: var(--gold); -webkit-text-stroke: 1.5px var(--ink); }
+.card .meta { font-size: 16px; font-weight: 700; opacity: .7; margin-top: 4px; }
+.card.next { background: #fff3c4; outline: 6px solid var(--gold); outline-offset: 3px; }
+.ribbon { position: absolute; top: -14px; right: -10px; transform: rotate(8deg); background: var(--coral); color: #fff; font-weight: 900; font-size: 18px; padding: 5px 12px; border: 3px solid var(--ink); border-radius: 10px; }
+
+/* Number pad */
+.pad { position: absolute; left: 0; right: 0; bottom: 0; height: 112px; background: rgba(14,59,67,.55); display: flex; justify-content: center; align-items: center; gap: 12px; z-index: 5; }
+.key { width: 74px; height: 74px; border-radius: 12px; background: var(--cream); border: 3px solid var(--ink); box-shadow: 0 4px 0 var(--ink); display: grid; place-items: center; font-size: 36px; font-weight: 900; }
+.key.wide { width: 128px; font-size: 28px; background: var(--teal); color: #fff; }
+.key.pressed { transform: translateY(-5px) scale(1.1); background: var(--gold); }
+
+.hud { position: absolute; left: 16px; right: 16px; top: 12px; height: 76px; display: flex; gap: 14px; align-items: center; z-index: 5; }
+.caption { flex: 1; height: 68px; display: grid; place-items: center; font-size: 40px; font-weight: 900; }
+.prog { width: 108px; text-align: center; font-size: 19px; font-weight: 900; color: var(--ink); background: var(--cream); border: 3.5px solid var(--ink); border-radius: 16px; padding: 6px 8px; }
+.prog .bar { height: 10px; border-radius: 6px; background: #e5d7b6; margin-top: 4px; overflow: hidden; border: 2px solid var(--ink); }
+.prog .bar i { display: block; height: 100%; background: var(--teal); }
+
+.stone { position: absolute; width: 96px; height: 96px; border-radius: 50%; background: var(--cream); border: 4px solid var(--ink); box-shadow: 0 6px 0 var(--ink); display: grid; place-items: center; font-size: 38px; font-weight: 900; z-index: 3; }
+.stone.song { width: 140px; height: 140px; background: var(--gold); font-size: 64px; box-shadow: 0 7px 0 var(--ink), 0 0 0 10px rgba(255,200,61,.45), 0 0 46px 18px rgba(255,214,90,.75); }
+.stone.boss { width: 128px; height: 128px; background: #ffd9b0; overflow: hidden; }
+.label { position: absolute; z-index: 4; font-size: 19px; font-weight: 900; text-align: center; }
+
+.rays { position: absolute; inset: -400px; background: repeating-conic-gradient(from 0deg at 50% 50%, rgba(255,214,90,.30) 0 8deg, rgba(255,214,90,0) 8deg 20deg); }
+.bigdisc { position: absolute; width: 330px; height: 330px; border-radius: 50%; border: 5px solid var(--ink); background: repeating-radial-gradient(circle, #f6c445 0 4px, #dca021 4px 8px); box-shadow: 0 10px 0 var(--ink), 0 0 80px 30px rgba(255,214,90,.7); display: grid; place-items: center; z-index: 3; }
+.bigdisc::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 10deg, transparent 0 30deg, rgba(255,255,255,.4) 45deg, transparent 65deg 200deg, rgba(255,255,255,.3) 215deg, transparent 235deg); }
+.bigdisc .lab { width: 132px; height: 132px; border-radius: 50%; background: #F2A13C; border: 4px solid var(--ink); display: grid; place-items: center; color: #fff; font-size: 54px; font-weight: 900; text-shadow: 0 3px 0 rgba(0,0,0,.3); z-index: 1; }
+.banner { position: absolute; z-index: 5; background: var(--coral); color: #fff; border: 4px solid var(--ink); border-radius: 20px; padding: 10px 34px; font-size: 40px; font-weight: 900; box-shadow: 0 6px 0 var(--ink); text-shadow: 0 3px 0 rgba(0,0,0,.25); }
+.stars { position: absolute; z-index: 5; display: flex; gap: 6px; }
+.stars img { height: 74px; filter: drop-shadow(0 4px 0 rgba(0,0,0,.3)); }
+.confetti { position: absolute; width: 14px; height: 22px; border-radius: 3px; z-index: 2; }
+</style>
+</head>
+<body>
+<h1>Times-table sing-along: mock-ups</h1>
+<p class="intro">These are mock-ups for planning, not working screens. They use the game's real art; new poses (Otter and Mosey singing, the band's instruments) would be drawn later. All examples use the 3 times table up to × 12, the Year 3 default.</p>
+
+<!-- 1 -->
+<figure><figcaption>1 · Option A: Campfire Sing-Along at Crash Camp<small>A song shelf with one record for each table the grown-up has switched on. Any song, any time. Stars come from the quiz; a gold record once the table is known well.</small></figcaption>
+<div class="screen" style="background-image:url(img/bg_camp.jpg)">
+  <div class="shade" style="background:linear-gradient(rgba(14,59,67,.10),rgba(14,59,67,.50))"></div>
+  <div class="topbar"><div class="round">←</div><div class="chip gold">🔥 Campfire Sing-Along</div><div class="sp"></div><div class="chip">⭐ 14</div><div class="chip">💿 2 gold records</div></div>
+  <img class="sprite" src="img/otter_talk.png" style="left:40px;top:360px;height:320px">
+  <div class="bubble" style="left:26px;top:236px;width:280px">Pick a song! The band's all warmed up.</div>
+  <div class="shelf" id="shelf"></div>
+  <div class="chip small" style="position:absolute;left:330px;bottom:22px;z-index:5">⚙️ Songs count up to × 12 · a grown-up can change this</div>
+</div></figure>
+
+<!-- 2 -->
+<figure><figcaption>2 · Option B: a warm-up song at the start of each zone<small>A song stop before level 1 introduces the zone's table (Trevor has three horns, so the 3s). Unstarred, like the Fix-It Workshop, so it can't be failed. The layout here is a sketch, not the real zone screen.</small></figcaption>
+<div class="screen" style="background-image:url(img/bg_meadow.jpg)">
+  <div class="shade" style="background:linear-gradient(rgba(14,59,67,0),rgba(14,59,67,.25))"></div>
+  <div class="topbar"><div class="round">←</div><div class="chip">🌾 Three-Horn Meadow</div><div class="chip gold">× 3</div><div class="sp"></div><div class="chip">⭐ 0/15</div></div>
+  <svg style="position:absolute;left:0;top:0;z-index:2" width="1180" height="820"><path d="M 190 600 C 280 560, 320 470, 400 500 S 520 610, 580 590 S 700 470, 760 500 S 880 610, 930 580 S 1040 450, 1080 480" fill="none" stroke="#FFF6E0" stroke-width="10" stroke-dasharray="4 22" stroke-linecap="round" opacity=".9"/></svg>
+  <div class="stone song" style="left:120px;top:530px">🎵</div>
+  <div class="ribbon" style="left:220px;top:512px;right:auto">NEW</div>
+  <div class="label chip small" style="left:84px;top:690px">Warm-up: the 3s song</div>
+  <div class="stone" style="left:352px;top:452px">1</div>
+  <div class="stone" style="left:532px;top:542px">2</div>
+  <div class="stone" style="left:712px;top:452px">3</div>
+  <div class="stone" style="left:882px;top:532px">4</div>
+  <div class="stone boss" style="left:1020px;top:400px"><img src="img/boss_trevor.png" style="height:118px;margin-left:-10px"></div>
+  <img class="sprite" src="img/otter_think.png" style="left:46px;top:170px;height:250px;z-index:3">
+  <div class="bubble" style="left:250px;top:150px;width:420px;--tail:-6px">Trevor has <b style="color:#E8643C">three</b> horns… so let's learn the <b style="color:#E8643C">3s song</b> before we meet him!</div>
+  <style>.screen .bubble[style*="--tail:-6px"]::after{left:-13px;bottom:auto;top:48px;transform:rotate(135deg)}</style>
+</div></figure>
+
+<!-- 3 -->
+<figure><figcaption>3 · Round 1 of 3: "Sing with us!"<small>Otter and Mosey sing every line over a backing beat. The line lights up word by word with a hopping footprint; the ladder on the right builds up the whole table. Befriended dinosaurs join the band. The child can tap the drum to stomp along.</small></figcaption>
+<div class="screen sing" style="background-image:url(img/bg_camp.jpg)">
+  <div class="shade" style="background:radial-gradient(ellipse at 22% 70%, rgba(255,170,60,.15), rgba(14,30,40,.35) 70%)"></div>
+  <div class="topbar"><div class="round">❚❚</div><div class="chip gold">Round 1 of 3 · 🎤 Sing with us!</div><div class="sp"></div><div class="chip tempo">Speed <span class="on">🐢</span><span>🦕</span><span>🦖</span></div><div class="round">🔊</div></div>
+  <img class="sprite" src="img/boss_maia_happy.png" style="left:18px;top:420px;height:150px;z-index:1"><div class="inst" style="left:40px;top:410px">🪇</div>
+  <img class="sprite" src="img/boss_trevor_happy.png" style="left:700px;top:300px;height:180px;z-index:1"><div class="inst" style="left:820px;top:430px;font-size:54px">🥁</div>
+  <img class="sprite" src="img/otter_talk.png" style="left:300px;top:300px;height:320px;z-index:2">
+  <img class="sprite" src="img/mosey_cheer.png" style="left:540px;top:350px;height:260px;z-index:2">
+  <div class="note" style="left:470px;top:250px">♪</div><div class="note" style="left:520px;top:190px;font-size:40px">♫</div><div class="note" style="left:590px;top:270px;font-size:36px">♪</div>
+  <div class="ladder panel" style="left:915px;top:104px;width:245px" data-ladder="sing" data-now="4"></div>
+  <div class="lyric panel" style="left:180px;top:620px;width:720px">
+    <div class="sum"><span>4 × 3 =</span><span class="ans">12</span></div>
+    <div class="words"><span class="sung">Four</span><span class="sung">times</span><span class="sung">three</span><span class="cur hop">is</span><span>twelve!</span></div>
+  </div>
+  <div class="stomp" style="left:22px;top:650px"><div><b>🥁</b>Stomp!</div></div>
+</div></figure>
+
+<!-- 4 -->
+<figure><figcaption>4 · Round 2 of 3: "You finish it!" (a bit faster)<small>The singers stop before each answer and Otter cups an ear. The egg wobbles for a beat while the child sings the answer, then hatches to show it. Nothing is marked: it's practice.</small></figcaption>
+<div class="screen sing" style="background-image:url(img/bg_camp.jpg)">
+  <div class="shade" style="background:radial-gradient(ellipse at 22% 70%, rgba(255,170,60,.15), rgba(14,30,40,.35) 70%)"></div>
+  <div class="topbar"><div class="round">❚❚</div><div class="chip gold">Round 2 of 3 · 🥚 You finish it!</div><div class="sp"></div><div class="chip tempo">Speed <span>🐢</span><span class="on">🦕</span><span>🦖</span></div><div class="round">🔊</div></div>
+  <img class="sprite" src="img/boss_maia_happy.png" style="left:18px;top:420px;height:150px;z-index:1"><div class="inst" style="left:40px;top:410px">🪇</div>
+  <img class="sprite" src="img/boss_trevor_happy.png" style="left:700px;top:300px;height:180px;z-index:1"><div class="inst" style="left:820px;top:430px;font-size:54px">🥁</div>
+  <img class="sprite" src="img/otter_think.png" style="left:300px;top:300px;height:320px;z-index:2">
+  <img class="sprite" src="img/mosey_idle.png" style="left:560px;top:400px;height:210px;z-index:2">
+  <div class="bubble gold" style="left:330px;top:200px;width:230px;font-size:26px">Your turn! 🎤</div>
+  <div class="ladder panel" style="left:915px;top:104px;width:245px" data-ladder="finish" data-now="7"></div>
+  <div class="lyric panel" style="left:180px;top:620px;width:720px">
+    <div class="sum"><span>7 × 3 =</span><img src="img/egg.png" style="transform:rotate(-10deg)"></div>
+    <div class="panel" style="position:absolute;right:-14px;top:-40px;padding:6px 14px;font-size:19px;font-weight:900;transform:rotate(5deg);background:#fff">next beat: it hatches → <span style="color:var(--coral);font-size:26px">21</span> 🐣</div>
+    <div class="words"><span class="sung">Seven</span><span class="sung">times</span><span class="sung">three</span><span class="sung">is…</span><span class="cur">(you sing!)</span></div>
+  </div>
+  <div class="stomp" style="left:22px;top:650px"><div><b>🥁</b>Stomp!</div></div>
+</div></figure>
+
+<!-- 5 -->
+<figure><figcaption>5 · Round 3 of 3: "Rex speed!" Sing the whole line<small>Only the first number shows; the child sings the rest, and the line appears as the band plays it. The ladder fills back in as they go. Faster again, which children tend to find hilarious.</small></figcaption>
+<div class="screen sing" style="background-image:url(img/bg_camp.jpg)">
+  <div class="shade" style="background:radial-gradient(ellipse at 22% 70%, rgba(255,170,60,.18), rgba(14,30,40,.40) 70%)"></div>
+  <div class="topbar"><div class="round">❚❚</div><div class="chip coral">Round 3 of 3 · 🦖 Rex speed!</div><div class="sp"></div><div class="chip tempo">Speed <span>🐢</span><span>🦕</span><span class="on">🦖</span></div><div class="round">🔊</div></div>
+  <img class="sprite" src="img/boss_steggy_happy.png" style="left:96px;top:395px;height:110px;z-index:1;transform:rotate(-4deg)"><div class="inst" style="left:150px;top:380px;font-size:36px">🎸</div>
+  <img class="sprite" src="img/boss_maia_happy.png" style="left:10px;top:440px;height:150px;z-index:1;transform:rotate(5deg)"><div class="inst" style="left:30px;top:430px">🪇</div>
+  <img class="sprite" src="img/boss_trevor_happy.png" style="left:700px;top:290px;height:180px;z-index:1;transform:rotate(-5deg)"><div class="inst" style="left:820px;top:430px;font-size:54px">🥁</div>
+  <img class="sprite" src="img/otter_cheer.png" style="left:290px;top:280px;height:330px;z-index:2;transform:rotate(-6deg)">
+  <img class="sprite" src="img/mosey_cheer.png" style="left:560px;top:340px;height:260px;z-index:2;transform:rotate(5deg)">
+  <div class="note" style="left:250px;top:250px">♫</div><div class="note" style="left:530px;top:230px;font-size:40px">♪</div><div class="note" style="left:640px;top:300px;font-size:44px">♫</div><div class="note" style="left:860px;top:250px;font-size:36px">♪</div>
+  <div class="ladder panel" style="left:915px;top:104px;width:245px" data-ladder="whole" data-now="9"></div>
+  <div class="lyric panel" style="left:180px;top:620px;width:720px">
+    <div class="sum"><span>9 ×</span><img src="img/egg.png" style="height:82px;transform:rotate(8deg)"><span>=</span><img src="img/egg.png" style="transform:rotate(-8deg)"></div>
+    <div class="words"><span class="sung">Nine</span><span class="cur">…sing the whole line!</span></div>
+  </div>
+  <div class="stomp" style="left:22px;top:650px;background:var(--gold);color:var(--ink)"><div><b>🥁</b>Stomp!</div></div>
+</div></figure>
+
+<!-- 6 -->
+<figure><figcaption>6 · Quiz option 1 (recommended): "Fill the ladder", in order, typed<small>The same 12 lines in order, typed on the game's number pad. The band keeps a soft beat and waits for the child: no timer. Right answers make the 3s fossil glow; facts that become secure keep their bones in the museum. A wrong answer brings back the sung line as the hint.</small></figcaption>
+<div class="screen" style="background-image:url(img/bg_camp.jpg)">
+  <div class="shade" style="background:rgba(14,40,50,.35);backdrop-filter:blur(3px)"></div>
+  <div class="hud"><div class="round">❚❚</div><div class="prog">3/12<div class="bar"><i style="width:25%"></i></div></div><div class="caption panel">4 × 3 = ?</div><div class="round">🔊</div><div class="round gold">💡</div></div>
+  <div class="ladder panel" style="left:24px;top:108px;width:286px" data-ladder="quiz" data-now="4"></div>
+  <img class="sprite" src="img/otter_cheer.png" style="left:360px;top:300px;height:290px;z-index:2">
+  <div class="bubble" style="left:340px;top:170px;width:300px">That's the song! Three right in a row!</div>
+  <img class="sprite" src="img/mosey_idle.png" style="left:580px;top:400px;height:190px;z-index:2">
+  <div class="panel" style="position:absolute;left:860px;top:108px;width:300px;padding:12px 14px;text-align:center;z-index:4">
+    <div style="font-size:22px;font-weight:900">The 3s fossil</div>
+    <img src="img/fossil_3.png" style="width:250px;margin:6px 0;filter:drop-shadow(0 0 14px rgba(255,214,90,.8))">
+    <div style="display:flex;justify-content:center;gap:2px" id="bones"></div>
+    <div style="font-size:16px;font-weight:700;opacity:.75;margin-top:6px">Right answers make its bones glow</div>
+  </div>
+  <img src="img/bone.png" style="position:absolute;left:830px;top:300px;height:56px;transform:rotate(-25deg);z-index:6;filter:drop-shadow(0 0 12px #ffd85c)">
+  <div class="note" style="left:800px;top:350px;font-size:30px;-webkit-text-stroke:0">✨</div>
+  <div class="chip small" style="position:absolute;left:380px;top:628px;z-index:5">🎵 The band plays softly and waits for you</div>
+  <div class="pad"><div class="key">1</div><div class="key pressed">2</div><div class="key">3</div><div class="key">4</div><div class="key">5</div><div class="key">6</div><div class="key">7</div><div class="key">8</div><div class="key">9</div><div class="key">0</div><div class="key">⌫</div><div class="key wide">Go ✓</div></div>
+</div></figure>
+
+<!-- 7 -->
+<figure><figcaption>7 · Quiz option 2: "Beat Catch", in order, pick on the beat<small>The Swoop Squad drop three eggs in time with the music and the child taps the right one. Faster and more musical, but picking is recognition, which builds memory less than typing. Could be the first quiz, with "Fill the ladder" unlocking after.</small></figcaption>
+<div class="screen" style="background-image:url(img/bg_camp.jpg)">
+  <div class="shade" style="background:rgba(14,40,50,.28)"></div>
+  <div class="hud"><div class="round">❚❚</div><div class="prog">6/12<div class="bar"><i style="width:50%"></i></div></div><div class="caption panel">7 × 3 = ?</div><div class="round">🔊</div><div class="round gold">💡</div></div>
+  <img class="sprite" src="img/boss_swoop_happy.png" style="left:450px;top:96px;height:170px;z-index:2">
+  <svg style="position:absolute;left:0;top:0;z-index:2" width="1180" height="820"><g fill="none" stroke="#FFF6E0" stroke-width="5" stroke-dasharray="3 14" stroke-linecap="round" opacity=".85"><path d="M 560 250 Q 420 280 340 380"/><path d="M 580 260 L 590 370"/><path d="M 610 250 Q 760 280 840 380"/></g></svg>
+  <div id="eggs"></div>
+  <img class="sprite" src="img/otter_idle.png" style="left:40px;top:420px;height:270px;z-index:2">
+  <div class="bubble" style="left:30px;top:300px;width:250px">Catch it on the beat!</div>
+  <img class="sprite" src="img/mosey_cheer.png" style="left:930px;top:470px;height:200px;z-index:2">
+  <div class="beats panel" style="left:470px;top:688px;padding:6px 22px;border-radius:999px"><span>🐾</span><span>🐾</span><span class="on">🐾</span><span>🐾</span></div>
+  <div class="chip small" style="position:absolute;left:400px;top:768px;z-index:5">Taps on the beat get a sparkle; any time still counts</div>
+</div></figure>
+
+<!-- 8 -->
+<figure><figcaption>8 · The reward: "You learned the 3s song!"<small>Stars from quiz accuracy (the game's usual 85% / 55% rule). A record for the song shelf (gold when the table is secure), new fossil bones, and a trophy. Befriended dinosaurs join the band as zones are cleared. Then: sing again, try the shuffled challenge, or go back to camp.</small></figcaption>
+<div class="screen" style="background-image:url(img/bg_camp.jpg)">
+  <div class="shade" style="background:rgba(30,20,10,.55)"></div>
+  <div class="rays"></div>
+  <div id="confetti"></div>
+  <div class="banner" style="left:300px;top:40px">You learned the 3s song!</div>
+  <div class="stars" style="left:470px;top:128px"><img src="img/icon_2b50.png"><img src="img/icon_2b50.png" style="transform:translateY(-14px) scale(1.15)"><img src="img/icon_2b50.png"></div>
+  <div class="bigdisc" style="left:425px;top:225px"><div class="lab">× 3</div></div>
+  <img class="sprite" src="img/fossil_3.png" style="left:40px;top:250px;width:330px;transform:rotate(-6deg);filter:sepia(1) saturate(4) hue-rotate(-12deg) brightness(1.15) drop-shadow(0 0 18px rgba(255,214,90,.9))">
+  <div class="note" style="left:70px;top:210px">♪</div><div class="note" style="left:300px;top:200px;font-size:40px">♫</div>
+  <div class="chip small" style="position:absolute;left:82px;top:470px;z-index:5">🦴 The 3s fossil does a dance</div>
+  <img class="sprite" src="img/otter_cheer.png" style="left:800px;top:220px;height:300px;z-index:3">
+  <img class="sprite" src="img/mosey_cheer.png" style="left:900px;top:380px;height:230px;z-index:3">
+  <div style="position:absolute;left:0;right:0;top:590px;display:flex;justify-content:center;gap:14px;z-index:5">
+    <div class="chip">🎤 12 lines sung, 3 times</div><div class="chip">🦴 4 bones secured</div><div class="chip gold">🏆 Sing-Along Star</div>
+  </div>
+  <div style="position:absolute;left:0;right:0;top:690px;display:flex;justify-content:center;gap:20px;z-index:5">
+    <div class="btn">🔁 Sing again</div><div class="btn teal">🎲 Shuffle challenge</div><div class="btn cream">🏕 Back to camp</div>
+  </div>
+</div></figure>
+
+<script>
+const words = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve'];
+const egg = '<img class="e" src="img/egg.png">';
+document.querySelectorAll('[data-ladder]').forEach(el => {
+  const mode = el.dataset.ladder, now = +el.dataset.now, t = 3, max = 12;
+  let html = `<h3>The 3s ${mode === 'quiz' ? 'ladder' : 'song'}</h3>`;
+  for (let n = 1; n <= max; n++) {
+    const state = n < now ? 'done' : n === now ? 'now' : 'next';
+    let mul = `${n} × ${t}`, ans = `${n * t}`;
+    if (mode === 'finish' && n >= now) ans = egg;
+    if (mode === 'whole' && n >= now) { mul = `${n} × ${egg}`; ans = egg; }
+    if (mode === 'quiz') {
+      if (n < now) ans = `${n * t}<span class="tick">✓</span>`;
+      if (n === now) ans = `<span class="box">1<i></i></span>`;
+      if (n > now) ans = '?';
+    }
+    html += `<div class="row ${state}"><span class="mul">${mul}</span><span class="eq">=</span><span class="ans">${ans}</span></div>`;
+  }
+  el.innerHTML = html;
+});
+
+const songs = [
+  { t: 2, c: '#3DB8FF', disc: 'gold', st: '★★★', meta: 'Gold record · sung 6 times' },
+  { t: 3, c: '#F2A13C', disc: '', st: '', meta: 'Not sung yet', next: true },
+  { t: 4, c: '#3FA796', disc: '', st: '', meta: 'Not sung yet', fresh: true },
+  { t: 5, c: '#FF7EB6', disc: 'gold', st: '★★★', meta: 'Gold record · sung 4 times' },
+  { t: 8, c: '#8FA8FF', disc: '', st: '', meta: 'Not sung yet', fresh: true },
+  { t: 10, c: '#1E9E52', disc: 'silver', st: '★★☆', meta: 'Sung twice' },
+];
+document.getElementById('shelf').innerHTML = songs.map(s => `
+  <div class="card panel ${s.next ? 'next' : ''}">
+    ${s.next ? '<div class="ribbon">Next up!</div>' : s.fresh ? '<div class="ribbon" style="background:var(--teal)">New</div>' : ''}
+    <div class="disc ${s.disc}"><div class="lab" style="background:${s.c}">×${s.t}</div></div>
+    <h4>The ${s.t}s Song</h4>
+    <div class="st">${s.st || '<span style="font-size:20px;font-weight:900;color:var(--coral);-webkit-text-stroke:0;letter-spacing:0">▶ Sing it!</span>'}</div>
+    <div class="meta">${s.meta}</div>
+  </div>`).join('');
+
+document.getElementById('bones').innerHTML = Array.from({ length: 12 }, (_, i) =>
+  `<img src="img/bone.png" style="height:20px;opacity:${i < 4 ? 1 : .2}">`).join('');
+
+document.getElementById('eggs').innerHTML = [[260, 18, -8, 0], [530, 21, 4, -26], [800, 24, 10, 0]].map(([x, v, r, dy]) => `
+  <div style="position:absolute;left:${x}px;top:${380 + dy}px;width:150px;height:230px;z-index:3;text-align:center">
+    <div style="position:absolute;left:-14px;top:-12px;width:178px;height:230px;border-radius:50%;border:4px dashed rgba(255,246,224,.75)"></div>
+    <img src="img/egg.png" style="height:200px;transform:rotate(${r}deg);filter:drop-shadow(0 6px 0 rgba(0,0,0,.25))">
+    <div class="panel" style="position:absolute;left:28px;top:70px;width:94px;height:64px;border-radius:32px;display:grid;place-items:center;font-size:40px;font-weight:900">${v}</div>
+  </div>`).join('') + `<div style="position:absolute;left:300px;top:${612}px;width:640px;height:22px;border-radius:50%;background:rgba(0,0,0,.25);z-index:2"></div>`;
+
+const colours = ['#FFC83D', '#FF6B5E', '#17B8A6', '#3DB8FF', '#FF7EB6', '#1E9E52'];
+let conf = '';
+for (let i = 0; i < 46; i++) {
+  const x = (i * 263) % 1180, y = (i * 137) % 560, r = (i * 47) % 180;
+  conf += `<div class="confetti" style="left:${x}px;top:${y}px;background:${colours[i % 6]};transform:rotate(${r}deg);border:2px solid #0E3B43"></div>`;
+}
+document.getElementById('confetti').innerHTML = conf;
+
+const s = new URLSearchParams(location.search).get('s');
+if (s) {
+  document.body.classList.add('single');
+  document.querySelectorAll('figure').forEach((f, i) => { if (i + 1 !== +s) f.style.display = 'none'; });
+}
+</script>
+</body>
+</html>

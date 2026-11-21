@@ -153,5 +153,20 @@
     "seconds": 0.8,
     "gain": -10,
     "text": "Two soft careful cartoon tiptoe footsteps on leaves, light and sneaky, very quiet"
+  },
+  "roar_steggy": {
+    "seconds": 1.8,
+    "gain": -7,
+    "text": "A dramatic cartoon stegosaurus giving a theatrical, offended trumpeting bellow with a whirring propeller spinning, comical and cartoonish for a children's game, not scary"
+  },
+  "roar_swoop": {
+    "seconds": 1.6,
+    "gain": -7,
+    "text": "Three cheeky cartoon pterosaurs squawking excitedly together with a whoosh of flapping wings as they swoop past, comical for a children's game, not scary"
+  },
+  "roar_raptors": {
+    "seconds": 1.6,
+    "gain": -7,
+    "text": "A pack of small fluffy cartoon raptors giving quick excited clucking chirps and cheeky giggly squawks, like angry chickens, comical for a children's game, not scary"
   }
 }

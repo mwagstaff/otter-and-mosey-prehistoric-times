@@ -13,18 +13,14 @@ final class BridgeBuilderScene: GameScene {
     private let slot = SKSpriteNode()
     private let water = SKSpriteNode(texture: BridgeBuilderScene.streamTexture)
 
-    /// A soft stream: pale at the surface, deeper blue below, with a few ripples.
+    /// A soft stream: pale at the surface, deeper blue below. (Painted ripples stretched into long
+    /// white stripes across the whole gap, so there are none.)
     private static let streamTexture: SKTexture = {
         let size = CGSize(width: 96, height: 160)
         let image = UIGraphicsImageRenderer(size: size).image { context in
             let colours = [UIColor(hex: "#A6E8F5").cgColor, UIColor(hex: "#4FB6D8").cgColor, UIColor(hex: "#256F9E").cgColor] as CFArray
             if let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: colours, locations: [0, 0.35, 1]) {
                 context.cgContext.drawLinearGradient(gradient, start: .zero, end: CGPoint(x: 0, y: size.height), options: [])
-            }
-            UIColor.white.withAlphaComponent(0.4).setFill()
-            for (index, y) in stride(from: 12.0, to: 150.0, by: 22.0).enumerated() {
-                let x = index.isMultiple(of: 2) ? 10.0 : 48.0
-                context.cgContext.fill(CGRect(x: x, y: y, width: 34, height: 2.5))
             }
         }
         return SKTexture(image: image)

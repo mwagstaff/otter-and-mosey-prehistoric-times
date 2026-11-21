@@ -14,6 +14,8 @@ final class GuardianScene: GameScene {
     private var charge = 0.0
     private var powerButton: SKSpriteNode?
     private var crystal: SKSpriteNode?
+    /// The part can be tapped only once the friendly talk is over.
+    private var partOffered = false
     private var acceptingAnswers = false
     private let guardianBadge = SpeechBadge(role: .guardian, width: 80)
 
@@ -73,6 +75,10 @@ final class GuardianScene: GameScene {
     }
 
     override func start() {
+        #if DEBUG
+        // Jump straight to the boss making friends, to check the part popping off.
+        if ProcessInfo.processInfo.arguments.contains("-debugBefriend") { return befriend() }
+        #endif
         roar()
         bridge.say([options.island.guardian.phases[0]], speaker: options.island.guardian.name) { [weak self] in self?.askNext() }
     }
@@ -163,7 +169,7 @@ final class GuardianScene: GameScene {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let point = touches.first?.location(in: self) else { return }
-        if let crystal, crystal.position.distance(to: point) < max(crystal.size.height, 90) {
+        if partOffered, let crystal, crystal.position.distance(to: point) < max(crystal.size.height, 90) {
             collectCrystal()
             return
         }
@@ -310,31 +316,50 @@ final class GuardianScene: GameScene {
 
     // MARK: - Ending
 
+    /// Where the part sits in each boss's chase picture (fractions from the left and from the
+    /// bottom), and after which friendly line it comes off. Mama Maia's Cog is hidden in her
+    /// nest, so it simply appears beside her.
+    private static let partSpots: [String: (x: CGFloat, y: CGFloat, after: Int)] = [
+        "trevor": (0.28, 0.59, 1), "steggy": (0.89, 0.88, 1), "swoop": (0.08, 0.09, 2),
+        "raptors": (0.35, 0.86, 2), "rex": (0.45, 0.81, 2),
+    ]
+
     private func befriend() {
         bridge.friendship = nil
+        let info = options.island.guardian
+        let after = min(Self.partSpots[info.kind]?.after ?? 2, info.befriended.count)
+        guardian.removeAllActions()
+        guardian.run(.group([.rotate(toAngle: 0, duration: 0.1), .scale(to: 1, duration: 0.1)]))
+        // The friendly talk starts while the part is still stuck on; it pops off on the right line.
+        bridge.say(Array(info.befriended.prefix(after)), speaker: info.name) { [weak self] in
+            guard let self else { return }
+            self.popPart()
+            self.run(.wait(forDuration: Effects.reducedMotion ? 0.3 : 1.1)) { [weak self] in
+                guard let self else { return }
+                self.bridge.say(Array(info.befriended.dropFirst(after)), speaker: info.name) { [weak self] in self?.offerPart() }
+            }
+        }
+    }
+
+    /// The part springs off the boss, who cheers up at once, and floats in the middle.
+    private func popPart() {
+        let spot = Self.partSpots[options.island.guardian.kind]
+        let start = CGPoint(x: guardian.position.x + guardian.size.width * ((spot?.x ?? 0.3) - 0.5),
+                            y: guardian.position.y + guardian.size.height * (spot?.y ?? 0.6))
         guardian.texture = theme.boss(theme.guardianHappy, facingLeft: true)
         layout()
         guardian.run(.pop())
-        Effects.rainbowBurst(at: CGPoint(x: guardian.position.x, y: guardian.position.y + guardian.size.height * 0.5), in: self, count: 60)
+        Effects.rainbowBurst(at: start, in: self, count: 60)
         AudioManager.shared.play(.unlock)
-        let info = options.island.guardian
-        bridge.say(info.befriended, speaker: info.name) { [weak self] in self?.revealCrystal() }
-    }
 
-    private func revealCrystal() {
         // The Times Machine part this boss had: the Cog, the Spring …
         let texture = Art.texture("part_\(options.island.part)")
         let height = min(play.height * 0.36, 280)
         let shard = SKSpriteNode(texture: texture, size: CGSize(width: height * texture.size().width / texture.size().height, height: height))
-        shard.position = CGPoint(x: guardian.position.x - guardian.size.width * 0.2, y: guardian.position.y + guardian.size.height * 0.6)
+        shard.position = start
         shard.zPosition = 48
-        shard.setScale(0.2)
+        shard.setScale(spot == nil ? 0.2 : 0.3)
         addChild(shard)
-        let home = CGPoint(x: play.midX, y: play.midY)
-        shard.run(.group([SKAction.move(to: home, duration: 0.8).eased(), .scale(to: 1, duration: 0.8)]))
-        if !Effects.reducedMotion {
-            shard.run(.repeatForever(SKAction.sequence([.moveBy(x: 0, y: 10, duration: 0.8), .moveBy(x: 0, y: -10, duration: 0.8)]).eased()))
-        }
         let glow = SKSpriteNode(texture: Art.glow, size: CGSize(width: height * 1.7, height: height * 1.7))
         glow.alpha = 0.6
         glow.color = UIColor(hex: options.island.colour)
@@ -343,6 +368,34 @@ final class GuardianScene: GameScene {
         glow.zPosition = -1
         shard.addChild(glow)
         crystal = shard
+
+        // High enough to stay clear of the dialogue box while the friendly talk finishes.
+        let home = CGPoint(x: play.midX, y: play.minY + play.height * 0.63)
+        let float = SKAction.repeatForever(SKAction.sequence([.moveBy(x: 0, y: 10, duration: 0.8), .moveBy(x: 0, y: -10, duration: 0.8)]).eased())
+        if Effects.reducedMotion {
+            shard.run(.group([.move(to: home, duration: 0.5), .scale(to: 1, duration: 0.5)]))
+            return
+        }
+        // Boing! Up in a high arc, spinning, then a little bounce as it settles.
+        let peak = CGPoint(x: (start.x + home.x) / 2, y: max(start.y, home.y) + play.height * 0.28)
+        let arc = UIBezierPath()
+        arc.move(to: start)
+        arc.addQuadCurve(to: home, controlPoint: peak)
+        shard.run(.sequence([
+            .group([.scaleY(to: 0.18, duration: 0.08), .scaleX(to: 0.4, duration: 0.08)]),
+            .group([
+                .follow(arc.cgPath, asOffset: false, orientToPath: false, duration: 0.9),
+                .scale(to: 1, duration: 0.9),
+                .rotate(byAngle: -.pi * 4, duration: 0.9),
+            ]).eased(),
+            .scaleX(to: 1.15, y: 0.85, duration: 0.08), .scaleX(to: 0.95, y: 1.06, duration: 0.1), .scale(to: 1, duration: 0.1),
+            float,
+        ]))
+    }
+
+    private func offerPart() {
+        if crystal == nil { popPart() }
+        partOffered = true
         bridge.caption = "Tap the \(options.island.partName)!"
         AudioManager.shared.play(.portal)
     }

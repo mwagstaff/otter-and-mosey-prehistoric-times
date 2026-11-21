@@ -151,6 +151,7 @@ class GameScene: SKScene {
 
     func askNext() {
         guard !finished, let question = session.next() else { return }
+        backdrop.setAnswering(true)
         current = question
         firstTry = true
         usedHint = false
@@ -205,6 +206,7 @@ class GameScene: SKScene {
     @discardableResult
     func succeed(at point: CGPoint) -> AnswerOutcome? {
         guard let question = current else { return nil }
+        backdrop.setAnswering(false)
         current = nil
         let outcome = session.complete(question, firstTry: firstTry, seconds: Date().timeIntervalSince(questionStart), usedHint: usedHint)
         AudioManager.shared.play(outcome.combo >= 3 ? .combo : .correct)

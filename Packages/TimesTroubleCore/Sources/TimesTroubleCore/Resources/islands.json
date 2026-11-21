@@ -138,40 +138,66 @@
    "roar": 2,
    "part": "spring",
    "partName": "Spring",
-   "ready": false,
+   "ready": true,
    "guardian": {
     "name": "Trevor",
     "kind": "trevor",
     "phases": [
-     "g:Coming soon!",
-     "g:Coming soon!",
-     "g:Coming soon!"
+     "g:Hmph! Off my meadow! I'm far too busy being cross!",
+     "g:Boing! Boing! Every time I nod, this thing goes boing!",
+     "g:Three horns, and not one of them can reach it. Hmph!"
     ],
     "befriended": [
-     "g:Coming soon!"
+     "o:Hold still, Trevor. One, two, three… pop! The Spring's off!",
+     "g:My horn! It's stopped boinging! Oh, that's much better.",
+     "g:Take your bouncy thing. And, er… thank you. Hmph."
     ]
    },
    "levels": [
     {
      "id": "meadow-1",
-     "title": "Coming soon 1",
+     "title": "Long Grass Gallop",
      "mode": "dinoDash",
      "skills": [
       "multiplication"
      ],
-     "count": 6,
+     "count": 8,
      "intro": [
-      "o:Coming soon!"
+      "g:Hmph! Who's rustling about in my meadow?",
+      "m:This grass is taller than me, and I'm quite tall.",
+      "o:It's Trevor! Run, Mosey, run!"
      ],
      "outro": [
-      "m:Coming soon!"
+      "o:Phew! He's stopped to eat a fern.",
+      "m:And to grumble at it."
      ],
      "reward": "pet-chomp",
-     "blurb": "Coming in the next update"
+     "blurb": "Gallop through the long grass"
     },
     {
      "id": "meadow-2",
-     "title": "Coming soon 2",
+     "title": "Counting Stones",
+     "mode": "bridgeBuilder",
+     "skills": [
+      "multiplication",
+      "sequences"
+     ],
+     "count": 6,
+     "intro": [
+      "o:A river! And the stepping stones count up in threes.",
+      "m:Three, six, nine… every stone is in the three times table.",
+      "o:Then hop, hop, hop!"
+     ],
+     "outro": [
+      "m:Three by three, all the way across."
+     ],
+     "reward": "hat-leaf",
+     "blurb": "Hop across in threes",
+     "table": 3
+    },
+    {
+     "id": "meadow-3",
+     "title": "Meadow Nests",
      "mode": "eggRescue",
      "skills": [
       "multiplication",
@@ -180,53 +206,41 @@
      ],
      "count": 6,
      "intro": [
-      "o:Coming soon!"
+      "m:Shh. More eggs, hidden in the long grass.",
+      "o:Triceratops eggs! Answer the sums to help them hatch.",
+      "m:Look, Otter. Their horns are tiny."
      ],
      "outro": [
-      "m:Coming soon!"
+      "o:Three little horns each!",
+      "m:Then let's count them in threes."
      ],
-     "reward": "hat-leaf",
-     "blurb": "Coming in the next update"
+     "reward": "deco-flowers",
+     "blurb": "Hatch the baby triceratops"
     },
     {
-     "id": "meadow-3",
-     "title": "Coming soon 3",
+     "id": "meadow-4",
+     "title": "Snoring Trevor",
      "mode": "tiptoe",
      "skills": [
       "multiplication",
       "missingNumber"
      ],
-     "count": 6,
+     "count": 8,
      "intro": [
-      "o:Coming soon!"
+      "o:Trevor's having a nap. Listen to him snore!",
+      "m:And there's our Spring, still stuck on his horn.",
+      "o:Tiptoe closer. Right answers only!"
      ],
      "outro": [
-      "m:Coming soon!"
-     ],
-     "reward": "deco-flowers",
-     "blurb": "Coming in the next update"
-    },
-    {
-     "id": "meadow-4",
-     "title": "Coming soon 4",
-     "mode": "bridgeBuilder",
-     "skills": [
-      "multiplication",
-      "sequences"
-     ],
-     "count": 6,
-     "intro": [
-      "o:Coming soon!"
-     ],
-     "outro": [
-      "m:Coming soon!"
+      "o:I can't reach it without waking him.",
+      "m:Then we'll have to try when he's awake. Gulp."
      ],
      "reward": "pet-butterfly",
-     "blurb": "Coming in the next update"
+     "blurb": "Sneak past a snoring triceratops"
     },
     {
      "id": "meadow-5",
-     "title": "Coming soon 5",
+     "title": "Trevor",
      "mode": "guardian",
      "skills": [
       "multiplication",
@@ -235,13 +249,16 @@
      ],
      "count": 9,
      "intro": [
-      "o:Coming soon!"
+      "g:Hmph! You again! Leave me alone with my bad mood!",
+      "o:We can help you, Trevor! Hold still!",
+      "m:He's lowering his horns. Answer fast!"
      ],
      "outro": [
-      "m:Coming soon!"
+      "o:Two parts back. Four to go!",
+      "m:And Trevor even gave us a smile."
      ],
      "reward": null,
-     "blurb": "Coming in the next update"
+     "blurb": "Escape Trevor and win back the Spring"
     }
    ]
   },
@@ -254,41 +271,46 @@
    "roar": 3,
    "part": "propeller",
    "partName": "Propeller",
-   "ready": false,
+   "ready": true,
    "guardian": {
     "name": "Steggy",
     "kind": "steggy",
     "phases": [
-     "g:Coming soon!",
-     "g:Coming soon!",
-     "g:Coming soon!"
+     "g:Darlings, keep back! My tail has a mind of its own today!",
+     "g:Whirr! Whirr! It keeps spinning me round in circles!",
+     "g:Four spikes and one silly spinner. Somebody stop it!"
     ],
     "befriended": [
-     "g:Coming soon!"
+     "m:Hold your tail still, Steggy. Otter, now!",
+     "g:Oh! It's stopped! I can walk in a straight line again!",
+     "g:Take your spinny thing, darlings. And do visit again!"
     ]
    },
    "levels": [
     {
      "id": "swamp-1",
-     "title": "Coming soon 1",
+     "title": "Swamp Swim",
      "mode": "mathsSplash",
      "skills": [
       "multiplication",
       "missingNumber"
      ],
-     "count": 6,
+     "count": 8,
      "intro": [
-      "o:Coming soon!"
+      "m:Water! At last, something I'm good at.",
+      "o:Swim through the gaps with the right answers!",
+      "m:Hold on tight. Mosasaurs are very fast swimmers."
      ],
      "outro": [
-      "m:Coming soon!"
+      "o:That was brilliant, Mosey!",
+      "m:I'm a mosasaur. It's what we do."
      ],
-     "reward": "pet-turtle",
-     "blurb": "Coming in the next update"
+     "reward": "pet-spike",
+     "blurb": "Swim through the swamp"
     },
     {
      "id": "swamp-2",
-     "title": "Coming soon 2",
+     "title": "Lily Pad Hop",
      "mode": "bridgeBuilder",
      "skills": [
       "multiplication",
@@ -296,17 +318,20 @@
      ],
      "count": 6,
      "intro": [
-      "o:Coming soon!"
+      "o:Lily pads! Counting up in fours.",
+      "m:Four, eight, twelve… double the twos, then double again.",
+      "o:Hop on the right ones. The wrong ones sink!"
      ],
      "outro": [
-      "m:Coming soon!"
+      "o:Four by four, and dry paws!"
      ],
      "reward": "hat-pirate",
-     "blurb": "Coming in the next update"
+     "blurb": "Hop across in fours",
+     "table": 4
     },
     {
      "id": "swamp-3",
-     "title": "Coming soon 3",
+     "title": "Muddy Eggs",
      "mode": "eggRescue",
      "skills": [
       "multiplication",
@@ -315,35 +340,41 @@
      ],
      "count": 6,
      "intro": [
-      "o:Coming soon!"
+      "m:Eggs, tucked in the warm mud.",
+      "o:Let's help them hatch!",
+      "m:Gently, Otter. No splashing."
      ],
      "outro": [
-      "m:Coming soon!"
+      "o:Look at their little back plates!",
+      "m:Tiny stegosauruses. Very spiky, very sweet."
      ],
      "reward": "deco-mushroom",
-     "blurb": "Coming in the next update"
+     "blurb": "Hatch the baby stegosauruses"
     },
     {
      "id": "swamp-4",
-     "title": "Coming soon 4",
-     "mode": "mathsSplash",
+     "title": "Sleepy Steggy",
+     "mode": "tiptoe",
      "skills": [
       "multiplication",
       "missingNumber"
      ],
-     "count": 6,
+     "count": 8,
      "intro": [
-      "o:Coming soon!"
+      "o:Steggy's asleep in the reeds.",
+      "m:And the Propeller's spinning on her tail. Whirr, whirr.",
+      "o:Tiptoe closer. Don't wake her!"
      ],
      "outro": [
-      "m:Coming soon!"
+      "m:Every time it spins, her tail twitches.",
+      "o:We need a plan. And a snack."
      ],
      "reward": "pet-crab",
-     "blurb": "Coming in the next update"
+     "blurb": "Sneak past a sleeping stegosaurus"
     },
     {
      "id": "swamp-5",
-     "title": "Coming soon 5",
+     "title": "Steggy",
      "mode": "guardian",
      "skills": [
       "multiplication",
@@ -352,13 +383,16 @@
      ],
      "count": 9,
      "intro": [
-      "o:Coming soon!"
+      "g:Who's there? Careful, darlings, my tail is out of control!",
+      "o:We can stop it spinning, Steggy!",
+      "m:Duck, Otter! Here comes that tail!"
      ],
      "outro": [
-      "m:Coming soon!"
+      "o:Three parts back. Halfway home!",
+      "m:And Steggy's walking in straight lines again."
      ],
      "reward": null,
-     "blurb": "Coming in the next update"
+     "blurb": "Escape Steggy and win back the Propeller"
     }
    ]
   },
@@ -371,60 +405,46 @@
    "roar": 4,
    "part": "bell",
    "partName": "Bell",
-   "ready": false,
+   "ready": true,
    "guardian": {
     "name": "The Swoop Squad",
     "kind": "swoop",
     "phases": [
-     "g:Coming soon!",
-     "g:Coming soon!",
-     "g:Coming soon!"
+     "g:Ooh, shiny! Mine! No, mine! It's the Squad's!",
+     "g:Ding-a-ling! Ding-a-ling! Best bell ever!",
+     "g:Wait. It rings every hour and wakes us all up!"
     ],
     "befriended": [
-     "g:Coming soon!"
+     "o:It's the Bell from our time machine. It rings every hour!",
+     "g:No wonder we've had no sleep! You have it, please!",
+     "g:And just so you know, we're pterosaurs, not dinosaurs!"
     ]
    },
    "levels": [
     {
      "id": "peaks-1",
-     "title": "Coming soon 1",
+     "title": "Cliff-Top Dash",
      "mode": "dinoDash",
      "skills": [
       "multiplication",
       "missingNumber"
      ],
-     "count": 6,
+     "count": 8,
      "intro": [
-      "o:Coming soon!"
+      "m:Something just swooped over my head.",
+      "g:Swoop! Swoop! Look at the funny furry one!",
+      "o:Pterodactyls! Run!"
      ],
      "outro": [
-      "m:Coming soon!"
+      "g:We're pterosaurs, actually!",
+      "m:I know exactly how they feel."
      ],
-     "reward": "pet-owl",
-     "blurb": "Coming in the next update"
+     "reward": "pet-flap",
+     "blurb": "Dash along the cliff tops"
     },
     {
      "id": "peaks-2",
-     "title": "Coming soon 2",
-     "mode": "tiptoe",
-     "skills": [
-      "multiplication",
-      "missingNumber",
-      "wordProblems"
-     ],
-     "count": 6,
-     "intro": [
-      "o:Coming soon!"
-     ],
-     "outro": [
-      "m:Coming soon!"
-     ],
-     "reward": "hat-shades",
-     "blurb": "Coming in the next update"
-    },
-    {
-     "id": "peaks-3",
-     "title": "Coming soon 3",
+     "title": "Ledge Leap",
      "mode": "bridgeBuilder",
      "skills": [
       "multiplication",
@@ -432,17 +452,21 @@
      ],
      "count": 6,
      "intro": [
-      "o:Coming soon!"
+      "o:Rocky ledges, counting up in eights.",
+      "m:Eight, sixteen, twenty-four. Double, double, double!",
+      "o:Don't look down!"
      ],
      "outro": [
-      "m:Coming soon!"
+      "m:I looked down.",
+      "o:Me too. Let's never do that again."
      ],
-     "reward": "deco-kite",
-     "blurb": "Coming in the next update"
+     "reward": "hat-shades",
+     "blurb": "Leap across in eights",
+     "table": 8
     },
     {
-     "id": "peaks-4",
-     "title": "Coming soon 4",
+     "id": "peaks-3",
+     "title": "Cliff Nests",
      "mode": "eggRescue",
      "skills": [
       "multiplication",
@@ -451,17 +475,42 @@
      ],
      "count": 6,
      "intro": [
-      "o:Coming soon!"
+      "m:A nest full of eggs, right on the edge.",
+      "o:Little pterosaurs! Let's help them hatch.",
+      "m:They'll be flying in no time."
      ],
      "outro": [
-      "m:Coming soon!"
+      "o:Look, they're flapping already!",
+      "m:And telling everyone they're not dinosaurs."
+     ],
+     "reward": "deco-kite",
+     "blurb": "Hatch the baby pterosaurs"
+    },
+    {
+     "id": "peaks-4",
+     "title": "Nest Peek",
+     "mode": "tiptoe",
+     "skills": [
+      "multiplication",
+      "missingNumber",
+      "wordProblems"
+     ],
+     "count": 8,
+     "intro": [
+      "o:The Swoop Squad is asleep in their nest.",
+      "m:And the Bell is right in the middle.",
+      "o:Tiptoe up. If it rings, they'll wake!"
+     ],
+     "outro": [
+      "n:Ding-a-ling! The Bell rang on the hour.",
+      "o:Uh-oh. They're awake!"
      ],
      "reward": "pet-firefly",
-     "blurb": "Coming in the next update"
+     "blurb": "Creep up to the Squad's nest"
     },
     {
      "id": "peaks-5",
-     "title": "Coming soon 5",
+     "title": "The Swoop Squad",
      "mode": "guardian",
      "skills": [
       "multiplication",
@@ -470,60 +519,68 @@
      ],
      "count": 9,
      "intro": [
-      "o:Coming soon!"
+      "g:Hands off our shiny! Squad, swoop!",
+      "o:It's not yours! It's our time machine's Bell!",
+      "m:Here they come. Answer fast!"
      ],
      "outro": [
-      "m:Coming soon!"
+      "o:Four parts back. Only two to go!",
+      "m:And a lot of very sleepy pterosaurs."
      ],
      "reward": null,
-     "blurb": "Coming in the next update"
+     "blurb": "Escape the Swoop Squad and win back the Bell"
     }
    ]
   },
   {
    "id": "ridge",
    "name": "Raptor Ridge",
-   "tagline": "Hot rocks and a clever pack",
+   "tagline": "Warm rocks and a clever pack",
    "focus": "",
    "colour": "#E8643C",
    "roar": 5,
    "part": "dial",
    "partName": "Dial",
-   "ready": false,
+   "ready": true,
    "guardian": {
     "name": "The Snatch Pack",
     "kind": "raptors",
     "phases": [
-     "g:Coming soon!",
-     "g:Coming soon!",
-     "g:Coming soon!"
+     "g:Keep-away! Keep-away! You can't catch us!",
+     "g:Throw it to me! No, me! Over here!",
+     "g:Hey, why does it go up to twelve? We can only count to three!"
     ],
     "befriended": [
-     "g:Coming soon!"
+     "o:It's our Dial. It counts all the way to twelve. Want to learn?",
+     "g:Yes! Teach us! Sharing is more fun than keep-away!",
+     "g:Here's your Dial. Can we count to twelve together?"
     ]
    },
    "levels": [
     {
      "id": "ridge-1",
-     "title": "Coming soon 1",
+     "title": "Ridge Run",
      "mode": "dinoDash",
      "skills": [
       "division",
       "multiplication"
      ],
-     "count": 6,
+     "count": 8,
      "intro": [
-      "o:Coming soon!"
+      "m:Why is that bush clucking?",
+      "g:Snatch Pack, go! Go! Go!",
+      "o:Raptors! They're like angry chickens! Run!"
      ],
      "outro": [
-      "m:Coming soon!"
+      "o:They're fast. But we're faster.",
+      "m:Only because you know your sharing facts."
      ],
-     "reward": "pet-cinder",
-     "blurb": "Coming in the next update"
+     "reward": "pet-scoot",
+     "blurb": "Run along the ridge"
     },
     {
      "id": "ridge-2",
-     "title": "Coming soon 2",
+     "title": "Warm Rock Eggs",
      "mode": "eggRescue",
      "skills": [
       "division",
@@ -531,17 +588,20 @@
      ],
      "count": 6,
      "intro": [
-      "o:Coming soon!"
+      "m:Eggs on a warm rock, all cosy.",
+      "o:Share out the numbers to hatch them!",
+      "m:Fluffy baby raptors. Oh dear."
      ],
      "outro": [
-      "m:Coming soon!"
+      "o:They're chirping at me!",
+      "m:I think they want your snack."
      ],
      "reward": "hat-crown",
-     "blurb": "Coming in the next update"
+     "blurb": "Hatch the baby raptors"
     },
     {
      "id": "ridge-3",
-     "title": "Coming soon 3",
+     "title": "Hot Rock Hop",
      "mode": "bridgeBuilder",
      "skills": [
       "division",
@@ -549,35 +609,41 @@
      ],
      "count": 6,
      "intro": [
-      "o:Coming soon!"
+      "o:Warm rocks, all in a row!",
+      "m:Hop on the right numbers and we'll get across.",
+      "o:Toasty toes!"
      ],
      "outro": [
-      "m:Coming soon!"
+      "o:Toasty, but safe!",
+      "m:Next time, let's find a bridge."
      ],
      "reward": "deco-lantern",
-     "blurb": "Coming in the next update"
+     "blurb": "Hop across the warm rocks"
     },
     {
      "id": "ridge-4",
-     "title": "Coming soon 4",
+     "title": "Raptor Nap",
      "mode": "tiptoe",
      "skills": [
       "division",
       "multiplication"
      ],
-     "count": 6,
+     "count": 8,
      "intro": [
-      "o:Coming soon!"
+      "o:Shh. The Snatch Pack is having a nap.",
+      "m:The Dial is tucked under the biggest one's chin.",
+      "o:Tiptoe closer. Don't step on a feather!"
      ],
      "outro": [
-      "m:Coming soon!"
+      "m:One of them's opening an eye.",
+      "o:Time to go!"
      ],
      "reward": "pet-ember",
-     "blurb": "Coming in the next update"
+     "blurb": "Sneak past the sleeping pack"
     },
     {
      "id": "ridge-5",
-     "title": "Coming soon 5",
+     "title": "The Snatch Pack",
      "mode": "guardian",
      "skills": [
       "division",
@@ -586,13 +652,16 @@
      ],
      "count": 9,
      "intro": [
-      "o:Coming soon!"
+      "g:Keep-away! You'll never get it back!",
+      "o:We will, if we share it out right!",
+      "m:Here they come. Quick sums, Otter!"
      ],
      "outro": [
-      "m:Coming soon!"
+      "o:Five parts back! Just one to go.",
+      "m:And I know exactly who has it."
      ],
      "reward": null,
-     "blurb": "Coming in the next update"
+     "blurb": "Escape the Snatch Pack and win back the Dial"
     }
    ]
   },
@@ -605,42 +674,25 @@
    "roar": 6,
    "part": "core",
    "partName": "Times Core",
-   "ready": false,
+   "ready": true,
    "guardian": {
     "name": "Rex",
     "kind": "rex",
     "phases": [
-     "g:Coming soon!",
-     "g:Coming soon!",
-     "g:Coming soon!"
+     "g:ROAR! Everybody run! I'm in a very bad mood!",
+     "g:ROAR! It ticks and it tocks and it itches!",
+     "g:My arms are too short! I can't reach the itch! ROAR!"
     ],
     "befriended": [
-     "g:Coming soon!"
+     "o:Rex, the itch is our Times Core! Bend down, and I'll climb up!",
+     "g:Oh. Oh! That's the spot! A little to the left! Aaah!",
+     "g:Best scratch ever. Here, take your ticking thing. Friends?"
     ]
    },
    "levels": [
     {
      "id": "rex-1",
-     "title": "Coming soon 1",
-     "mode": "dinoDash",
-     "skills": [
-      "multiplication",
-      "division",
-      "missingNumber"
-     ],
-     "count": 6,
-     "intro": [
-      "o:Coming soon!"
-     ],
-     "outro": [
-      "m:Coming soon!"
-     ],
-     "reward": "pet-comet",
-     "blurb": "Coming in the next update"
-    },
-    {
-     "id": "rex-2",
-     "title": "Coming soon 2",
+     "title": "Tiptoe Past Rex",
      "mode": "tiptoe",
      "skills": [
       "multiplication",
@@ -648,38 +700,22 @@
       "division",
       "wordProblems"
      ],
-     "count": 6,
+     "count": 8,
      "intro": [
-      "o:Coming soon!"
+      "m:Otter. Look at the size of those footprints.",
+      "o:And listen to the size of that snore. It's Rex!",
+      "m:Tiptoe past. Very, very quietly."
      ],
      "outro": [
-      "m:Coming soon!"
+      "o:The Times Core is stuck on his back!",
+      "m:No wonder he's grumpy. It's ticking right between his shoulders."
      ],
-     "reward": "hat-wizard",
-     "blurb": "Coming in the next update"
+     "reward": "pet-comet",
+     "blurb": "Tiptoe past the sleeping T-Rex"
     },
     {
-     "id": "rex-3",
-     "title": "Coming soon 3",
-     "mode": "bridgeBuilder",
-     "skills": [
-      "multiplication",
-      "division",
-      "sequences"
-     ],
-     "count": 6,
-     "intro": [
-      "o:Coming soon!"
-     ],
-     "outro": [
-      "m:Coming soon!"
-     ],
-     "reward": "deco-rainbow",
-     "blurb": "Coming in the next update"
-    },
-    {
-     "id": "rex-4",
-     "title": "Coming soon 4",
+     "id": "rex-2",
+     "title": "Giant Eggs",
      "mode": "eggRescue",
      "skills": [
       "multiplication",
@@ -689,17 +725,63 @@
      ],
      "count": 6,
      "intro": [
-      "o:Coming soon!"
+      "m:These eggs are enormous!",
+      "o:Baby T-Rexes! Answer the sums to hatch them.",
+      "m:I hope they're friendlier than their dad."
      ],
      "outro": [
-      "m:Coming soon!"
+      "o:They're adorable! Look at their tiny arms!",
+      "m:Everything here has tiny arms. I have flippers."
+     ],
+     "reward": "hat-wizard",
+     "blurb": "Hatch the baby T-Rexes"
+    },
+    {
+     "id": "rex-3",
+     "title": "Footprint Hop",
+     "mode": "bridgeBuilder",
+     "skills": [
+      "multiplication",
+      "division",
+      "sequences"
+     ],
+     "count": 6,
+     "intro": [
+      "o:Giant footprints, full of muddy water.",
+      "m:Hop across on the right numbers.",
+      "o:Rex must be enormous."
+     ],
+     "outro": [
+      "m:He is. And he's coming this way."
+     ],
+     "reward": "deco-rainbow",
+     "blurb": "Hop across the footprints"
+    },
+    {
+     "id": "rex-4",
+     "title": "The Big Stomp",
+     "mode": "dinoDash",
+     "skills": [
+      "multiplication",
+      "division",
+      "missingNumber"
+     ],
+     "count": 8,
+     "intro": [
+      "g:ROAR! Who's been hatching my babies?",
+      "o:Run, Mosey! Fastest answers ever!",
+      "m:I'm a mosasaur! I'm not built for running!"
+     ],
+     "outro": [
+      "o:We made it to the volcano!",
+      "m:One part left. And it's on his back."
      ],
      "reward": "pet-moonmoth",
-     "blurb": "Coming in the next update"
+     "blurb": "Outrun the T-Rex"
     },
     {
      "id": "rex-5",
-     "title": "Coming soon 5",
+     "title": "Rex",
      "mode": "guardian",
      "skills": [
       "multiplication",
@@ -709,13 +791,16 @@
      ],
      "count": 9,
      "intro": [
-      "o:Coming soon!"
+      "g:ROAR! You can't hide from me forever!",
+      "o:We don't want to hide. We want to help!",
+      "m:Here he comes! Every right answer counts!"
      ],
      "outro": [
-      "m:Coming soon!"
+      "o:Six parts! The Times Machine is complete!",
+      "m:We can go home, Otter. But let's say goodbye first."
      ],
      "reward": null,
-     "blurb": "Coming in the next update"
+     "blurb": "Escape Rex and win back the Times Core"
     }
    ]
   }
@@ -770,10 +855,10 @@
    "emoji": "🦋"
   },
   {
-   "id": "pet-turtle",
+   "id": "pet-spike",
    "kind": "pet",
-   "name": "Shelly the turtle",
-   "emoji": "🐢"
+   "name": "Spike the baby Stegosaurus",
+   "emoji": "🦕"
   },
   {
    "id": "hat-pirate",
@@ -794,10 +879,10 @@
    "emoji": "🦀"
   },
   {
-   "id": "pet-owl",
+   "id": "pet-flap",
    "kind": "pet",
-   "name": "Hoot the owl",
-   "emoji": "🦉"
+   "name": "Flap the baby Pteranodon",
+   "emoji": "🪽"
   },
   {
    "id": "hat-shades",
@@ -818,10 +903,10 @@
    "emoji": "✨"
   },
   {
-   "id": "pet-cinder",
+   "id": "pet-scoot",
    "kind": "pet",
-   "name": "Cinder the lizard",
-   "emoji": "🦎"
+   "name": "Scoot the baby raptor",
+   "emoji": "🐣"
   },
   {
    "id": "hat-crown",
@@ -925,6 +1010,32 @@
    "m:One step closer to home."
   ]
  },
+ "singAlong": {
+  "intro": [
+   "o:Campfire sing-along! We sing, you sing with us, and you can stomp along on the drum.",
+   "m:We'll sing it three times. A little faster every time!"
+  ],
+  "warmUp": [
+   "m:Before we explore, let's learn a times-table song. It'll help us later!"
+  ],
+  "round2": [
+   "o:Your turn! We sing the start, and you sing the answer."
+  ],
+  "round3": [
+   "m:Rex speed! Can you sing the whole line before we do?"
+  ],
+  "quiz": [
+   "o:Now let's fill the ladder! Type each answer, in order.",
+   "m:Take your time. The band will wait for you."
+  ],
+  "shuffle": [
+   "m:Now the tricky bit. The same times table, all mixed up!"
+  ],
+  "done": [
+   "o:You sang the whole song!",
+   "m:That's another times table you know by heart."
+  ]
+ },
  "finale": {
   "opening": [
    "n:The six parts are back where they belong…",
@@ -932,12 +1043,12 @@
    "n:Every dinosaur came to say goodbye!"
   ],
   "guardians": {
-   "hollow": "g:Coming soon!",
-   "meadow": "g:Coming soon!",
-   "swamp": "g:Coming soon!",
-   "peaks": "g:Coming soon!",
-   "ridge": "g:Coming soon!",
-   "rex": "g:Coming soon!"
+   "hollow": "g:Goodbye, my dears! Come back when my babies hatch!",
+   "meadow": "g:Hmph. I'll miss you. A tiny bit. Don't tell anyone.",
+   "swamp": "g:Goodbye, darlings! Look, I can walk in a straight line!",
+   "peaks": "g:Bye! And remember, we're pterosaurs!",
+   "ridge": "g:One, two, three… all the way to twelve! Bye!",
+   "rex": "g:Thank you, little friends. Best scratch ever."
   },
   "thanks": [
    "o:We couldn't have done any of this without you!",

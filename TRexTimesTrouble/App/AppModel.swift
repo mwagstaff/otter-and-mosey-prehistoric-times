@@ -8,6 +8,10 @@ enum Route: Equatable {
     case workshop(String)
     /// The Fossil Museum: a skeleton for each times table, a bone for each fact.
     case museum
+    /// The Campfire Sing-Along's song shelf, one whole song, and the short song a level opens with.
+    case songShelf
+    case song(Int)
+    case levelSong(String)
 }
 
 /// Writes save files off the main thread, one at a time and in order.
@@ -107,11 +111,15 @@ final class AppModel {
             case "intro": route = .intro
             case "museum": route = .museum
             case "workshop": route = .workshop(catalog.islands[0].id)
+            case "shelf": route = .songShelf
             case "check", "setup":
                 update { $0.seenIntro = false }
                 parentUnlocked = name == "setup"
                 route = name == "setup" ? .quickSetup : .grownUpCheck
-            default: if name.hasPrefix("island:") { route = .island(String(name.dropFirst(7))) }
+            default:
+                if name.hasPrefix("island:") { route = .island(String(name.dropFirst(7))) }
+                if name.hasPrefix("song:"), let table = Int(name.dropFirst(5)) { route = .song(table) }
+                if name.hasPrefix("levelsong:") { startLevel(String(name.dropFirst(10))) }
             }
         }
     }
@@ -281,6 +289,16 @@ final class AppModel {
 
     // MARK: - Navigation
 
+    /// Starts a level, with its song first unless the grown-up has switched level songs off.
+    /// Play-testing from the grown-ups' area goes straight in.
+    func startLevel(_ levelID: String) {
+        if playtest == nil, let profile, SingAlong.levelSong(levelID, profile: profile, catalog: catalog) != nil {
+            route = .levelSong(levelID)
+        } else {
+            route = .play(levelID)
+        }
+    }
+
     /// Starts a level again with fresh questions.
     func replay(_ levelID: String) {
         if route == .play(levelID) { playRun += 1 } else { route = .play(levelID) }
@@ -342,6 +360,21 @@ final class AppModel {
         }
         guard var profile = save.activeProfile else { return RewardSummary() }
         let summary = Progression.apply(result, levelID: levelID, learner: learner, usedFriendshipPower: friendshipUses, to: &profile, catalog: catalog)
+        save.activeProfile = profile
+        persistNow()
+        return summary
+    }
+
+    /// Notes a sing-along round sung (and the song finished, after its last round).
+    func sangSong(_ table: Int, through round: SongRound, finished: Bool) {
+        guard playtest == nil else { return }
+        update { SingAlong.sang(table, through: round, finished: finished, profile: &$0) }
+    }
+
+    /// Saves a finished sing-along quiz and hands out any trophies it won.
+    func finishSong(_ quiz: SongQuiz, learner: LearnerModel) -> SingAlong.QuizSummary {
+        guard var profile = save.activeProfile else { return SingAlong.QuizSummary() }
+        let summary = SingAlong.finish(quiz, learner: learner, profile: &profile, catalog: catalog)
         save.activeProfile = profile
         persistNow()
         return summary

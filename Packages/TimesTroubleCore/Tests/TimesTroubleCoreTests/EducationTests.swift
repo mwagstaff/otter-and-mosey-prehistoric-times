@@ -270,19 +270,26 @@ let tuesday = Calendar(identifier: .gregorian).date(from: DateComponents(year: 2
         #expect(keys.allSatisfy { [10, 2, 5].contains(Fact(key: $0)?.table ?? 0) }, "zone 1 warms up with 2, 5 and 10")
     }
 
-    @Test func newFactsArriveAFewAtATime() {
+    @Test func newFactsArriveEasiestFirst() {
         for seed in 0..<30 {
             let keys = play("hollow-1", seed: UInt64(seed)).keys
-            #expect(Set(keys.prefix(6)).count <= QuestionPlanner.newFactsPerLevel, "seed \(seed): \(keys)")
+            let early = keys.prefix(QuestionPlanner.newFactsPerLevel).compactMap { Fact(key: $0)?.multiplier }
+            #expect(early.allSatisfy { [1, 2, 10].contains($0) }, "seed \(seed): \(keys)")
         }
     }
 
-    @Test func factsNeverComeTwiceInARowOrMoreThanTwice() {
+    @Test func noQuestionRepeatsInALevel() {
         for seed in 0..<40 {
-            for id in ["hollow-4", "meadow-1", "swamp-1", "ridge-1", "rex-5"] {
-                let facts = play(id, seed: UInt64(seed)).keys.compactMap(Fact.init(key:))
-                #expect(zip(facts, facts.dropFirst()).allSatisfy { $0 != $1 }, "\(id) seed \(seed)")
-                #expect(Dictionary(grouping: facts, by: { $0 }).values.allSatisfy { $0.count <= QuestionPlanner.maxPerLevel }, "\(id) seed \(seed)")
+            for id in ["hollow-4", "meadow-1", "meadow-2", "swamp-1", "ridge-1", "rex-5"] {
+                var session = ChallengeSession(level: catalog.level(id)!, learner: LearnerModel(), seed: UInt64(seed))
+                var prompts: [String] = [], facts: [String] = []
+                while let question = session.next() {
+                    prompts.append(question.prompt)
+                    if Fact(key: question.key) != nil { facts.append(question.key) }
+                    _ = session.complete(question, firstTry: true, seconds: 4, usedHint: false)
+                }
+                #expect(Set(prompts).count == prompts.count, "\(id) seed \(seed): \(prompts)")
+                #expect(Set(facts).count == facts.count, "\(id) seed \(seed): \(facts)")
             }
         }
     }
@@ -304,13 +311,28 @@ let tuesday = Calendar(identifier: .gregorian).date(from: DateComponents(year: 2
         #expect(found >= 15, "the due 8 × 7 should often come back in the 3s zone (\(found)/40)")
     }
 
-    @Test func aMissedFactComesBackInTheSameLevel() {
+    @Test func aMissedFactIsNotAskedAgainInTheSameLevel() {
         var session = ChallengeSession(level: catalog.level("hollow-4")!, learner: LearnerModel(), seed: 4)
         let first = session.next()!
         session.recordSlip()
         _ = session.complete(first, firstTry: false, seconds: 9, usedHint: false)
-        _ = session.complete(session.next()!, firstTry: true, seconds: 3, usedHint: false)
-        #expect(session.next()?.key == first.key)
+        var later: [String] = []
+        while let question = session.next() {
+            later.append(question.key)
+            _ = session.complete(question, firstTry: true, seconds: 3, usedHint: false)
+        }
+        #expect(!later.contains(first.key))
+    }
+
+    @Test func aCountingLevelSticksToItsTable() {
+        for (id, table) in [("meadow-2", 3), ("swamp-2", 4), ("peaks-2", 8)] {
+            var learner = LearnerModel()
+            learner.record(key: "mul:5x7", skill: .multiplication, correct: false, seconds: 9, usedHint: false, on: monday)
+            for seed in 0..<20 {
+                let keys = play(id, learner: learner, seed: UInt64(seed)).keys
+                #expect(keys.allSatisfy { $0 == "seq:\(table)" || Fact(key: $0)?.table == table }, "\(id): \(keys)")
+            }
+        }
     }
 
     @Test func answersArePickedThenTyped() {

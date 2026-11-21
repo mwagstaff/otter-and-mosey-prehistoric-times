@@ -44,14 +44,11 @@ struct ParentGateView: View {
             HStack(spacing: 8) {
                 ForEach(Array("1234567890"), id: \.self) { digit in
                     Button(String(digit)) { if entry.count < 3 { entry.append(digit) } }
-                        .font(.system(size: 22, weight: .bold, design: .rounded))
-                        .frame(width: 48, height: 48)
-                        .background(RoundedRectangle(cornerRadius: 10).fill(.white).shadow(radius: 1))
                 }
                 Button { if !entry.isEmpty { entry.removeLast() } } label: { Image(systemName: "delete.left") }
-                    .frame(width: 48, height: 48)
+                    .accessibilityLabel("Delete")
             }
-            .buttonStyle(.plain)
+            .buttonStyle(ParentKeyStyle())
             HStack(spacing: 16) {
                 Button("Back", action: onCancel).buttonStyle(.bordered)
                 Button("Continue") {
@@ -70,6 +67,22 @@ struct ParentGateView: View {
             .controlSize(.large)
         }
         .padding(30)
+    }
+}
+
+private struct ParentKeyStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.system(size: 22, weight: .bold, design: .rounded))
+            .foregroundStyle(configuration.isPressed ? Color(uiColor: .systemBackground) : .primary)
+            .frame(width: 48, height: 48)
+            .background {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(configuration.isPressed ? Color.primary : Color(uiColor: .secondarySystemGroupedBackground))
+                    .shadow(radius: 1)
+            }
+            .contentShape(Rectangle())
+            .animation(configuration.isPressed ? nil : .easeOut(duration: 0.15), value: configuration.isPressed)
     }
 }
 
@@ -322,7 +335,12 @@ struct MathsSettingsRows: View {
     @Environment(AppModel.self) private var model
     let profile: Profile
 
-    private var grid: [GridItem] { [GridItem(.adaptive(minimum: 64), alignment: .leading)] }
+    @ScaledMetric(relativeTo: .body) private var numberColumnWidth: CGFloat = 64
+    @ScaledMetric(relativeTo: .body) private var starredColumnWidth: CGFloat = 100
+
+    private func columns(minimum: CGFloat) -> [GridItem] {
+        [GridItem(.adaptive(minimum: minimum), alignment: .leading)]
+    }
 
     var body: some View {
         let parent = parentBinding(profile, model)
@@ -336,7 +354,7 @@ struct MathsSettingsRows: View {
         }
         VStack(alignment: .leading) {
             Text("Times tables")
-            LazyVGrid(columns: grid, alignment: .leading) {
+            LazyVGrid(columns: columns(minimum: numberColumnWidth), alignment: .leading) {
                 ForEach(ParentSettings.allTables, id: \.self) { table in
                     let on = settings.tables.contains(table)
                     Button("\(table)×") {
@@ -352,7 +370,7 @@ struct MathsSettingsRows: View {
         }
         VStack(alignment: .leading) {
             Text("Focus on")
-            LazyVGrid(columns: grid, alignment: .leading) {
+            LazyVGrid(columns: columns(minimum: starredColumnWidth), alignment: .leading) {
                 ForEach(settings.usableTables, id: \.self) { table in
                     let focus = settings.focusTables.contains(table)
                     Button {
@@ -370,7 +388,7 @@ struct MathsSettingsRows: View {
         }
         VStack(alignment: .leading) {
             Text("Multiply and divide by")
-            LazyVGrid(columns: grid, alignment: .leading) {
+            LazyVGrid(columns: columns(minimum: numberColumnWidth), alignment: .leading) {
                 ForEach(ParentSettings.allMultipliers, id: \.self) { value in
                     let on = settings.multipliers.contains(value)
                     Button("× \(value)") {
@@ -414,5 +432,12 @@ struct PlaySettingsRows: View {
             ForEach([10, 15, 20, 30, 45], id: \.self) { Text("\($0) minutes").tag($0) }
         }
         Toggle("Timed bonus points", isOn: parent.timedChallenges)
+        Picker("Sing-along rounds", selection: parent.songRounds) {
+            Text("1 (sing together)").tag(1)
+            Text("2 (and finish the line)").tag(2)
+            Text("3 (and sing it all)").tag(3)
+        }
+        Toggle("Sing-along gets faster each round", isOn: parent.songSpeedUp)
+        Toggle("A times-table song before every level", isOn: parent.levelSongs)
     }
 }

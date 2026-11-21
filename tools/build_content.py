@@ -60,6 +60,7 @@ def collect(scene, lines, guardian=None, mood=None):
         dialogue.setdefault(line_key(line), entry)
 collect("intro", source.INTRO + source.INTRO_AFTER)
 collect("workshop", source.WORKSHOP["intro"] + source.WORKSHOP["done"])
+collect("singalong", [line for lines in source.SINGALONG.values() for line in lines])
 collect("help", source.ASK_GROWN_UP)
 # Zones still to come keep placeholder lines, which are never recorded.
 ready = [island for island in source.ISLANDS if island.get("ready", True)]
@@ -81,7 +82,7 @@ for island in ready if len(ready) == len(source.ISLANDS) else []:
 catalogue = {
     "islands": source.ISLANDS,
     "rewards": [{"id": r[0], "kind": r[1], "name": r[2], "emoji": r[3]} for r in source.REWARDS],
-    "intro": source.INTRO, "introAfter": source.INTRO_AFTER, "askGrownUp": source.ASK_GROWN_UP, "workshop": source.WORKSHOP,
+    "intro": source.INTRO, "introAfter": source.INTRO_AFTER, "askGrownUp": source.ASK_GROWN_UP, "workshop": source.WORKSHOP, "singAlong": source.SINGALONG,
     "finale": source.FINALE,
 }
 (out / "islands.json").write_text(json.dumps(catalogue, indent=1, ensure_ascii=False) + "\n")

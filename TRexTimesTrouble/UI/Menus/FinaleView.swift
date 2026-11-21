@@ -1,10 +1,10 @@
 import TimesTroubleCore
 import SwiftUI
 
-// The end-of-game celebration: the crystal comes home, every guardian says thank you, three
-// cheers, the player's adventure in numbers, a group photo, and a nudge to keep exploring.
-// Nothing spoken uses the player's name (the lines are recorded once); it only appears as text.
-// Mirrors web/src/ui/finale.ts.
+// The end-of-game celebration at Crash Camp: the six parts fly home and the Times Machine is
+// whole again, every dinosaur says goodbye, three cheers, the player's adventure in numbers, a
+// group photo, and a nudge to keep exploring. Nothing spoken uses the player's name (the lines are
+// recorded once); it only appears as text.
 
 /// How a member of the cast arrives on the beach.
 private enum Entrance { case grow, splash, swoop, float, bounce, sparkle, run, swim }
@@ -23,14 +23,14 @@ private struct CastMember: Identifiable {
     var line: DialogueLine?
 }
 
-/// Where each guardian stands, and how it arrives, keyed by island.
+/// Where each dinosaur stands, and how it arrives, keyed by zone. Rex arrives last and biggest.
 private let guardianPlaces: [String: (x: Double, bottom: Double, height: Double, entrance: Entrance, layer: Double)] = [
-    "woods": (12, 16, 56, .grow, 1),
-    "bay": (24, 4, 30, .splash, 4),
-    "dragon": (75, 9, 42, .swoop, 3),
-    "cloud": (84, 60, 26, .float, 2),
-    "candy": (89, 2, 32, .bounce, 5),
-    "star": (34, 3, 20, .sparkle, 6),
+    "hollow": (32, 9, 27, .run, 3),
+    "meadow": (89, 7, 29, .bounce, 3),
+    "swamp": (21, 1, 25, .run, 5),
+    "peaks": (77, 60, 24, .swoop, 2),
+    "ridge": (76, 1, 23, .bounce, 6),
+    "rex": (12, 8, 60, .grow, 1),
 ]
 
 /// Confetti pieces, moved on every frame. A plain class so the frames don't churn SwiftUI state.
@@ -77,8 +77,8 @@ private struct Metrics {
         CGPoint(x: (size.width - 1536 * beachScale) / 2 + x * 1536 * beachScale,
                 y: (size.height - 1024 * beachScale) / 2 + y * 1024 * beachScale)
     }
-    /// The castle's crystal in the picture, where the flying crystal comes to rest.
-    var castleCrystal: CGPoint { onBeach(0.653, 0.106) }
+    /// Where the mended Times Machine stands in the Crash Camp picture.
+    var castleCrystal: CGPoint { onBeach(0.5, 0.5) }
     var skipButton: CGRect {
         CGRect(x: size.width - insets.trailing - 13 * u, y: insets.top + 1.5 * u, width: 12 * u, height: 7 * u)
     }
@@ -135,7 +135,7 @@ struct FinaleView: View {
         ]
         for island in model.catalog.islands {
             guard let place = guardianPlaces[island.id] else { continue }
-            members.append(CastMember(id: island.id, art: "guardian_\(island.guardian.kind)_happy", name: island.guardian.name,
+            members.append(CastMember(id: island.id, art: "boss_\(island.guardian.kind)_happy", name: island.guardian.name,
                                       x: place.x, bottom: place.bottom, height: place.height, entrance: place.entrance, layer: place.layer,
                                       line: finale?.guardians[island.id]))
         }
@@ -160,7 +160,7 @@ struct FinaleView: View {
         .task(id: run) { await play(from: startBeat) }
         .onAppear {
             confetti.colours = model.catalog.islands.map { Palette.hex($0.colour) } + [Palette.gold, .white]
-            AudioManager.shared.playMusic("music_title")
+            AudioManager.shared.playMusic("music_main")
         }
         .onDisappear { Narrator.shared.stop() }
     }
@@ -171,11 +171,11 @@ struct FinaleView: View {
         let size = m.size
         let u = m.u, v = m.v, w = m.w
         ZStack(alignment: .topLeading) {
-            // Night sky, then the beach opening from the crystal in colour.
+            // Night sky, then Crash Camp opening out from the mended machine in colour.
             RadialGradient(colors: [Color(red: 0.14, green: 0.13, blue: 0.35), Color(red: 0.04, green: 0.06, blue: 0.18), .black],
                            center: .init(x: 0.5, y: 0.4), startRadius: 0, endRadius: size.width * 0.7)
                 .opacity(nightGone ? 0 : 1)
-            Image("bg_title").resizable().scaledToFill().frame(width: size.width, height: size.height)
+            Image("bg_camp").resizable().scaledToFill().frame(width: size.width, height: size.height)
                 .saturation(beachOpen ? 1 : 0).brightness(beachOpen ? 0 : -0.4)
                 .mask {
                     Circle().frame(width: beachOpen ? size.width * 3 : 1, height: beachOpen ? size.width * 3 : 1)
@@ -183,11 +183,11 @@ struct FinaleView: View {
                 }
             rays(m)
             shards(m)
-            Image("crystal_whole").resizable().scaledToFit()
-                .frame(width: crystalHome ? 0.055 * 1536 * m.beachScale : 14 * u)
-                .shadow(color: .white.opacity(0.8), radius: 3 * u)
+            Image("machine_whole").resizable().scaledToFit()
+                .frame(width: crystalHome ? 0.2 * 1536 * m.beachScale : 26 * u)
+                .shadow(color: .white.opacity(crystalHome ? 0 : 0.8), radius: 3 * u)
                 .scaleEffect(crystalOn ? 1 : 0.3)
-                .opacity(crystalOn && !crystalHome ? 1 : 0)
+                .opacity(crystalOn ? 1 : 0)
                 .position(crystalHome ? m.castleCrystal : CGPoint(x: 50 * w, y: 36 * v))
 
             // The cast and speech bubbles layer among themselves, beneath the panels.
@@ -235,7 +235,7 @@ struct FinaleView: View {
         .rotationEffect(.degrees(crystalOn && !calm ? 360 : 0))
         .animation(calm ? nil : .linear(duration: 18).repeatForever(autoreverses: false), value: crystalOn)
         .opacity(crystalOn ? (crystalHome ? 0.55 : 1) : 0)
-        .position(crystalHome ? m.onBeach(0.65, 0.14) : CGPoint(x: 50 * m.w, y: 36 * v))
+        .position(crystalHome ? m.castleCrystal : CGPoint(x: 50 * m.w, y: 36 * v))
         .allowsHitTesting(false)
     }
 
@@ -251,8 +251,8 @@ struct FinaleView: View {
             case 3: (50, 36)
             default: (start.0, start.1)
             }
-            Image("crystal_shard").resizable().scaledToFit()
-                .frame(width: 6 * u)
+            Image("part_\(island.part)").resizable().scaledToFit()
+                .frame(width: 8 * u)
                 .shadow(color: Palette.hex(island.colour), radius: 1.2 * u)
                 .shadow(color: Palette.hex(island.colour), radius: 2.4 * u)
                 .rotationEffect(.degrees(shardPhase == 2 ? 0 : shardPhase == 3 ? 360 : -160))
@@ -269,7 +269,10 @@ struct FinaleView: View {
         let v = m.v, w = m.w
         let isIn = entered.contains(member.id)
         let art = talking == member.id ? (member.talkArt ?? member.art) : member.art
+        // Bosses are painted facing left; those on the left turn round to face everyone else.
+        let turned = guardianPlaces[member.id] != nil && member.x < 45
         return Image(art).resizable().scaledToFit()
+            .scaleEffect(x: turned ? -1 : 1)
             .frame(height: member.height * v)
             .shadow(color: .black.opacity(0.25), radius: 0.6 * v, y: 0.6 * v)
             .scaleEffect(x: !isIn && member.entrance == .grow ? 0.6 : 1, y: !isIn && member.entrance == .grow ? 0.01 : 1, anchor: .bottom)
@@ -398,7 +401,7 @@ struct FinaleView: View {
             VStack(spacing: 0) {
                 Image("trophy_champion").resizable().scaledToFit().frame(width: 22 * u)
                     .shadow(color: Palette.gold.opacity(0.9), radius: 3 * u)
-                Text("Rainbow Crystal Champion").font(.game(3 * u)).foregroundStyle(.white)
+                Text("Time Travel Champion").font(.game(3 * u)).foregroundStyle(.white)
                     .padding(.horizontal, 3 * u).padding(.vertical, 0.8 * u)
                     .panel(fill: Palette.coral, radius: 1.2 * u)
                     .offset(y: -1 * u)
@@ -485,7 +488,7 @@ struct FinaleView: View {
             Text(everything ? "You found everything!" : "The adventure goes on!").font(.game(3.4 * u)).foregroundStyle(Palette.ink)
             Text(everything
                  ? "Every trophy, every star and every pet. You're a true time-travel legend! Play any level again, just for fun."
-                 : "Every island is open. Play any level again to find what's still hiding.")
+                 : "Every zone is open. Play any level again to find what's still hiding.")
                 .font(.game(1.9 * u, weight: .bold)).foregroundStyle(Palette.ink.opacity(0.8)).multilineTextAlignment(.center)
             if !everything {
                 HStack(spacing: 1.4 * u) {
@@ -503,7 +506,7 @@ struct FinaleView: View {
                     Button(action: tapped {
                         startBeat = 0
                         run += 1
-                    }) { IconLabel("Watch again", emoji: "🌈", size: size) }
+                    }) { IconLabel("Watch again", emoji: "🦖", size: size) }
                         .buttonStyle(ChunkyButtonStyle(fill: Palette.gold, size: size))
                 } else {
                     Button(action: tapped { model.route = .map }) { IconLabel("Back to the map", emoji: "🗺", size: size) }

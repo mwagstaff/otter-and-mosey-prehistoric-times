@@ -111,21 +111,38 @@ struct HomeIslandView: View {
         GeometryReader { geometry in
             let compact = geometry.size.height < 480
             let itemSize: CGFloat = compact ? 54 : 84 * ScreenMetrics.scale(geometry)
+            let insets = geometry.safeAreaInsets
+            let paintingFrame = CGRect(x: -insets.leading, y: -insets.top,
+                width: geometry.size.width + insets.leading + insets.trailing,
+                height: geometry.size.height + insets.top + insets.bottom)
+            let ground = CampGround(paintingFrame: paintingFrame, viewport: paintingFrame,
+                decorations: (model.profile?.decorations ?? []).map {
+                    CGPoint(x: $0.x * geometry.size.width, y: $0.y * geometry.size.height)
+                }, propSize: itemSize * 1.25)
             ZStack {
-                // Pets the player has rescued wander along the beach.
+                // Stagger the rescued pets across the near and far sides of the clearing.
                 ForEach(Array(pets.enumerated()), id: \.element.id) { index, pet in
-                    Glyph(pet.emoji, size: itemSize * 0.85, art: pet.art)
-                        .position(x: geometry.size.width * (0.12 + 0.76 * Double(index) / Double(max(pets.count - 1, 1))), y: geometry.size.height * (index.isMultiple(of: 2) ? 0.8 : 0.72))
+                    let columns = pets.count <= 4 ? pets.count : (pets.count + 1) / 2
+                    let column = pets.count <= 4 ? index : index / 2
+                    let x = CGFloat(column) / CGFloat(max(columns - 1, 1))
+                    let start = ground.screen(CGPoint(x: 309 + 337 * x,
+                                                      y: index.isMultiple(of: 2) ? 437 : 495))
+                    CampPet(pet: pet, index: index, size: geometry.size, iconSize: itemSize * 0.85, ground: ground,
+                            home: model.profile?.campPetSpots[pet.id] ?? CampSpot(
+                                x: start.x / geometry.size.width, y: start.y / geometry.size.height),
+                            calmer: model.settings.reducedMotion) { spot in
+                        model.update { $0.campPetSpots[pet.id] = spot }
+                    }
+
                 }
                 ForEach(model.profile?.decorations ?? []) { placed in
                     if let reward = model.catalog.reward(placed.reward) {
                         Glyph(reward.emoji, size: itemSize * 1.25, art: reward.art)
                             .scaleEffect(dragging == placed.id ? 1.2 : 1)
-                            .position(x: placed.x * geometry.size.width, y: placed.y * geometry.size.height)
                             // One gesture does both, because a drag that starts on touch-down swallows the
                             // taps a separate double-tap would need: a real drag moves the decoration,
                             // and two quick taps that barely move put it away.
-                            .gesture(DragGesture(minimumDistance: 0)
+                            .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .named("campGround"))
                                 .onChanged { value in
                                     guard hypot(value.translation.width, value.translation.height) > 6 else { return }
                                     dragging = placed.id
@@ -139,6 +156,8 @@ struct HomeIslandView: View {
                                     }
                                     move(placed.id, to: value.location, in: geometry.size, persist: true)
                                 })
+                            .position(x: placed.x * geometry.size.width, y: placed.y * geometry.size.height)
+                            .zIndex(placed.y + itemSize * 1.25 * 0.46 / geometry.size.height)
                     }
                 }
                 // The trophy cabinet stands at the camp too.
@@ -152,6 +171,20 @@ struct HomeIslandView: View {
                 .buttonStyle(.plain)
                 .position(x: geometry.size.width * 0.88, y: geometry.size.height * 0.4)
                 .accessibilityLabel("Trophy cabinet")
+                .zIndex(2)
+                // The campfire band: the way into the Campfire Sing-Along.
+                Button(action: tapped { model.route = .songShelf }) {
+                    VStack(spacing: 2) {
+                        Image("camp_band").resizable().scaledToFit().frame(height: itemSize * 2)
+                        IconLabel("Sing-Along", emoji: "🎵", size: compact ? 13 : 18).font(.game(compact ? 13 : 18)).foregroundStyle(Palette.ink)
+                            .padding(.horizontal, 10).padding(.vertical, 3).panel(fill: Palette.gold, radius: 12)
+                    }
+                }
+                .buttonStyle(.plain)
+                // On the ground beside the campfire.
+                .position(x: geometry.size.width * 0.38, y: geometry.size.height * 0.6)
+                .accessibilityLabel("Sing-Along")
+                .zIndex(2)
                 VStack {
                     // Everything sits along the top, so the ground is free for decorations.
                     HStack(alignment: .top, spacing: 10) {
@@ -175,8 +208,13 @@ struct HomeIslandView: View {
                     Spacer()
                 }
                 .padding(compact ? 8 : 24)
+                .zIndex(3)
             }
-            .screenBackground("bg_camp")
+            .coordinateSpace(name: "campGround")
+            .background {
+                CampBackdrop(calmerMotion: model.settings.reducedMotion, ground: ground)
+                    .ignoresSafeArea().accessibilityHidden(true)
+            }
         }
     }
 
@@ -231,6 +269,168 @@ struct HomeIslandView: View {
             profile.decorations[index].x = x
             profile.decorations[index].y = y
         }
+    }
+}
+
+/// A rescued pet wanders near its chosen home. Only an intentional drop writes the save.
+private struct CampPet: View {
+    let pet: Reward
+    let index: Int
+    let size: CGSize
+    let iconSize: CGFloat
+    let ground: CampGround
+    let home: CampSpot
+    let calmer: Bool
+    let place: (CampSpot) -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduced
+    @Environment(\.scenePhase) private var phase
+    @State private var walk: CampWalk?
+    @State private var resting: CGPoint?
+    @State private var departed = Date()
+    @State private var speed: CGFloat = 14
+    @State private var facingLeft = false
+    @State private var looking = false
+    @State private var greetingUntil = Date.distantPast
+    @State private var dragOrigin: CGPoint?
+    @State private var depth: Double = 0
+    @GestureState private var translation = CGSize.zero
+
+    private var call: (String, SFX) {
+        switch pet.id {
+        case "pet-pip", "pet-chomp", "pet-nubbin", "pet-ember", "pet-spike": ("Raar!", .roarMaia)
+        case "pet-crab": ("Glub glub!", .glub)
+        case "pet-flap": ("Squawk!", .chirp)
+        case "pet-scoot": ("Cluck cluck!", .chirp)
+        default: ("Chirp!", .chirp)
+        }
+    }
+
+    private var walkArt: String? {
+        switch pet.id {
+        case "pet-pip", "pet-nubbin", "pet-chomp", "pet-ember": "camp_" + String(pet.id.dropFirst(4))
+        default: nil
+        }
+    }
+
+    private var area: CampWalkingArea {
+        ground.walkingArea(width: iconSize / ground.scale, height: iconSize / ground.scale)
+    }
+
+    private func restingPoint(_ requested: CGPoint) -> CGPoint? {
+        area.nearest(ground.painting(requested)).map(ground.screen)
+    }
+
+    private var spawn: CGPoint {
+        ground.painting(CGPoint(x: size.width * home.x, y: size.height * home.y))
+    }
+
+    private func pose(at date: Date) -> (point: CGPoint, frame: Int, facingLeft: Bool)? {
+        if let walk {
+            let distance = max(0, date.timeIntervalSince(departed)) * speed
+            let sample = walk.sample(distance)
+            let stride = iconSize / ground.scale * (pet.id == "pet-nubbin" ? 0.43 : 0.58)
+            return (ground.screen(sample.point), Int(distance / max(1, stride / 4)) % 4, sample.west)
+        }
+        return (resting ?? area.nearest(spawn)).map { (ground.screen($0), 1, facingLeft) }
+    }
+
+    private struct TravelInputs: Equatable {
+        let ground: CampGround
+        let home: CampSpot
+        let suspended: Bool
+        let diameter: CGFloat
+        let greeting: Date
+    }
+
+    /// Plan once per outing or layout change. The animation clock only samples a route.
+    private func explore() async {
+        let map = area
+        let here = pose(at: Date()).map { ground.painting($0.point) } ?? spawn
+        resting = map.nearest(here)
+        walk = nil
+        looking = false
+        guard phase == .active, !calmer, !reduced, dragOrigin == nil else { return }
+        do {
+            while let start = resting, !Task.isCancelled {
+                try await Task.sleep(for: .seconds(Double.random(in: 0.6...2.4)))
+                if Bool.random() {
+                    looking = true
+                    facingLeft.toggle()
+                    try await Task.sleep(for: .seconds(Double.random(in: 0.6...1.5)))
+                    looking = false
+                }
+                // Mix short investigations with occasional trips across the clearing.
+                let x = Bool.random() ? start.x + .random(in: -100...100) : .random(in: map.bounds.minX...map.bounds.maxX)
+                let wish = CGPoint(x: x,
+                                   y: start.y + .random(in: -110...110))
+                guard let end = map.nearest(wish), hypot(end.x - start.x, end.y - start.y) > 22,
+                      let route = map.route(from: start, to: end) else { continue }
+                speed = (pet.id == "pet-nubbin" ? 14 : 19) * .random(in: 0.85...1.2)
+                departed = Date()
+                walk = route
+                try await Task.sleep(for: .seconds(route.length / speed))
+                facingLeft = route.sample(route.length).west
+                resting = end
+                walk = nil
+            }
+        } catch { /* SwiftUI cancels the outing on drag, scene exit or a changed obstacle. */ }
+    }
+
+    private func greet() {
+        AudioManager.shared.play(call.1, volume: 0.6)
+        greetingUntil = Date().addingTimeInterval(1)
+    }
+
+    var body: some View {
+        TimelineView(.animation(minimumInterval: 1.0 / 20, paused: phase != .active)) { clock in
+            if let pose = pose(at: clock.date) {
+                let roaming = pose.point
+                let target = dragOrigin.map { CGPoint(x: $0.x + translation.width, y: $0.y + translation.height) }
+                // Carry freely over scenery. Only the released position needs walkable ground.
+                let centre = target ?? roaming
+                let feet = (roaming.y + iconSize * 0.38) / size.height
+                Group {
+                    if let art = walkArt {
+                        Image(art + "_" + String(target == nil ? pose.frame : 1))
+                            .resizable().scaledToFit().frame(width: iconSize, height: iconSize)
+                            .rotationEffect(.degrees(looking ? (pose.facingLeft ? -4 : 4) : 0), anchor: .bottom)
+                                .scaleEffect(x: pose.facingLeft ? -1 : 1, y: 1)
+                    } else {
+                        Glyph(pet.emoji, size: iconSize, art: pet.art)
+                    }
+                }
+                    .frame(width: max(44, iconSize), height: max(44, iconSize))
+                    .contentShape(Rectangle())
+                    .overlay(alignment: .top) {
+                        if clock.date < greetingUntil {
+                            Text(call.0).font(.caption.bold()).padding(4).background(.regularMaterial, in: Capsule())
+                                .fixedSize().offset(y: -20).allowsHitTesting(false)
+                        }
+                    }
+                    .gesture(DragGesture(minimumDistance: 4, coordinateSpace: .named("campGround"))
+                        .updating($translation) { drag, offset, _ in offset = drag.translation }
+                        .onChanged { _ in if dragOrigin == nil { dragOrigin = roaming } }
+                        .onEnded { drag in
+                            let origin = dragOrigin ?? roaming
+                            guard let drop = restingPoint(CGPoint(x: origin.x + drag.translation.width, y: origin.y + drag.translation.height)) else { dragOrigin = nil; return }
+                            place(CampSpot(x: drop.x / size.width, y: drop.y / size.height))
+                            walk = nil
+                            resting = ground.painting(drop)
+                            dragOrigin = nil
+                        }
+                        .exclusively(before: TapGesture().onEnded { greet() }))
+                    .onChange(of: translation) { _, offset in if offset == .zero { dragOrigin = nil } }
+                    .accessibilityLabel(pet.name)
+                    .accessibilityAddTraits(.isButton)
+                    .accessibilityAction { greet() }
+                    .position(centre)
+                    .onChange(of: feet, initial: true) { _, value in depth = value }
+            }
+        }
+        .zIndex(dragOrigin == nil ? depth : 4)
+        .task(id: TravelInputs(ground: ground, home: home,
+                               suspended: phase != .active || calmer || reduced || dragOrigin != nil,
+                               diameter: iconSize, greeting: greetingUntil)) { await explore() }
     }
 }
 

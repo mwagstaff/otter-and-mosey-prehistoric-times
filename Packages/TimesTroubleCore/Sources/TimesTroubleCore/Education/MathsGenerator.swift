@@ -148,7 +148,7 @@ public enum MathsGenerator {
     /// second term, so the hint ("they go up by 4") can never give the answer away.
     static func sequence<R: RandomNumberGenerator>(table step: Int, level: Int, using rng: inout R) -> Draft {
         let backwards = level >= 5 && Bool.random(using: &rng)
-        let start = step * Int.random(in: (backwards ? 2...6 : (level >= 3 ? 0...6 : 0...3)), using: &rng)
+        let start = step * Int.random(in: (backwards ? 2...6 : 0...6), using: &rng)
         var terms = (0..<5).map { start + step * $0 }
         if backwards { terms.reverse() }
         let hole = level <= 2 ? 4 : Int.random(in: 2...4, using: &rng)

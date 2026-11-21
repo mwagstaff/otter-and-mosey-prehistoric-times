@@ -116,6 +116,46 @@
         "stability": 0.45,
         "similarityBoost": 0.8
       }
+    },
+    "rex": {
+      "voiceId": "DFyOc5MvJkgfqLuhzL92",
+      "voiceName": "Rex (Times Trouble)",
+      "deliveryTag": "[booming, grumpy] ",
+      "befriendedTag": "[contented, warmly] ",
+      "voiceSettings": {
+        "stability": 0.4,
+        "similarityBoost": 0.8
+      }
+    },
+    "steggy": {
+      "voiceId": "pFZP5JQG7iQjIQuC4Bku",
+      "voiceName": "Lily (premade) as Steggy",
+      "deliveryTag": "[dramatic, theatrical] ",
+      "befriendedTag": "[delighted] ",
+      "voiceSettings": {
+        "stability": 0.35,
+        "similarityBoost": 0.8
+      }
+    },
+    "swoop": {
+      "voiceId": "N2lVS1w4EtoT3dr4eOWO",
+      "voiceName": "Callum (premade) as the Swoop Squad",
+      "deliveryTag": "[mischievous, excited] ",
+      "befriendedTag": "[sleepy, cheerful] ",
+      "voiceSettings": {
+        "stability": 0.35,
+        "similarityBoost": 0.8
+      }
+    },
+    "raptors": {
+      "voiceId": "FGY2WhTYpPnrIDTdsKH5",
+      "voiceName": "Laura (premade) as the Snatch Pack",
+      "deliveryTag": "[cheeky, giggling] ",
+      "befriendedTag": "[excited] ",
+      "voiceSettings": {
+        "stability": 0.3,
+        "similarityBoost": 0.8
+      }
     }
   }
 }

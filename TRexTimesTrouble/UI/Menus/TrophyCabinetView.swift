@@ -387,7 +387,7 @@ struct TrophyCabinetView: View {
 
     private func playAction(level: LevelDef?, island: Island?) -> (title: String, go: () -> Void)? {
         if let level, Progression.isUnlocked(levelID: level.id, in: profile, catalog: model.catalog) {
-            return ("Play \(level.title)", { model.route = .play(level.id) })
+            return ("Play \(level.title)", { model.startLevel(level.id) })
         }
         if level == nil, let island, Progression.isUnlocked(island: island, in: profile, catalog: model.catalog) {
             return ("Visit \(island.name)", { model.route = .island(island.id) })

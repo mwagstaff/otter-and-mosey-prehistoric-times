@@ -36,41 +36,43 @@ struct IslandTheme {
         facingLeft ? Art.texture(name) : Art.mirroredTexture(name)
     }
     var collectible: String {
-        switch id { case "swamp": "🪷"; case "peaks": "🪶"; case "ridge": "💎"; default: "🥚" }
+        switch id { case "meadow": "🌼"; case "swamp": "🪷"; case "peaks": "🪶"; case "ridge": "💎"; case "rex": "🦴"; default: "🥚" }
     }
     var gateDecoration: String {
-        switch id { case "swamp": "🪷"; case "peaks": "🪶"; case "ridge": "🔥"; default: "🌿" }
+        switch id { case "meadow": "🌾"; case "swamp": "🪷"; case "peaks": "🪶"; case "ridge": "🔥"; case "rex": "🌋"; default: "🌿" }
     }
     var collectInstruction: String { "Tap them to collect them, or steer through them!" }
     var snack: String { "🍓" }
     var snackName: String { "berries" }
 
-    /// Hatchling Hollow and Three-Horn Meadow have their own art. The zones still to come borrow
-    /// art until they are built; while locked they are never played.
+    /// Each zone's own look: background, boss, the babies that hatch there, music and roar.
     static func island(_ id: String) -> IslandTheme {
-        let babies = ["reward_pet-pip", "reward_pet-nubbin", "icon_1f996"]
+        func zone(_ id: String, _ tint: String, _ ambient: Ambient, blooms: [String], babies: [String], boss: String,
+                  sleeps: Bool = true, roar: SFX, underwater: Bool = false) -> IslandTheme {
+            IslandTheme(id: id, tint: UIColor(hex: tint), ambient: ambient, blooms: blooms, container: "egg", friends: babies,
+                        music: "music_\(id)", underwater: underwater, background: "bg_\(id)", foreground: "fg_\(id)",
+                        guardian: "boss_\(boss)", guardianChase: "boss_\(boss)_chase", guardianHappy: "boss_\(boss)_happy",
+                        guardianSleep: sleeps ? "boss_\(boss)_sleep" : nil, roar: roar)
+        }
         switch id {
         case "meadow":
-            return IslandTheme(id: id, tint: UIColor(hex: "#F2A13C"), ambient: .sparkles, blooms: ["🌼", "🌸", "🌾", "🦋", "🍀"],
-                               container: "egg", friends: babies, music: "music_main", underwater: false,
-                               background: "bg_meadow", foreground: "fg_hollow", guardian: "boss_trevor", guardianChase: "boss_trevor_chase",
-                               guardianHappy: "boss_trevor_happy", guardianSleep: nil, roar: .roarTrevor)
-        case "swamp", "peaks", "ridge", "rex":
-            let look: (UIColor, Ambient, String, String, Bool) = switch id {
-            case "swamp": (UIColor(hex: "#3FA796"), .bubbles, "bay", "music_bay", true)
-            case "peaks": (UIColor(hex: "#8FA8FF"), .sparkles, "cloud", "music_cloud", false)
-            case "ridge": (UIColor(hex: "#E8643C"), .embers, "dragon", "music_dragon", false)
-            default: (UIColor(hex: "#9B5BD6"), .embers, "dragon", "music_dragon", false)
-            }
-            return IslandTheme(id: id, tint: look.0, ambient: look.1, blooms: ["🌿", "🥚", "🌼", "🦋", "🍃"],
-                               container: "egg", friends: babies, music: look.3, underwater: look.4,
-                               background: "bg_\(look.2)", foreground: "fg_\(look.2)", guardian: "boss_trevor", guardianChase: "boss_trevor_chase",
-                               guardianHappy: "boss_trevor_happy", guardianSleep: nil, roar: id == "rex" ? .roarRex : .roarTrevor)
+            return zone(id, "#F2A13C", .sparkles, blooms: ["🌼", "🌸", "🌾", "🦋", "🍀"], babies: ["reward_pet-nubbin"],
+                        boss: "trevor", roar: .roarTrevor)
+        case "swamp":
+            return zone(id, "#3FA796", .bubbles, blooms: ["🪷", "🌿", "🫧", "🐸", "🍃"], babies: ["reward_pet-spike"],
+                        boss: "steggy", roar: .roarSteggy, underwater: true)
+        case "peaks":
+            return zone(id, "#8FA8FF", .sparkles, blooms: ["🪶", "☁️", "🌼", "✨", "🍃"], babies: ["reward_pet-flap"],
+                        boss: "swoop", roar: .roarSwoop)
+        case "ridge":
+            return zone(id, "#E8643C", .embers, blooms: ["🪶", "🌵", "🌼", "✨", "🔥"], babies: ["reward_pet-scoot"],
+                        boss: "raptors", roar: .roarRaptors)
+        case "rex":
+            return zone(id, "#9B5BD6", .embers, blooms: ["🌿", "🦴", "🌋", "✨", "🍃"], babies: ["reward_pet-chomp"],
+                        boss: "rex", roar: .roarRex)
         default:
-            return IslandTheme(id: "hollow", tint: UIColor(hex: "#7BC86C"), ambient: .fireflies, blooms: ["🌿", "🥚", "🌼", "🦋", "🍃"],
-                               container: "egg", friends: babies, music: "music_hollow", underwater: false,
-                               background: "bg_hollow", foreground: "fg_hollow", guardian: "boss_maia", guardianChase: "boss_maia_chase",
-                               guardianHappy: "boss_maia_happy", guardianSleep: "boss_maia_sleep", roar: .roarMaia)
+            return zone("hollow", "#7BC86C", .fireflies, blooms: ["🌿", "🥚", "🌼", "🦋", "🍃"],
+                        babies: ["reward_pet-pip", "reward_pet-nubbin", "icon_1f996"], boss: "maia", roar: .roarMaia)
         }
     }
 

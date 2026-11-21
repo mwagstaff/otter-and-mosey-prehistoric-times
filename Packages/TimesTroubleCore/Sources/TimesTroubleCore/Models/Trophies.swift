@@ -18,7 +18,7 @@ public enum TrophyGroup: String, CaseIterable, Sendable {
 /// Lifetime counts that feed the milestone ladders. Each one is a number the cabinet can show
 /// as "486 of 500".
 public enum TrophyCounter: String, CaseIterable, Sendable {
-    case stars, pearls, answers, firstTry, streak, levels, friendship, days, crystals, lightning
+    case stars, pearls, answers, firstTry, streak, levels, friendship, days, crystals, lightning, songs
 
     public var unit: String {
         switch self {
@@ -32,6 +32,7 @@ public enum TrophyCounter: String, CaseIterable, Sendable {
         case .days: "days played"
         case .crystals: "machine parts"
         case .lightning: "lightning answers"
+        case .songs: "songs sung"
         }
     }
 }
@@ -46,6 +47,8 @@ public enum TrophyRule: Equatable, Sendable {
     case skill(Skill)
     case table(Int)
     case firstSteps, pets(Int), allPets, allHats, decorations(Int), allTreasures
+    /// Sing-along: sing a song through its fastest round; any gold record; every switched-on song sung.
+    case rexSpeed, goldRecord, songbook
     case comeback, neverGiveUp, pearlPerfect, hatTrick, oldFriends, backForMore, weekend, noHints, rainbowDay
 
     /// Won by one particular run rather than by something that stays true. These have to be
@@ -131,6 +134,7 @@ public enum Trophies {
         TrophyLadder(id: "friends", title: "Best Friends", counter: .friendship, rungs: [1, 10, 30]) { _ in "badge_friendship" },
         TrophyLadder(id: "days", title: "Explorer", counter: .days, rungs: [2, 5, 10, 20]) { _ in "badge_explorer" },
         TrophyLadder(id: "crystals", title: "Mechanic", counter: .crystals, rungs: [3, 6]) { "badge_crystal-\($0)" },
+        TrophyLadder(id: "songs", title: "Sing-Along Star", counter: .songs, rungs: [1, 5, 20]) { _ in "badge_sing" },
     ]
 
     /// Every times table has a skeleton in the Fossil Museum, and a learning trophy for finishing it.
@@ -174,6 +178,7 @@ public enum Trophies {
                 case .crystals: rung == 6 ? "Rebuild the whole Times Machine." : "Win back \(rung) Times Machine parts."
                 case .levels: "Finish \(rung) levels."
                 case .lightning: "Type \(rung) answers right in under \(Int(LearnerModel.lightningSeconds)) seconds."
+                case .songs: rung == 1 ? "Sing a times-table song at the campfire." : "Sing \(rung) times-table songs at the campfire."
                 default: "Collect \(rung) \(ladder.counter.unit)."
                 }
                 list.append(Trophy("\(ladder.id)-\(rung)", ladder.title, detail, group: .milestones, art: ladder.art(rung),
@@ -201,6 +206,11 @@ public enum Trophies {
             Trophy("hats-all", "Dress-up", "Try on every hat.", group: .collections, art: "badge_hats-all", rule: .allHats),
             Trophy("decorator", "Home Designer", "Put 8 decorations around Crash Camp.", group: .collections, art: "badge_decorator", rule: .decorations(8)),
             Trophy("treasure-all", "Treasure Hunter", "Collect every treasure in the game.", group: .collections, art: "badge_treasure-all", rule: .allTreasures),
+        ]
+        list += [
+            Trophy("rex-speed", "Rex Speed", "Sing a whole song right through its Rex-speed round.", group: .learning, art: "badge_sing", rule: .rexSpeed),
+            Trophy("gold-record", "Gold Record", "Earn a gold record by learning every fact in a times table.", group: .learning, art: "badge_sing", rule: .goldRecord),
+            Trophy("songbook", "Whole Songbook", "Sing every times-table song on the campfire shelf.", group: .learning, art: "badge_sing", rule: .songbook),
         ]
         let secrets: [(String, String, String, String, TrophyRule)] = [
             ("comeback", "Comeback Kid", "Get a question right after two wrong tries.", "Try, try and try again…", .comeback),
@@ -234,6 +244,7 @@ public enum Trophies {
         case .days: return profile.stats.playDays
         case .crystals: return profile.crystals.count
         case .lightning: return learner.lightningAnswers
+        case .songs: return profile.songs.values.reduce(0) { $0 + $1.sung }
         }
     }
 
@@ -249,6 +260,8 @@ public enum Trophies {
         case .allPets: (petCount(profile, catalog), catalog.rewards.filter { $0.kind == .pet }.count)
         case .allHats: (hatsTried(profile, catalog), catalog.rewards.filter { $0.kind == .accessory }.count)
         case let .decorations(needed): (min(profile.decorations.count, needed), needed)
+        case .songbook:
+            (SingAlong.shelf(profile.parent).filter { SingAlong.record($0, in: profile).sung > 0 }.count, SingAlong.shelf(profile.parent).count)
         case .allTreasures: (catalog.rewards.filter { profile.has($0.id) }.count, catalog.rewards.count)
         case let .champion(island):
             catalog.island(island).map { island in (island.levels.filter { profile.stars(for: $0.id) == 3 }.count, island.levels.count) }
@@ -286,6 +299,9 @@ public enum Trophies {
         case let .decorations(needed): return profile.decorations.count >= needed
         case .allTreasures: return catalog.rewards.allSatisfy { profile.has($0.id) }
         case .hatTrick: return profile.stats.hatStreak >= 3
+        case .rexSpeed: return profile.songs.values.contains { $0.bestRound >= SongRound.whole.rawValue && $0.sung > 0 }
+        case .goldRecord: return profile.songs.keys.contains { Int($0).map { SingAlong.level($0, in: profile) == .gold } ?? false }
+        case .songbook: return SingAlong.shelf(profile.parent).allSatisfy { SingAlong.record($0, in: profile).sung > 0 }
         case .backForMore: return profile.levels.values.contains { $0.plays >= 3 }
         case .weekend: return Set(profile.stats.weekendDays).isSuperset(of: [1, 7])
         case .rainbowDay: return profile.stats.trophyDayIslands.count >= 3
@@ -329,6 +345,8 @@ public enum Trophies {
             case .firstSteps: 0
             case let .superstar(level) where level == run.levelID: 1
             case let .flawless(level) where level == run.levelID: 1
+            // A sing-along's own trophies come first after a song.
+            case .count(.songs, _), .rexSpeed, .goldRecord, .songbook: run.levelID.isEmpty ? 1 : 4
             default: trophy.rule.isMoment ? 2 : 4
             }
         }
@@ -351,9 +369,18 @@ public enum Trophies {
                 profile.stats.trophyDay = today
                 profile.stats.trophyDayIslands = []
             }
-            if !profile.stats.trophyDayIslands.contains(run.islandID) { profile.stats.trophyDayIslands.append(run.islandID) }
+            if !run.islandID.isEmpty, !profile.stats.trophyDayIslands.contains(run.islandID) { profile.stats.trophyDayIslands.append(run.islandID) }
         }
         return given
+    }
+
+    /// Hands out trophies won away from a level (at the campfire sing-along), with the usual
+    /// per-level limit and waiting list. Trophies for a single level run can't be won here.
+    public static func awardOutsideLevel(_ profile: inout Profile, catalog: Catalog = .shared, now: Date = Date()) -> [Trophy] {
+        let run = TrophyRun(levelID: "", islandID: "", mode: .eggRescue,
+                            result: LevelResult(stars: 0, accuracy: 0, score: 0, bestCombo: 0, correctFirstTry: 0, total: 0),
+                            previousStars: 0, guardianAlreadyFriend: false)
+        return award(&profile, run: run, catalog: catalog, now: now)
     }
 
     /// How many trophies the player has, out of how many.

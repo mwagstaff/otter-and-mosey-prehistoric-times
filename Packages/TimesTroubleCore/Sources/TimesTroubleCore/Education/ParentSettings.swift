@@ -97,6 +97,12 @@ public struct ParentSettings: Codable, Equatable, Sendable {
     public var sessionMinutes = 0
     /// Optional speed bonuses. Off by default: nothing in the game requires speed.
     public var timedChallenges = false
+    /// How many rounds of each sing-along song, 1 to 3.
+    public var songRounds = 3
+    /// Each round of a song a little faster than the one before.
+    public var songSpeedUp = true
+    /// Every level opens with about a minute of its table's song.
+    public var levelSongs = true
 
     public init() {}
 
@@ -111,6 +117,9 @@ public struct ParentSettings: Codable, Equatable, Sendable {
         chasePace = c.value(.chasePace, default: .calm)
         sessionMinutes = c.value(.sessionMinutes, default: 0)
         timedChallenges = c.value(.timedChallenges, default: false)
+        songRounds = min(max(c.value(.songRounds, default: 3), 1), 3)
+        songSpeedUp = c.value(.songSpeedUp, default: true)
+        levelSongs = c.value(.levelSongs, default: true)
     }
 
     /// Switches to a year group's tables and focus.

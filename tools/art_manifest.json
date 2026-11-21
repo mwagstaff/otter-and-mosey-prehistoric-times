@@ -412,6 +412,288 @@
    "model": "gpt-image-2.5-sunburst",
    "quality": "high",
    "prompt": "This is Mosey the mosasaur. Draw exactly the same character (a boy): same ocean-blue body, pale-grey bobbly frills along back and side, turquoise belly, golden-amber eyes with no eyelashes, small neat white pointed teeth with slightly rounded tips peeking out along the edge of his upper jaw, four frill-edged flippers, tail fluke, nothing round his neck, same proportions and art style. One figure only. Head pointing to the right. New pose: has just finished a tasty snack: licking his lips with a little pink tongue, eyes closed blissfully, a contented happy smile, one flipper patting his tummy."
+  },
+  {
+   "name": "boss_trevor_sleep",
+   "refs": [
+    "tools/raw/boss_trevor.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same character and art style as the reference, same colours, markings and proportions, same size. One figure only. Keep facing LEFT exactly like the reference: head at the left end of the body, tail to the right, looking where it is going, never back over the shoulder. New pose: fast asleep lying down in the long grass, legs tucked under, head resting on the ground at the LEFT, eyes closed, mouth open in a big grumpy snore, the coiled copper spring still stuck on one horn. Cosy and funny."
+  },
+  {
+   "name": "boss_steggy",
+   "quality": "high",
+   "prompt": "A big funny video-game boss dinosaur, comical and lovable, never scary: rounded chunky shapes, big expressive eyes, no sharp claws on show. Whole body visible. Side view facing LEFT: head at the LEFT end of the body looking where it is going, never back over the shoulder, tail stretching out to the right. One figure only. Steggy, a proud, dramatic Stegosaurus who thinks she is very glamorous: soft teal-green skin with a pale mint belly, two rows of rounded rose-pink back plates, long eyelashes, a little smug smile, and exactly four rounded blunt spikes on the end of her tail. A small red three-bladed propeller with a brass hub is stuck on one of her tail spikes, spinning, which makes her tail wobble. She stands on all fours, head held high and haughty."
+  },
+  {
+   "name": "boss_steggy_chase",
+   "refs": [
+    "tools/raw/boss_steggy.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same character and art style as the reference, same colours, markings and proportions, same size. Keep facing LEFT exactly like the reference: head at the left end of the body, tail to the right, looking where it is going, never back over the shoulder. New pose: swinging her tail round in a big comic wobble, the red propeller spinning fast with little motion lines, one foot stamping, cross pouty face. Comical, never frightening."
+  },
+  {
+   "name": "boss_steggy_happy",
+   "refs": [
+    "tools/raw/boss_steggy.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same character and art style as the reference, same colours, markings and proportions, same size. Keep facing LEFT exactly like the reference: head at the left end of the body, tail to the right, looking where it is going, never back over the shoulder. The propeller is gone from her tail at last and she is delighted: big happy smile, eyes closed in a happy curve, striking a glamorous pose with one front foot lifted, little sparkles round her plates."
+  },
+  {
+   "name": "boss_steggy_sleep",
+   "refs": [
+    "tools/raw/boss_steggy.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same character and art style as the reference, same colours, markings and proportions, same size. Keep facing LEFT exactly like the reference: head at the left end of the body, tail to the right, looking where it is going, never back over the shoulder. New pose: fast asleep curled up in shallow swamp reeds, head resting at the LEFT, eyes closed, a dreamy snoring smile, the red propeller still on one tail spike, turning slowly. Cosy and funny."
+  },
+  {
+   "name": "boss_swoop",
+   "quality": "high",
+   "prompt": "A big funny video-game boss dinosaur, comical and lovable, never scary: rounded chunky shapes, big expressive eyes, no sharp claws on show. Whole body visible. Side view facing LEFT: head at the LEFT end of the body looking where it is going, never back over the shoulder, tail stretching out to the right. A group of exactly three flying reptiles, all airborne in mid-flight: cheeky Pteranodons flying together in a tight comic formation as one boss: the leader in front is bigger, with a long swept-back head crest, teal-blue leathery wings with pale tips, a cream belly and a long toothless beak holding a shiny brass bell by its loop; the two smaller ones fly just behind and above, grinning mischievously. Big expressive eyes, rounded friendly shapes, all three facing LEFT. ONLY these three small creatures and nothing else in the picture: no other dinosaur, no big animal underneath or behind them, no ground, no rocks, no plants.",
+   "note": "First take added an extra stegosaur-like dinosaur under the flock."
+  },
+  {
+   "name": "boss_swoop_chase",
+   "refs": [
+    "tools/raw/boss_swoop.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same character and art style as the reference, same colours, markings and proportions, same size. Keep facing LEFT exactly like the reference: head at the left end of the body, tail to the right, looking where it is going, never back over the shoulder. New pose: all three swooping down in a comic dive, wings swept back, the leader clutching the brass bell in its beak, cheeky grins, little wind lines. Comical, never frightening."
+  },
+  {
+   "name": "boss_swoop_happy",
+   "refs": [
+    "tools/raw/boss_swoop.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same character and art style as the reference, same colours, markings and proportions, same size. Keep facing LEFT exactly like the reference: head at the left end of the body, tail to the right, looking where it is going, never back over the shoulder. The bell is gone and all three are happy friends now: landed in a row, wings spread wide in a cheerful wave, big smiles, one giving the others a hug with a wing."
+  },
+  {
+   "name": "boss_swoop_sleep",
+   "refs": [
+    "tools/raw/boss_swoop.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same character and art style as the reference, same colours, markings and proportions, same size. Keep facing LEFT exactly like the reference: head at the left end of the body, tail to the right, looking where it is going, never back over the shoulder. New pose: all three fast asleep in a big round twiggy nest on a rocky ledge, wings folded like blankets, heads tucked, eyes closed, a little snore, the shiny brass bell resting in the middle of the nest. Cosy and funny."
+  },
+  {
+   "name": "boss_raptors",
+   "quality": "high",
+   "prompt": "A big funny video-game boss dinosaur, comical and lovable, never scary: rounded chunky shapes, big expressive eyes, no sharp claws on show. Whole body visible. Side view facing LEFT: head at the LEFT end of the body looking where it is going, never back over the shoulder, tail stretching out to the right. A pack of exactly three small, fluffy, feathery Velociraptors standing side by side on their own two feet as one boss, like mischievous angry chickens: sandy-orange bodies with soft brown stripes, fluffy feathered arms and tails with turquoise feather tips, big bright eyes, cheeky toothless grins, rounded blunt claws. The leader in front holds a big round brass dial with numbers in its feathery arms; the other two jump and flap behind, wanting it. ONLY these three small creatures and nothing else in the picture: no other dinosaur, no big animal underneath or behind them, no ground, no rocks, no plants.",
+   "note": "First take had them riding a big blue dinosaur."
+  },
+  {
+   "name": "boss_raptors_chase",
+   "refs": [
+    "tools/raw/boss_raptors.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same character and art style as the reference, same colours, markings and proportions, same size. Keep facing LEFT exactly like the reference: head at the left end of the body, tail to the right, looking where it is going, never back over the shoulder. New pose: all three running fast in a comic keep-away game, one tossing the brass dial to another, feathers flying, legs a blur, cheeky grins. Comical, never frightening."
+  },
+  {
+   "name": "boss_raptors_happy",
+   "refs": [
+    "tools/raw/boss_raptors.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same character and art style as the reference, same colours, markings and proportions, same size. Keep facing LEFT exactly like the reference: head at the left end of the body, tail to the right, looking where it is going, never back over the shoulder. The dial is gone and all three are happy friends now: hopping up and down in a happy little dance, feathery arms flapping, big beaming smiles, one doing a twirl."
+  },
+  {
+   "name": "boss_raptors_sleep",
+   "refs": [
+    "tools/raw/boss_raptors.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same character and art style as the reference, same colours, markings and proportions, same size. Keep facing LEFT exactly like the reference: head at the left end of the body, tail to the right, looking where it is going, never back over the shoulder. New pose: all three fast asleep in a fluffy feathery heap on a warm rock, curled up like chicks, eyes closed, little snores, the big brass dial tucked under the leader's chin. Cosy and funny."
+  },
+  {
+   "name": "boss_rex",
+   "quality": "high",
+   "prompt": "A big funny video-game boss dinosaur, comical and lovable, never scary: rounded chunky shapes, big expressive eyes, no sharp claws on show. Whole body visible. Side view facing LEFT: head at the LEFT end of the body looking where it is going, never back over the shoulder, tail stretching out to the right. One figure only. Rex, a huge Tyrannosaurus rex who is big and loud but secretly a softie: rounded chunky body, deep moss-green skin with darker green stripes on his back, a pale yellow belly, a big round head with a wide grin of rounded blunt teeth, small friendly eyes with bushy brows, comically tiny arms. A carved wooden cuckoo-clock box with a softly glowing rainbow window is hooked on his back between his shoulders, just out of reach of his tiny arms. He stands on two big legs, tail out behind for balance."
+  },
+  {
+   "name": "boss_rex_chase",
+   "refs": [
+    "tools/raw/boss_rex.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same character and art style as the reference, same colours, markings and proportions, same size. Keep facing LEFT exactly like the reference: head at the left end of the body, tail to the right, looking where it is going, never back over the shoulder. New pose: stomping forward mid-ROAR with his mouth wide open (rounded blunt teeth, no tongue gore), tiny arms flailing, little dust clouds round his feet, the wooden clock box still hooked on his back. Big and loud but comical, never frightening."
+  },
+  {
+   "name": "boss_rex_happy",
+   "refs": [
+    "tools/raw/boss_rex.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same character and art style as the reference, same colours, markings and proportions, same size. Keep facing LEFT exactly like the reference: head at the left end of the body, tail to the right, looking where it is going, never back over the shoulder. The clock box is gone from his back and he is blissfully happy: eyes closed, huge relieved smile, leaning sideways having the best back scratch of his life, one leg kicking like a happy dog, tiny arms clasped."
+  },
+  {
+   "name": "boss_rex_sleep",
+   "refs": [
+    "tools/raw/boss_rex.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same character and art style as the reference, same colours, markings and proportions, same size. Keep facing LEFT exactly like the reference: head at the left end of the body, tail to the right, looking where it is going, never back over the shoulder. New pose: fast asleep lying on his tummy among tall ferns, chin resting on the ground at the LEFT, eyes closed, a huge rumbly snore, the wooden clock box still hooked on his back rising and falling. Cosy and funny."
+  },
+  {
+   "name": "bg_swamp",
+   "quality": "high",
+   "size": "1536x1024",
+   "background": "opaque",
+   "style": "scene",
+   "prompt": "Wide side-view game background. Keep the middle band of the picture open and uncluttered for gameplay, with the ground along the bottom fifth. Spiky Swamp, in the time of the dinosaurs: a warm, misty prehistoric swamp of green water with lily pads, giant ferns, cycad palms, mossy logs, reeds and big rounded rocks, soft shafts of sunlight through the haze. Cosy and mysterious, never gloomy."
+  },
+  {
+   "name": "bg_peaks",
+   "quality": "high",
+   "size": "1536x1024",
+   "background": "opaque",
+   "style": "scene",
+   "prompt": "Wide side-view game background. Keep the middle band of the picture open and uncluttered for gameplay, with the ground along the bottom fifth. Pterodactyl Peaks, in the time of the dinosaurs: tall rocky sandstone pinnacles and cliffs high above the clouds, with grassy ledges, twiggy nests on the tops, small waterfalls, a bright blue sky with puffy clouds. Breezy and exciting."
+  },
+  {
+   "name": "bg_ridge",
+   "quality": "high",
+   "size": "1536x1024",
+   "background": "opaque",
+   "style": "scene",
+   "prompt": "Wide side-view game background. Keep the middle band of the picture open and uncluttered for gameplay, with the ground along the bottom fifth. Raptor Ridge, in the time of the dinosaurs: a warm rocky ridge of orange and red sandstone with dry ferns, scrubby cycads, scattered boulders and a friendly smoking volcano far away, golden late-afternoon light. Adventurous, never scary."
+  },
+  {
+   "name": "bg_rex",
+   "quality": "high",
+   "size": "1536x1024",
+   "background": "opaque",
+   "style": "scene",
+   "prompt": "Wide side-view game background. Keep the middle band of the picture open and uncluttered for gameplay, with the ground along the bottom fifth. T-Rex Territory, in the time of the dinosaurs: a vast valley of giant ferns and towering conifer trees, huge footprints in the mud, a rumbling volcano on the horizon with a gentle plume of smoke, a dramatic purple and orange sunset sky. Epic but friendly, never scary."
+  },
+  {
+   "name": "fg_meadow",
+   "quality": "high",
+   "size": "1536x1024",
+   "prompt": "A foreground layer for a side-scrolling game, drawn as an isolated strip: content ONLY along the bottom quarter of the picture, spanning the full width edge to edge; the upper three quarters are completely empty. Slightly darker and softer than a normal sprite because it sits closest to the camera. The strip shows long swaying prehistoric grass, wildflowers, small rounded rocks and a few clover clumps."
+  },
+  {
+   "name": "fg_swamp",
+   "quality": "high",
+   "size": "1536x1024",
+   "prompt": "A foreground layer for a side-scrolling game, drawn as an isolated strip: content ONLY along the bottom quarter of the picture, spanning the full width edge to edge; the upper three quarters are completely empty. Slightly darker and softer than a normal sprite because it sits closest to the camera. The strip shows muddy reeds, lily pads, mossy logs and curly fern fronds."
+  },
+  {
+   "name": "fg_peaks",
+   "quality": "high",
+   "size": "1536x1024",
+   "prompt": "A foreground layer for a side-scrolling game, drawn as an isolated strip: content ONLY along the bottom quarter of the picture, spanning the full width edge to edge; the upper three quarters are completely empty. Slightly darker and softer than a normal sprite because it sits closest to the camera. The strip shows rocky ledges, tufts of mountain grass, small twigs and a few soft feathers."
+  },
+  {
+   "name": "fg_ridge",
+   "quality": "high",
+   "size": "1536x1024",
+   "prompt": "A foreground layer for a side-scrolling game, drawn as an isolated strip: content ONLY along the bottom quarter of the picture, spanning the full width edge to edge; the upper three quarters are completely empty. Slightly darker and softer than a normal sprite because it sits closest to the camera. The strip shows warm orange rocks, dry ferns, scrubby cycad leaves and a few pebbles. The empty part must be fully transparent, with no haze, mist, fog, dust or white glow anywhere.",
+   "note": "First take had a white haze band."
+  },
+  {
+   "name": "fg_rex",
+   "quality": "high",
+   "size": "1536x1024",
+   "prompt": "A foreground layer for a side-scrolling game, drawn as an isolated strip: content ONLY along the bottom quarter of the picture, spanning the full width edge to edge; the upper three quarters are completely empty. Slightly darker and softer than a normal sprite because it sits closest to the camera. The strip shows giant fern fronds, mud with a huge three-toed footprint, and mossy boulders."
+  },
+  {
+   "name": "reward_pet-spike",
+   "style": "icon",
+   "prompt": "Spike, a baby Stegosaurus: teal-green with a pale mint tummy, two rows of small rounded rose-pink back plates, four soft blunt tail spikes, big happy eyes."
+  },
+  {
+   "name": "reward_pet-flap",
+   "style": "icon",
+   "prompt": "Flap, a baby Pteranodon (a pterosaur): sky-blue leathery wings with pale tips spread in a wave, a cream tummy, a little swept-back head crest, a short toothless yellow beak, big happy eyes."
+  },
+  {
+   "name": "reward_pet-scoot",
+   "style": "icon",
+   "prompt": "Scoot, a baby Velociraptor: a fluffy, feathery chick-like little raptor, sandy-orange with soft brown stripes and turquoise feather tips on its arms and tail, big bright eyes, a cheeky toothless grin."
+  },
+  {
+   "name": "reward_pet-chomp",
+   "style": "icon",
+   "prompt": "Chomp, a baby Tyrannosaurus rex: moss-green with a pale yellow tummy, a big round head, a wide toothless grin, comically tiny arms waving, big happy eyes."
+  },
+  {
+   "name": "bg_ending",
+   "refs": [
+    "tools/raw/boss_steggy_happy.png",
+    "tools/raw/otter_ref.png",
+    "tools/raw/mosey_ref.png",
+    "tools/raw/machine_whole.png",
+    "tools/raw/bg_camp.png",
+    "tools/raw/boss_maia_happy.png",
+    "tools/raw/boss_trevor_happy.png",
+    "tools/raw/boss_swoop_happy.png",
+    "tools/raw/boss_raptors_happy.png",
+    "tools/raw/boss_rex_happy.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "size": "1536x1024",
+   "background": "opaque",
+   "style": "scene_with_characters",
+   "prompt": "A joyful group photo for the end of a children's game, using exactly the characters and art style of the references. Most important: Steggy, the teal-green Stegosaurus with rose-pink back plates from the FIRST reference, stands proudly on the far LEFT of the picture, whole body visible, smiling at the camera. Setting: the Crash Camp clearing from the background reference, sunny. In the middle stands the finished time machine (the bathtub with clock, cog, spring, propeller, bell, dial and glowing clock box). In front of it, Otter (the brown otter with the teal scarf) and Mosey (the blue mosasaur) grin and wave. Also smiling at the camera: the big friendly green T-Rex at the back, tiny arms waving; the sage-green duck-billed Maiasaura; the orange Triceratops on the right; three blue Pteranodons flying overhead; and three fluffy orange raptors hopping at the front right. Twelve characters in all: Steggy, Maiasaura, Triceratops, T-Rex, three Pteranodons, three raptors, Otter and Mosey. Everyone fits in the picture, nobody cropped. Warm and happy, like a holiday snapshot. No text.",
+   "note": "Earlier takes left out the Stegosaurus; she is now the first reference and placed explicitly."
+  },
+  {
+   "name": "otter_sing",
+   "refs": [
+    "tools/raw/otter_ref.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "This is Otter. Draw exactly the same character: same chocolate-brown curly fur, cream muzzle and tummy, big black nose, whiskers, teal scarf, same proportions and art style. One figure only. New pose: singing his heart out at a campfire sing-along: mouth wide open in a big happy song, eyes closed with joy, one paw raised high conducting the beat, tail swishing. No musical notes, no instruments."
+  },
+  {
+   "name": "otter_listen",
+   "refs": [
+    "tools/raw/otter_ref.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "This is Otter. Draw exactly the same character: same chocolate-brown curly fur, cream muzzle and tummy, big black nose, whiskers, teal scarf, same proportions and art style. One figure only. New pose: leaning forward and cupping one paw behind his ear as if to say 'I can't hear you, your turn to sing!', eyebrows raised, a cheeky encouraging smile."
+  },
+  {
+   "name": "mosey_sing",
+   "refs": [
+    "tools/raw/mosey_ref.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "This is Mosey the mosasaur. Draw exactly the same character (a boy): same ocean-blue body, pale-grey bobbly frills along back and side, turquoise belly, golden-amber eyes with no eyelashes, small neat white pointed teeth with slightly rounded tips peeking out along the edge of his upper jaw, four frill-edged flippers, tail fluke, nothing round his neck, same proportions and art style. One figure only. Head pointing to the right. New pose: singing happily, mouth open wide in a joyful song, head tilted back, front flippers spread wide as if swaying to music. No musical notes, no instruments."
+  },
+  {
+   "name": "badge_sing",
+   "style": "badge",
+   "prompt": "A round reward sticker for a children's times-tables game: a cheerful little campfire with three golden musical notes floating up from its flames like sparks, on a warm sunset-orange disc with a chunky cream rim."
+  },
+  {
+   "name": "camp_band",
+   "style": "sprite",
+   "quality": "high",
+   "prompt": "A cheerful prehistoric campfire band stand for a children's game: a big hollow-log drum with a stretched hide top and two bone drumsticks resting on it, a little wooden ukulele leaning against it, and a pair of gourd maracas beside it, all on a small patch of grass, seen from slightly above and to the front."
   }
  ]
 }

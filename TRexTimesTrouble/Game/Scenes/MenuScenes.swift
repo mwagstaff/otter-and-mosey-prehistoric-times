@@ -74,6 +74,23 @@ final class TitleScene: CoverScene {
 
     init() { super.init(background: "bg_title") }
 
+    private var wildlife: IslandWildlife?
+
+    func setSceneryMotion(_ enabled: Bool) {
+        cover.shader = enabled ? SKShader(fileNamed: "RainbowIslandWater.fsh") : nil
+        cover.shader?.uniforms = [SKUniform(name: "u_saturation", float: 1)]
+        wildlife?.removeFromParent()
+        wildlife = nil
+        if enabled {
+            let layer = IslandWildlife()
+            layer.zPosition = 1
+            cover.addChild(layer)
+            layer.fit(to: cover)
+            layer.start()
+            wildlife = layer
+        }
+    }
+
     override func build() {
         addChild(Effects.ambient(.sparkles, size: size))
         addChild(otter)
@@ -89,6 +106,7 @@ final class TitleScene: CoverScene {
     }
 
     override func layout() {
+        wildlife?.fit(to: cover)
         otter.resize(min(play.height * 0.5, 300))
         mosey.resize(min(play.height * 0.72, 420))
         otter.position = CGPoint(x: play.minX + play.width * 0.13, y: play.minY + play.height * 0.04)
@@ -104,6 +122,7 @@ final class TitleScene: CoverScene {
             Haptics.shared.tap()
             return
         }
+        if let wildlife, wildlife.greet(at: wildlife.convert(point, from: self)) { return }
         Effects.burst(at: point, colour: .white, count: 10, in: self)
     }
 }
