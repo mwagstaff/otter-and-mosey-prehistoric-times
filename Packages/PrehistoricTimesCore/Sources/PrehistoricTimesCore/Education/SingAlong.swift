@@ -461,14 +461,17 @@ public enum SingAlong {
         ZonePlan.ordered(profile.parent.usableTables).first { friendTier($0, in: profile) == .unmet }
     }
 
-    /// The song a level opens with, or nil when the grown-up has switched level songs off. The
-    /// table is the level's own (if switched on) or one of the zone's, taking turns level by level.
+    /// The song a level opens with, or nil when there isn't one. By default only the first level
+    /// of each zone opens with a song, and only until it has been cleared; a grown-up can choose
+    /// every level, or none. The table is the level's own (if switched on) or one of the zone's,
+    /// taking turns level by level.
     /// The piece sung moves on as the child does: each round in turn, then filling the ladder,
     /// then a mix of the fastest round, the shuffle challenge and the ladder, so nothing gets stale.
     public static func levelSong(_ levelID: String, profile: Profile, catalog: Catalog = .shared) -> LevelSong? {
-        guard profile.parent.levelSongs, let island = catalog.island(containing: levelID),
+        guard profile.parent.levelSongs != .never, let island = catalog.island(containing: levelID),
               let zone = catalog.islands.firstIndex(where: { $0.id == island.id }),
               let index = island.levels.firstIndex(where: { $0.id == levelID }) else { return nil }
+        if profile.parent.levelSongs == .zoneOpeners, index != 0 || profile.stars(for: levelID) > 0 { return nil }
         let settings = profile.parent
         let table: Int
         if let own = island.levels[index].table, settings.usableTables.contains(own) {

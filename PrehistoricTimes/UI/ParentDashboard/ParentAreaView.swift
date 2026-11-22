@@ -373,7 +373,7 @@ struct ParentDashboardView: View {
     }
 }
 
-let learningHelp = "Year groups set up the tables in one tap; changing a table makes them custom. Starred focus tables come up most and the other switched-on tables keep coming back for review. \"Multiply and divide by\" picks the other number: switch off × 11 and × 12 to keep things gentler. Adaptive answers let a child pick from three while a fact is new and type it once it's getting there, because typing an answer from memory builds recall. Chases (in the dinosaur levels): calm dinosaurs only get closer after a wrong answer, and no level can ever be failed. Timed bonus points only add extra score for quick answers; nothing in the adventure ever runs out of time. Times Tables Check practice adds a button at Crash Camp for 25 questions with 6 seconds each, like the Year 4 Multiplication Tables Check; scores appear in the report below. The Raptor Race (60 seconds against your own best) opens after Raptor Ridge."
+let learningHelp = "Year groups set up the tables in one tap; changing a table makes them custom. Starred focus tables come up most and the other switched-on tables keep coming back for review. \"Multiply and divide by\" picks the other number: switch off × 11 and × 12 to keep things gentler. Adaptive answers let a child pick from three while a fact is new and type it once it's getting there, because typing an answer from memory builds recall. Chases (in the dinosaur levels): calm dinosaurs only get closer after a wrong answer, and no level can ever be failed. Timed bonus points only add extra score for quick answers; nothing in the adventure ever runs out of time. Times Tables Check practice adds a button at Crash Camp for 25 questions with 6 seconds each, like the Year 4 Multiplication Tables Check; scores appear in the report below. The Raptor Race (60 seconds against your own best) opens after Raptor Ridge. A short times-table song opens the first level of each zone, the first time it is played; choose every level for more singing, or never. Every song is always on the campfire shelf."
 
 /// Saves a change to one player's learning settings straight away.
 private func parentBinding(_ profile: Profile, _ model: AppModel) -> Binding<ParentSettings> {
@@ -495,7 +495,9 @@ struct PlaySettingsRows: View {
             Text("3 (and sing it all)").tag(3)
         }
         Toggle("Sing-along gets faster each round", isOn: parent.songSpeedUp)
-        Toggle("A times-table song before every level", isOn: parent.levelSongs)
+        Picker("Times-table song before a level", selection: parent.levelSongs) {
+            ForEach(LevelSongs.allCases, id: \.self) { Text($0.title).tag($0) }
+        }
     }
 }
 

@@ -167,6 +167,13 @@ nonisolated final class PlaythroughTests: XCTestCase {
         continueAfterFailure = false
         XCUIDevice.shared.orientation = .landscapeLeft
         let app = XCUIApplication()
+        // A brand-new player: only a zone's first level, not yet cleared, opens with a song.
+        var save = SaveFile()
+        let profile = Profile(nickname: "Singer")
+        save.profiles = [profile]
+        save.activeProfileID = profile.id
+        app.launchEnvironment["CAMP_TEST_ID"] = UUID().uuidString
+        app.launchEnvironment["CAMP_TEST_SAVE"] = try SaveMigrator.encode(save).base64EncodedString()
         app.launchArguments = ["-debugRoute", "levelsong:hollow-1", "-debugShort", "-debugAutomation"]
         app.launch()
         defer { app.terminate() }

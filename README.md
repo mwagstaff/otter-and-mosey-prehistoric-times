@@ -36,8 +36,9 @@ What plays today:
   `PrehistoricTimesCore/Education`.
 - **Campfire Sing-Along:** Otter and Mosey chant a times table over a campfire beat, three rounds
   that get faster and leave more for the child to sing, then "Fill the ladder" (the table typed in
-  order) and an optional shuffle challenge. Every level opens with about a minute of its table's
-  song, moving on level by level (each round in turn, then the ladder, then a mix). Each song has
+  order) and an optional shuffle challenge. The first level of each zone opens with about a minute
+  of its table's song the first time it is played (a grown-up can choose every level, or none),
+  moving on song by song (each round in turn, then the ladder, then a mix). Each song has
   its own baby dinosaur musician to meet, who sparkles and then wins a crown as the song is sung
   again. Baby dinosaurs
   and friends join in, one per line sung and per right answer. A record for each table on the song

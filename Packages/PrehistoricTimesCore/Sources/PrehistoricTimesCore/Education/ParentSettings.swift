@@ -77,6 +77,24 @@ public enum ChasePace: String, Codable, CaseIterable, Sendable {
     }
 }
 
+/// When a level opens with about a minute of its times-table song.
+public enum LevelSongs: String, Codable, CaseIterable, Sendable {
+    /// Only the first level of each zone, the first time it is played: six songs in the adventure.
+    case zoneOpeners
+    /// Every level, every time it is started from the zone.
+    case everyLevel
+    /// None: songs only on the campfire shelf.
+    case never
+
+    public var title: String {
+        switch self {
+        case .zoneOpeners: "First level of each zone (recommended)"
+        case .everyLevel: "Every level"
+        case .never: "Never"
+        }
+    }
+}
+
 /// Parent-controlled limits on what a session may ask.
 public struct ParentSettings: Codable, Equatable, Sendable {
     public static let allTables = Array(1...12)
@@ -101,8 +119,8 @@ public struct ParentSettings: Codable, Equatable, Sendable {
     public var songRounds = 3
     /// Each round of a song a little faster than the one before.
     public var songSpeedUp = true
-    /// Every level opens with about a minute of its table's song.
-    public var levelSongs = true
+    /// Which levels open with about a minute of their table's song.
+    public var levelSongs = LevelSongs.zoneOpeners
     /// Times Tables Check practice at Crash Camp: 25 questions, 6 seconds each, like the Year 4 check.
     public var mtcPractice = false
 
@@ -121,7 +139,13 @@ public struct ParentSettings: Codable, Equatable, Sendable {
         timedChallenges = c.value(.timedChallenges, default: false)
         songRounds = min(max(c.value(.songRounds, default: 3), 1), 3)
         songSpeedUp = c.value(.songSpeedUp, default: true)
-        levelSongs = c.value(.levelSongs, default: true)
+        // Older saves kept an on/off switch: off stays off, and on becomes the zone openers
+        // (a song before every level turned out to be too many).
+        if let old = try? c.decode(Bool.self, forKey: .levelSongs) {
+            levelSongs = old ? .zoneOpeners : .never
+        } else {
+            levelSongs = c.value(.levelSongs, default: .zoneOpeners)
+        }
         mtcPractice = c.value(.mtcPractice, default: false)
     }
 

@@ -176,8 +176,20 @@ import Testing
         #expect(SingAlong.nextUp(profile) == 10, "the easiest one still to sing is suggested")
     }
 
-    @Test func everyLevelOpensWithItsTablesSong() {
+    @Test func onlyEachZonesFirstLevelOpensWithASongByDefault() {
         var profile = Profile(nickname: "Sky")
+        let catalog = Catalog.shared
+        #expect(profile.parent.levelSongs == .zoneOpeners)
+        let opening = catalog.allLevels.filter { SingAlong.levelSong($0.id, profile: profile) != nil }.map(\.id)
+        #expect(opening == catalog.islands.map { $0.levels[0].id }, "six songs in the whole adventure")
+        #expect(SingAlong.levelSong("hollow-1", profile: profile) == LevelSong(table: 10, segment: .round(.together)))
+        profile.levels["hollow-1", default: LevelRecord()].stars = 2
+        #expect(SingAlong.levelSong("hollow-1", profile: profile) == nil, "no song when replaying a cleared level")
+    }
+
+    @Test func everyLevelOpensWithItsTablesSongWhenChosen() {
+        var profile = Profile(nickname: "Sky")
+        profile.parent.levelSongs = .everyLevel
         let catalog = Catalog.shared
         for level in catalog.allLevels { #expect(SingAlong.levelSong(level.id, profile: profile) != nil, "\(level.id)") }
         // Hatchling Hollow's tables (10, 2, 5) take turns; Counting Stones in the meadow sings its own 3s.
@@ -185,8 +197,20 @@ import Testing
         #expect(SingAlong.levelSong("hollow-2", profile: profile)?.table == 2)
         #expect(SingAlong.levelSong("hollow-4", profile: profile)?.table == 10)
         #expect(SingAlong.levelSong("meadow-2", profile: profile)?.table == 3)
-        profile.parent.levelSongs = false
+        profile.parent.levelSongs = .never
         #expect(SingAlong.levelSong("hollow-1", profile: profile) == nil)
+    }
+
+    @Test func theOldOnOffSwitchCarriesOver() throws {
+        for (old, new) in [(true, LevelSongs.zoneOpeners), (false, .never)] {
+            var json = try JSONSerialization.jsonObject(with: JSONEncoder().encode(ParentSettings())) as! [String: Any]
+            json["levelSongs"] = old
+            let settings = try JSONDecoder().decode(ParentSettings.self, from: JSONSerialization.data(withJSONObject: json))
+            #expect(settings.levelSongs == new)
+        }
+        var settings = ParentSettings()
+        settings.levelSongs = .everyLevel
+        #expect(try JSONDecoder().decode(ParentSettings.self, from: JSONEncoder().encode(settings)).levelSongs == .everyLevel)
     }
 
     @Test func theSongMovesOnLevelByLevel() {

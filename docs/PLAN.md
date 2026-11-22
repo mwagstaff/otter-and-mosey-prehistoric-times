@@ -532,14 +532,16 @@ choices are confirmed (section 13, items 5–10). Mock-ups, made from the game's
   as the child likes. A record is black until the song has been sung and its quiz finished, then
   silver, then gold once the table's skeleton in the Fossil Museum is complete (every fact secure),
   so the shelf and the museum always agree. It shows the best quiz stars.
-- **A song before every level** (changed from zone warm-ups after play-testing, 21 Nov 2026).
-  Each level opens with about a minute of its table's song: the level's own table if it has one,
+- **A song before the first level of each zone** (21 Nov 2026 every level had one; on 22 Nov
+  that proved too many, so by default only each zone's first level opens with a song, and only
+  until it is cleared: six in the whole adventure). A grown-up can choose every level, or never.
+  The song is about a minute of its table's song: the level's own table if it has one,
   otherwise the zone's focus tables taking turns level by level. What is sung moves on as the
   child does: round 1, then round 2, then Rex speed, then filling the ladder, then the fastest
   round, the shuffle challenge and the ladder in turn (`SingAlong.nextSegment`). A start card says
   what's coming ("Warm-up: the 2s song · Sing with us! · Then on to Fern Dash"); afterwards, "On to
-  Fern Dash!". Unstarred and can't be failed; a Skip button appears once the level has stars. A
-  grown-up can switch level songs off. Play-testing from the grown-ups' area skips them.
+  Fern Dash!". Unstarred and can't be failed; there is no Skip (removed 22 Nov 2026).
+  Play-testing from the grown-ups' area skips them.
 - **Crash Camp:** a campfire band (log drum, ukulele, maracas) stands on the dirt beside the fire,
   a fixed obstacle the pets walk round, and opens the shelf. The shelf lists the songs in number
   order; "Next up!" marks the easiest one whose friend hasn't been met.
