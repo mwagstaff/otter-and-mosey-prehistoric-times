@@ -1,7 +1,7 @@
 import Foundation
 
 public enum GameMode: String, Codable, CaseIterable, Sendable {
-    case mathsSplash, bridgeBuilder, eggRescue, guardian, dinoDash, tiptoe
+    case mathsSplash, bridgeBuilder, eggRescue, guardian, dinoDash, tiptoe, skySnatch
 
     public var title: String {
         switch self {
@@ -11,6 +11,7 @@ public enum GameMode: String, Codable, CaseIterable, Sendable {
         case .guardian: "Big Escape"
         case .dinoDash: "Dino Dash"
         case .tiptoe: "Tiptoe Past"
+        case .skySnatch: "Sky Snatch"
         }
     }
 }
@@ -109,6 +110,8 @@ public struct LevelDef: Codable, Equatable, Identifiable, Sendable {
     /// The one times table this level's story is about ("the stones count up in threes"). When
     /// the grown-up has it switched on, every question in the level uses it.
     public var table: Int? = nil
+    /// A Dino Fact card, read by the narrator the first time the level is cleared.
+    public var fact: DialogueLine? = nil
 }
 
 public struct GuardianDef: Codable, Equatable, Sendable {
@@ -249,6 +252,11 @@ public struct Catalog: Codable, Sendable {
 
     /// Decorations everyone starts with or earns from star totals: (stars needed, reward id).
     public static let starDecorations: [(stars: Int, reward: String)] = [
-        (0, "deco-palm"), (6, "deco-fountain"), (20, "deco-castle"), (45, "deco-tent"),
+        (0, "deco-palm"), (6, "deco-fountain"), (20, "deco-volcano"), (45, "deco-tent"), (70, "deco-skeleton"),
     ]
+
+    /// The Dino Fact cards: one per level that has a fact, collected by clearing the level.
+    public var factCards: [(level: LevelDef, fact: DialogueLine)] {
+        allLevels.compactMap { level in level.fact.map { (level, $0) } }
+    }
 }

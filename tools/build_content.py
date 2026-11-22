@@ -62,6 +62,9 @@ collect("intro", source.INTRO + source.INTRO_AFTER)
 collect("workshop", source.WORKSHOP["intro"] + source.WORKSHOP["done"])
 collect("singalong", [line for lines in source.SINGALONG.values() for line in lines])
 collect("help", source.ASK_GROWN_UP)
+for island in source.ISLANDS:
+    for l in island["levels"]:
+        if l.get("fact"): collect("facts", [l["fact"]])
 # Zones still to come keep placeholder lines, which are never recorded.
 ready = [island for island in source.ISLANDS if island.get("ready", True)]
 for island in ready:

@@ -43,7 +43,8 @@
       "m:You do have the right hair."
      ],
      "reward": "pet-pip",
-     "blurb": "Hatch the baby dinosaurs"
+     "blurb": "Hatch the baby dinosaurs",
+     "fact": "n:Maiasaura means good mother lizard. Scientists found whole nesting grounds full of its eggs and babies."
     },
     {
      "id": "hollow-2",
@@ -63,7 +64,8 @@
       "m:She's gone back to sit on something shiny."
      ],
      "reward": "hat-goggles",
-     "blurb": "Dash through the ferns"
+     "blurb": "Dash through the ferns",
+     "fact": "n:Ferns grew on Earth long before the dinosaurs, and lots of plant-eating dinosaurs munched them."
     },
     {
      "id": "hollow-3",
@@ -83,7 +85,8 @@
       "o:Dry feet! Well, mostly."
      ],
      "reward": "deco-campfire",
-     "blurb": "Hop across the stream"
+     "blurb": "Hop across the stream",
+     "fact": "n:Dinosaur footprints can turn to stone. Scientists use them to work out how fast dinosaurs walked."
     },
     {
      "id": "hollow-4",
@@ -104,7 +107,8 @@
       "o:Then we'll have to be brave. And quick."
      ],
      "reward": "pet-nubbin",
-     "blurb": "Sneak past a sleeping dinosaur"
+     "blurb": "Sneak past a sleeping dinosaur",
+     "fact": "n:Dinosaur eggs had hard shells, like birds' eggs. Some were round, and some were long like a rugby ball."
     },
     {
      "id": "hollow-5",
@@ -124,8 +128,9 @@
       "o:One part back. Five to go!",
       "m:And not a single egg was harmed."
      ],
-     "reward": null,
-     "blurb": "Escape Mama Maia and win back the Cog"
+     "reward": "hat-bow",
+     "blurb": "Escape Mama Maia and win back the Cog",
+     "fact": "n:Maiasaura parents probably brought food to their babies in the nest, just like birds do today."
     }
    ]
   },
@@ -172,7 +177,8 @@
       "m:And to grumble at it."
      ],
      "reward": "pet-chomp",
-     "blurb": "Gallop through the long grass"
+     "blurb": "Gallop through the long grass",
+     "fact": "n:Triceratops means three-horned face. Its two big horns could be longer than a grown-up's arm."
     },
     {
      "id": "meadow-2",
@@ -193,7 +199,8 @@
      ],
      "reward": "hat-leaf",
      "blurb": "Hop across in threes",
-     "table": 3
+     "table": 3,
+     "fact": "n:Triceratops had a huge bony frill on its neck. Its whole head could be more than two metres long."
     },
     {
      "id": "meadow-3",
@@ -215,7 +222,8 @@
       "m:Then let's count them in threes."
      ],
      "reward": "deco-flowers",
-     "blurb": "Hatch the baby triceratops"
+     "blurb": "Hatch the baby triceratops",
+     "fact": "n:Triceratops had hundreds of teeth packed into rows, for chopping up tough plants."
     },
     {
      "id": "meadow-4",
@@ -235,8 +243,9 @@
       "o:I can't reach it without waking him.",
       "m:Then we'll have to try when he's awake. Gulp."
      ],
-     "reward": "pet-butterfly",
-     "blurb": "Sneak past a snoring triceratops"
+     "reward": "pet-stretch",
+     "blurb": "Sneak past a snoring triceratops",
+     "fact": "n:Triceratops lived at the very end of the time of the dinosaurs, alongside T-Rex."
     },
     {
      "id": "meadow-5",
@@ -258,7 +267,8 @@
       "m:And Trevor even gave us a smile."
      ],
      "reward": null,
-     "blurb": "Escape Trevor and win back the Spring"
+     "blurb": "Escape Trevor and win back the Spring",
+     "fact": "n:A grown-up Triceratops was as heavy as an elephant, or even heavier."
     }
    ]
   },
@@ -306,7 +316,8 @@
       "m:I'm a mosasaur. It's what we do."
      ],
      "reward": "pet-spike",
-     "blurb": "Swim through the swamp"
+     "blurb": "Swim through the swamp",
+     "fact": "n:Crocodiles were already around in dinosaur times, and some of them were as long as a bus."
     },
     {
      "id": "swamp-2",
@@ -327,7 +338,8 @@
      ],
      "reward": "hat-pirate",
      "blurb": "Hop across in fours",
-     "table": 4
+     "table": 4,
+     "fact": "n:Dragonflies zoomed about in dinosaur times too, and they're still flying today."
     },
     {
      "id": "swamp-3",
@@ -348,8 +360,9 @@
       "o:Look at their little back plates!",
       "m:Tiny stegosauruses. Very spiky, very sweet."
      ],
-     "reward": "deco-mushroom",
-     "blurb": "Hatch the baby stegosauruses"
+     "reward": "deco-footprints",
+     "blurb": "Hatch the baby stegosauruses",
+     "fact": "n:Stegosaurus lived so long before T-Rex that there was more time between them than between T-Rex and us!"
     },
     {
      "id": "swamp-4",
@@ -369,8 +382,9 @@
       "m:Every time it spins, her tail twitches.",
       "o:We need a plan. And a snack."
      ],
-     "reward": "pet-crab",
-     "blurb": "Sneak past a sleeping stegosaurus"
+     "reward": "pet-paddle",
+     "blurb": "Sneak past a sleeping stegosaurus",
+     "fact": "n:The big plates on a Stegosaurus's back may have helped it warm up, or show off to other Stegosauruses."
     },
     {
      "id": "swamp-5",
@@ -391,8 +405,9 @@
       "o:Three parts back. Halfway home!",
       "m:And Steggy's walking in straight lines again."
      ],
-     "reward": null,
-     "blurb": "Escape Steggy and win back the Propeller"
+     "reward": "hat-fossil",
+     "blurb": "Escape Steggy and win back the Propeller",
+     "fact": "n:The spikes on a Stegosaurus's tail are called a thagomizer. The name began as a joke in a cartoon!"
     }
    ]
   },
@@ -440,29 +455,31 @@
       "m:I know exactly how they feel."
      ],
      "reward": "pet-flap",
-     "blurb": "Dash along the cliff tops"
+     "blurb": "Dash along the cliff tops",
+     "fact": "n:Pteranodon's wings stretched further from tip to tip than a car is long."
     },
     {
      "id": "peaks-2",
-     "title": "Ledge Leap",
-     "mode": "bridgeBuilder",
+     "title": "Sky Snatch",
+     "mode": "skySnatch",
      "skills": [
       "multiplication",
       "sequences"
      ],
-     "count": 6,
+     "count": 8,
      "intro": [
-      "o:Rocky ledges, counting up in eights.",
-      "m:Eight, sixteen, twenty-four. Double, double, double!",
-      "o:Don't look down!"
+      "g:Ooh, shiny stones! Catch us if you can!",
+      "o:The Swoop Squad has got our number stones!",
+      "m:Tap the one carrying the right answer. They'll drop it!"
      ],
      "outro": [
-      "m:I looked down.",
-      "o:Me too. Let's never do that again."
+      "g:Ooh, shiny! Mine! No, mine! It's the Squad's!",
+      "m:And the Bell is right in the middle."
      ],
      "reward": "hat-shades",
-     "blurb": "Leap across in eights",
-     "table": 8
+     "blurb": "Catch the stones in the 8s",
+     "table": 8,
+     "fact": "n:Pterosaurs were the first animals with backbones to fly, long before birds or bats."
     },
     {
      "id": "peaks-3",
@@ -484,7 +501,8 @@
       "m:And telling everyone they're not dinosaurs."
      ],
      "reward": "deco-kite",
-     "blurb": "Hatch the baby pterosaurs"
+     "blurb": "Hatch the baby pterosaurs",
+     "fact": "n:Scientists think some baby pterosaurs could fly very soon after they hatched."
     },
     {
      "id": "peaks-4",
@@ -505,8 +523,9 @@
       "n:Ding-a-ling! The Bell rang on the hour.",
       "o:Uh-oh. They're awake!"
      ],
-     "reward": "pet-firefly",
-     "blurb": "Creep up to the Squad's nest"
+     "reward": "pet-feather",
+     "blurb": "Creep up to the Squad's nest",
+     "fact": "n:Pteranodon had no teeth at all. It probably caught fish with its long, pointed beak."
     },
     {
      "id": "peaks-5",
@@ -528,7 +547,8 @@
       "m:And a lot of very sleepy pterosaurs."
      ],
      "reward": null,
-     "blurb": "Escape the Swoop Squad and win back the Bell"
+     "blurb": "Escape the Swoop Squad and win back the Bell",
+     "fact": "n:Pterosaurs weren't dinosaurs. They were the dinosaurs' flying cousins."
     }
    ]
   },
@@ -576,7 +596,8 @@
       "m:Only because you know your sharing facts."
      ],
      "reward": "pet-scoot",
-     "blurb": "Run along the ridge"
+     "blurb": "Run along the ridge",
+     "fact": "n:A real Velociraptor was only about the size of a turkey, much smaller than in the films."
     },
     {
      "id": "ridge-2",
@@ -597,7 +618,8 @@
       "m:I think they want your snack."
      ],
      "reward": "hat-crown",
-     "blurb": "Hatch the baby raptors"
+     "blurb": "Hatch the baby raptors",
+     "fact": "n:Velociraptor had feathers, a bit like a bird."
     },
     {
      "id": "ridge-3",
@@ -618,7 +640,8 @@
       "m:Next time, let's find a bridge."
      ],
      "reward": "deco-lantern",
-     "blurb": "Hop across the warm rocks"
+     "blurb": "Hop across the warm rocks",
+     "fact": "n:Velociraptor had a big curved claw on each foot, which it held up off the ground as it walked."
     },
     {
      "id": "ridge-4",
@@ -638,8 +661,9 @@
       "m:One of them's opening an eye.",
       "o:Time to go!"
      ],
-     "reward": "pet-ember",
-     "blurb": "Sneak past the sleeping pack"
+     "reward": "pet-bonk",
+     "blurb": "Sneak past the sleeping pack",
+     "fact": "n:Birds are living dinosaurs, so a chicken is a very distant cousin of T-Rex!"
     },
     {
      "id": "ridge-5",
@@ -660,8 +684,9 @@
       "o:Five parts back! Just one to go.",
       "m:And I know exactly who has it."
      ],
-     "reward": null,
-     "blurb": "Escape the Snatch Pack and win back the Dial"
+     "reward": "hat-bone",
+     "blurb": "Escape the Snatch Pack and win back the Dial",
+     "fact": "n:Velociraptor fossils have been found in the Gobi Desert, in Mongolia."
     }
    ]
   },
@@ -710,8 +735,9 @@
       "o:The Times Core is stuck on his back!",
       "m:No wonder he's grumpy. It's ticking right between his shoulders."
      ],
-     "reward": "pet-comet",
-     "blurb": "Tiptoe past the sleeping T-Rex"
+     "reward": "pet-clubby",
+     "blurb": "Tiptoe past the sleeping T-Rex",
+     "fact": "n:T-Rex had one of the strongest bites of any land animal that has ever lived."
     },
     {
      "id": "rex-2",
@@ -734,7 +760,8 @@
       "m:Everything here has tiny arms. I have flippers."
      ],
      "reward": "hat-wizard",
-     "blurb": "Hatch the baby T-Rexes"
+     "blurb": "Hatch the baby T-Rexes",
+     "fact": "n:The biggest T-Rex teeth, roots and all, were about as long as a banana."
     },
     {
      "id": "rex-3",
@@ -754,8 +781,9 @@
      "outro": [
       "m:He is. And he's coming this way."
      ],
-     "reward": "deco-rainbow",
-     "blurb": "Hop across the footprints"
+     "reward": "deco-fernarch",
+     "blurb": "Hop across the footprints",
+     "fact": "n:T-Rex had short arms with just two fingers on each hand, but its arms were very strong."
     },
     {
      "id": "rex-4",
@@ -776,8 +804,9 @@
       "o:We made it to the volcano!",
       "m:One part left. And it's on his back."
      ],
-     "reward": "pet-moonmoth",
-     "blurb": "Outrun the T-Rex"
+     "reward": "pet-dot",
+     "blurb": "Outrun the T-Rex",
+     "fact": "n:A grown-up T-Rex was about as long as a bus, and as heavy as an elephant."
     },
     {
      "id": "rex-5",
@@ -800,7 +829,8 @@
       "m:We can go home, Otter. But let's say goodbye first."
      ],
      "reward": null,
-     "blurb": "Escape Rex and win back the Times Core"
+     "blurb": "Escape Rex and win back the Times Core",
+     "fact": "n:Tyrannosaurus rex means tyrant lizard king."
     }
    ]
   }
@@ -849,10 +879,10 @@
    "emoji": "🌸"
   },
   {
-   "id": "pet-butterfly",
+   "id": "pet-stretch",
    "kind": "pet",
-   "name": "Breeze the butterfly",
-   "emoji": "🦋"
+   "name": "Stretch the baby Brachiosaurus",
+   "emoji": "🦕"
   },
   {
    "id": "pet-spike",
@@ -867,16 +897,16 @@
    "emoji": "🏴‍☠️"
   },
   {
-   "id": "deco-mushroom",
+   "id": "deco-footprints",
    "kind": "decoration",
-   "name": "Glow mushroom",
-   "emoji": "🍄"
+   "name": "Footprint path",
+   "emoji": "👣"
   },
   {
-   "id": "pet-crab",
+   "id": "pet-paddle",
    "kind": "pet",
-   "name": "Pinchy the crab",
-   "emoji": "🦀"
+   "name": "Paddle the baby Ichthyosaurus",
+   "emoji": "🐬"
   },
   {
    "id": "pet-flap",
@@ -897,10 +927,10 @@
    "emoji": "🪁"
   },
   {
-   "id": "pet-firefly",
+   "id": "pet-feather",
    "kind": "pet",
-   "name": "Flicker the firefly",
-   "emoji": "✨"
+   "name": "Feather the baby Archaeopteryx",
+   "emoji": "🪶"
   },
   {
    "id": "pet-scoot",
@@ -921,16 +951,16 @@
    "emoji": "🏮"
   },
   {
-   "id": "pet-ember",
+   "id": "pet-bonk",
    "kind": "pet",
-   "name": "Ember the fire hatchling",
-   "emoji": "🐲"
+   "name": "Bonk the baby Pachycephalosaurus",
+   "emoji": "🦕"
   },
   {
-   "id": "pet-comet",
+   "id": "pet-clubby",
    "kind": "pet",
-   "name": "Comet the star pup",
-   "emoji": "🐶"
+   "name": "Clubby the baby Ankylosaurus",
+   "emoji": "🦕"
   },
   {
    "id": "hat-wizard",
@@ -939,16 +969,16 @@
    "emoji": "🎩"
   },
   {
-   "id": "deco-rainbow",
+   "id": "deco-fernarch",
    "kind": "decoration",
-   "name": "Rainbow arch",
-   "emoji": "🌈"
+   "name": "Fern arch",
+   "emoji": "🌿"
   },
   {
-   "id": "pet-moonmoth",
+   "id": "pet-dot",
    "kind": "pet",
-   "name": "Luna the moon moth",
-   "emoji": "🌙"
+   "name": "Dot the baby Protoceratops",
+   "emoji": "🦕"
   },
   {
    "id": "deco-palm",
@@ -963,16 +993,40 @@
    "emoji": "⛲"
   },
   {
-   "id": "deco-castle",
+   "id": "deco-volcano",
    "kind": "decoration",
-   "name": "Sandcastle",
-   "emoji": "🏰"
+   "name": "Volcano lamp",
+   "emoji": "🌋"
   },
   {
    "id": "deco-tent",
    "kind": "decoration",
    "name": "Party tent",
    "emoji": "🎪"
+  },
+  {
+   "id": "deco-skeleton",
+   "kind": "decoration",
+   "name": "Dino skeleton",
+   "emoji": "🦴"
+  },
+  {
+   "id": "hat-bow",
+   "kind": "accessory",
+   "name": "Mama Maia's bow",
+   "emoji": "🎀"
+  },
+  {
+   "id": "hat-fossil",
+   "kind": "accessory",
+   "name": "Fossil-hunter hat",
+   "emoji": "🤠"
+  },
+  {
+   "id": "hat-bone",
+   "kind": "accessory",
+   "name": "Bone hair clip",
+   "emoji": "🦴"
   }
  ],
  "intro": [

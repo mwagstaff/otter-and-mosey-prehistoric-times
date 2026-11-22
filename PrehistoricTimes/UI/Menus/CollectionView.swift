@@ -1,12 +1,14 @@
 import PrehistoricTimesCore
 import SwiftUI
 
-/// Everything the player has collected: crystals, pets and hats. Trophies have their own cabinet.
+/// Everything the player has collected: machine parts, the Dino Nursery, hats and Dino Fact cards.
+/// Trophies have their own cabinet.
 struct CollectionView: View {
     @Environment(AppModel.self) private var model
     @State private var tab = 0
     @State private var showingPhoto = false
-    private let tabs = [("⚙️", "Parts"), ("🐾", "Pets"), ("🎩", "Hats")]
+    @State private var openFact: String?
+    private let tabs = [("⚙️", "Parts"), ("🥚", "Nursery"), ("🎩", "Hats"), ("🦖", "Facts")]
 
     var body: some View {
         GeometryReader { geometry in
@@ -29,7 +31,9 @@ struct CollectionView: View {
                 }
                 .padding(compact ? 8 : 24)
                 if showingPhoto { GroupPhotoViewer { showingPhoto = false } }
+                if let openFact { DinoFactViewer(levelID: openFact) { self.openFact = nil }.transition(.opacity) }
             }
+            .animation(.easeInOut(duration: 0.2), value: openFact)
             .screenBackground("bg_camp", blur: 8, dim: 0.4)
             .environment(\.compact, compact)
         }
@@ -61,8 +65,15 @@ struct CollectionView: View {
                     .buttonStyle(.plain)
                 }
             }
-        case 1: rewardGrid(.pet, columns: columns, compact: compact)
-        default: rewardGrid(.accessory, columns: columns, compact: compact)
+        case 1:
+            VStack(alignment: .leading, spacing: 10) {
+                let pets = model.catalog.rewards.filter { $0.kind == .pet }
+                Text("The Dino Nursery: \(pets.filter { profile?.has($0.id) == true }.count) of \(pets.count) baby dinosaurs. They play at Crash Camp!")
+                    .font(.game(compact ? 14 : 18, weight: .bold)).foregroundStyle(Palette.ink.opacity(0.7))
+                rewardGrid(.pet, columns: columns, compact: compact)
+            }
+        case 2: rewardGrid(.accessory, columns: columns, compact: compact)
+        default: DinoFactShelf(compact: compact, open: $openFact)
         }
     }
 
@@ -77,7 +88,7 @@ struct CollectionView: View {
                     model.update { $0.wear(worn ? nil : reward.id) }
                 }) {
                     tile(compact: compact, title: owned ? reward.name : "???",
-                         subtitle: !owned ? "Keep exploring to find it" : (kind == .accessory ? (worn ? "Both wearing it! Tap to take off" : "Tap for both to wear") : "Your friend"),
+                         subtitle: !owned ? "Keep exploring to find it" : (kind == .accessory ? (worn ? "Both wearing it! Tap to take off" : "Tap for both to wear") : "Hatched and happy"),
                          earned: owned, highlight: worn) {
                         Glyph(reward.emoji, size: compact ? 50 : 70, art: reward.art).saturation(owned ? 1 : 0).opacity(owned ? 1 : 0.25)
                     }
@@ -302,9 +313,9 @@ private struct CampPet: View {
 
     private var call: (String, SFX) {
         switch pet.id {
-        case "pet-pip", "pet-chomp", "pet-nubbin", "pet-ember", "pet-spike": ("Raar!", .roarMaia)
-        case "pet-crab": ("Glub glub!", .glub)
-        case "pet-flap": ("Squawk!", .chirp)
+        case "pet-pip", "pet-chomp", "pet-nubbin", "pet-spike", "pet-stretch", "pet-bonk", "pet-clubby", "pet-dot": ("Raar!", .roarMaia)
+        case "pet-paddle": ("Glub glub!", .glub)
+        case "pet-flap", "pet-feather": ("Squawk!", .chirp)
         case "pet-scoot": ("Cluck cluck!", .chirp)
         default: ("Chirp!", .chirp)
         }
@@ -312,7 +323,7 @@ private struct CampPet: View {
 
     private var walkArt: String? {
         switch pet.id {
-        case "pet-pip", "pet-nubbin", "pet-chomp", "pet-ember": "camp_" + String(pet.id.dropFirst(4))
+        case "pet-pip", "pet-nubbin", "pet-chomp": "camp_" + String(pet.id.dropFirst(4))
         default: nil
         }
     }
@@ -477,6 +488,7 @@ struct SettingsControls: View {
         VStack(spacing: compact ? 6 : 12) {
             slider("Music", "music.note", value: settings.musicVolume)
             slider("Sounds", "bell.fill", value: settings.effectsVolume)
+            slider("Roars", "pawprint.fill", value: settings.roarVolume, sample: .roarMaia)
             LazyVGrid(columns: [GridItem(.adaptive(minimum: compact ? 250 : 300), spacing: 10)], spacing: compact ? 6 : 10) {
                 toggle("Mute everything", "speaker.slash.fill", settings.muted)
                 toggle("Read questions aloud", "text.bubble.fill", settings.spokenInstructions)
@@ -490,12 +502,13 @@ struct SettingsControls: View {
         }
     }
 
-    private func slider(_ title: String, _ symbol: String, value: Binding<Double>) -> some View {
+    private func slider(_ title: String, _ symbol: String, value: Binding<Double>, sample: SFX = .correct) -> some View {
         HStack {
             Label(title, systemImage: symbol).font(.game(compact ? 17 : 22)).foregroundStyle(Palette.ink).frame(width: compact ? 130 : 170, alignment: .leading)
             Slider(value: value, in: 0...1) { editing in
-                if !editing { AudioManager.shared.play(.correct) }
+                if !editing { AudioManager.shared.play(sample) }
             }
+            .accessibilityLabel(title)
             .tint(Palette.teal)
             .frame(minHeight: 44)
         }

@@ -18,7 +18,7 @@ public enum TrophyGroup: String, CaseIterable, Sendable {
 /// Lifetime counts that feed the milestone ladders. Each one is a number the cabinet can show
 /// as "486 of 500".
 public enum TrophyCounter: String, CaseIterable, Sendable {
-    case stars, pearls, answers, firstTry, streak, levels, friendship, days, crystals, lightning, songs
+    case stars, pearls, answers, firstTry, streak, levels, friendship, days, crystals, lightning, songs, raptorRace
 
     public var unit: String {
         switch self {
@@ -33,6 +33,7 @@ public enum TrophyCounter: String, CaseIterable, Sendable {
         case .crystals: "machine parts"
         case .lightning: "lightning answers"
         case .songs: "songs sung"
+        case .raptorRace: "in a Raptor Race"
         }
     }
 }
@@ -52,12 +53,18 @@ public enum TrophyRule: Equatable, Sendable {
     /// Sing-along: meet every song friend on the shelf; crown any song friend.
     case songFriends, crownedFriend
     case comeback, neverGiveUp, pearlPerfect, hatTrick, oldFriends, backForMore, weekend, noHints, rainbowDay
+    /// Fit every Times Machine part in the Fix-It Workshop; 25 out of 25 in a Times Tables Check.
+    case workshops, mtcPerfect
+    /// Every bone in every switched-on skeleton; every decoration; every Dino Fact card.
+    case allFossils, allDecorations, factCards
+    /// Scratch Rex's itchy back ten times; outrun a dinosaur without it gaining once; visit the museum after dark.
+    case itchyBack, untouchable, nightMuseum
 
     /// Won by one particular run rather than by something that stays true. These have to be
     /// remembered as waiting if there is no room to hand them out straight away.
     var isMoment: Bool {
         switch self {
-        case .comeback, .neverGiveUp, .pearlPerfect, .oldFriends, .noHints: true
+        case .comeback, .neverGiveUp, .pearlPerfect, .oldFriends, .noHints, .untouchable: true
         default: false
         }
     }
@@ -137,6 +144,7 @@ public enum Trophies {
         TrophyLadder(id: "days", title: "Explorer", counter: .days, rungs: [2, 5, 10, 20]) { _ in "badge_explorer" },
         TrophyLadder(id: "crystals", title: "Mechanic", counter: .crystals, rungs: [3, 6]) { "badge_crystal-\($0)" },
         TrophyLadder(id: "songs", title: "Sing-Along Star", counter: .songs, rungs: [1, 5, 20]) { _ in "badge_sing" },
+        TrophyLadder(id: "raptor", title: "Raptor Racer", counter: .raptorRace, rungs: [10, 20, 30]) { _ in "badge_raptor-race" },
     ]
 
     /// Every times table has a skeleton in the Fossil Museum, and a learning trophy for finishing it.
@@ -181,6 +189,7 @@ public enum Trophies {
                 case .levels: "Finish \(rung) levels."
                 case .lightning: "Type \(rung) answers right in under \(Int(LearnerModel.lightningSeconds)) seconds."
                 case .songs: rung == 1 ? "Sing a times-table song at the campfire." : "Sing \(rung) times-table songs at the campfire."
+                case .raptorRace: "Get \(rung) right in one Raptor Race."
                 default: "Collect \(rung) \(ladder.counter.unit)."
                 }
                 list.append(Trophy("\(ladder.id)-\(rung)", ladder.title, detail, group: .milestones, art: ladder.art(rung),
@@ -192,21 +201,28 @@ public enum Trophies {
                                group: .learning, art: "badge_tables", rule: .table(table), badge: "×\(table)"))
         }
         let topics: [(Skill, String, String)] = [
-            // The missing-number and counting badges borrow Lost Islands art until the dinosaur badges are painted (M5).
-            (.missingNumber, "Missing Number Master", "badge_fractions"), (.division, "Division Detective", "badge_division"),
-            (.sequences, "Counting Champ", "badge_place-value"), (.wordProblems, "Word Problem Wizard", "badge_word-problems"),
+            (.missingNumber, "Missing Number Master", "badge_missing-number"), (.division, "Division Detective", "badge_division"),
+            (.sequences, "Counting Champ", "badge_counting"), (.wordProblems, "Word Problem Wizard", "badge_word-problems"),
         ]
         for (skill, title, art) in topics {
             list.append(Trophy("skill-\(skill.rawValue)", title, "Get \(mastery) \(skill.title.lowercased()) questions right first time.",
                                group: .learning, art: art, rule: .skill(skill)))
         }
+        list += [
+            Trophy("fact-family", "Fact Family Fixer", "Fit every Times Machine part in the Fix-It Workshop.", group: .learning,
+                   art: "badge_fact-family", rule: .workshops),
+            Trophy("mtc-ready", "MTC Ready", "Get all 25 right in a Times Tables Check.", group: .learning, art: "badge_mtc", rule: .mtcPerfect),
+        ]
         let pets = catalog.rewards.filter { $0.kind == .pet }.count
         list += [
             Trophy("first-steps", "First Steps", "Finish your first level.", group: .collections, art: "badge_first-steps", rule: .firstSteps),
-            Trophy("pets-5", "Animal Friend", "Collect five pets.", group: .collections, art: "badge_pets-5", rule: .pets(5)),
-            Trophy("pets-all", "Animal Park", "Collect all \(pets) pets.", group: .collections, art: "badge_pets-all", rule: .allPets),
+            Trophy("pets-5", "Dino Babysitter", "Look after five baby dinosaurs in the Dino Nursery.", group: .collections, art: "badge_pets-5", rule: .pets(5)),
+            Trophy("pets-all", "Full Nursery", "Collect all \(pets) baby dinosaurs.", group: .collections, art: "badge_pets-all", rule: .allPets),
             Trophy("hats-all", "Dress-up", "Try on every hat.", group: .collections, art: "badge_hats-all", rule: .allHats),
             Trophy("decorator", "Home Designer", "Put 8 decorations around Crash Camp.", group: .collections, art: "badge_decorator", rule: .decorations(8)),
+            Trophy("decorations-all", "Camp Designer", "Collect every Crash Camp decoration.", group: .collections, art: "badge_decorations-all", rule: .allDecorations),
+            Trophy("fossils-all", "Fossil Hunter", "Put every bone into every skeleton in the Fossil Museum.", group: .collections, art: "badge_fossils-all", rule: .allFossils),
+            Trophy("fact-cards", "Dino Expert", "Collect every Dino Fact card.", group: .collections, art: "badge_fact-cards", rule: .factCards),
             Trophy("treasure-all", "Treasure Hunter", "Collect every treasure in the game.", group: .collections, art: "badge_treasure-all", rule: .allTreasures),
         ]
         list += [
@@ -226,6 +242,9 @@ public enum Trophies {
             ("weekend", "Weekend Explorer", "Play on a Saturday and on a Sunday.", "Saturday… and Sunday?", .weekend),
             ("no-hints", "No Help Needed", "Finish a Big Escape without a single hint.", "No help needed…", .noHints),
             ("rainbow-day", "Busy Day", "Win trophies in three different zones in one day.", "Three zones, one day…", .rainbowDay),
+            ("itchy-back", "Itchy Back", "Give Rex ten scratches after he gives back the Times Core.", "A little to the left…", .itchyBack),
+            ("untouchable", "Untouchable", "Finish a Dino Dash without the dinosaur gaining on you once.", "Not even close…", .untouchable),
+            ("night-museum", "Night at the Museum", "Visit the Fossil Museum after 7 o'clock in the evening.", "Bones by moonlight…", .nightMuseum),
         ]
         for (id, title, detail, riddle, rule) in secrets {
             list.append(Trophy(id, title, detail, group: .secret, art: "badge_\(id)", rule: rule, riddle: riddle))
@@ -249,6 +268,7 @@ public enum Trophies {
         case .crystals: return profile.crystals.count
         case .lightning: return learner.lightningAnswers
         case .songs: return profile.songs.values.reduce(0) { $0 + $1.sung }
+        case .raptorRace: return profile.bestQuickFire(.raptorRace)
         }
     }
 
@@ -269,6 +289,13 @@ public enum Trophies {
         case .songFriends:
             (SingAlong.shelf(profile.parent).filter { SingAlong.record($0, in: profile).sung > 0 }.count, SingAlong.shelf(profile.parent).count)
         case .allTreasures: (catalog.rewards.filter { profile.has($0.id) }.count, catalog.rewards.count)
+        case .allDecorations: (decorationCount(profile, catalog), catalog.rewards.filter { $0.kind == .decoration }.count)
+        case .workshops: (min(profile.stats.workshopsFixed.count, catalog.islands.count), catalog.islands.count)
+        case .factCards: (factCardCount(profile, catalog), catalog.factCards.count)
+        case .itchyBack: (min(profile.stats.rexScratches, rexScratches), rexScratches)
+        case .allFossils:
+            (fossilTables(profile).reduce(0) { $0 + Fossils.placed(table: $1, learner: profile.learner, multipliers: profile.parent.usableMultipliers) },
+             fossilTables(profile).count * Fossils.needed(table: 1, multipliers: profile.parent.usableMultipliers).count)
         case let .champion(island):
             catalog.island(island).map { island in (island.levels.filter { profile.stars(for: $0.id) == 3 }.count, island.levels.count) }
         default: nil
@@ -278,6 +305,20 @@ public enum Trophies {
     private static func petCount(_ profile: Profile, _ catalog: Catalog) -> Int {
         profile.rewards.filter { catalog.reward($0)?.kind == .pet }.count
     }
+
+    /// Scratches Rex needs for Itchy Back.
+    public static let rexScratches = 10
+
+    private static func decorationCount(_ profile: Profile, _ catalog: Catalog) -> Int {
+        profile.rewards.filter { catalog.reward($0)?.kind == .decoration }.count
+    }
+
+    private static func factCardCount(_ profile: Profile, _ catalog: Catalog) -> Int {
+        catalog.factCards.filter { profile.stars(for: $0.level.id) > 0 }.count
+    }
+
+    /// The skeletons shown in the museum: one per switched-on table.
+    private static func fossilTables(_ profile: Profile) -> [Int] { profile.parent.usableTables }
 
     private static func hatsTried(_ profile: Profile, _ catalog: Catalog) -> Int {
         catalog.rewards.filter { $0.kind == .accessory && profile.stats.hatsWorn.contains($0.id) }.count
@@ -305,6 +346,17 @@ public enum Trophies {
         case let .decorations(needed): return profile.decorations.count >= needed
         case .allTreasures: return catalog.rewards.allSatisfy { profile.has($0.id) }
         case .hatTrick: return profile.stats.hatStreak >= 3
+        case .workshops: return catalog.islands.allSatisfy { profile.stats.workshopsFixed.contains($0.id) }
+        case .mtcPerfect: return profile.quickFireScores(.mtc).contains { $0.score >= QuickFireRound.mtcQuestions }
+        case .allDecorations: return decorationCount(profile, catalog) >= catalog.rewards.filter { $0.kind == .decoration }.count
+        case .factCards: return !catalog.factCards.isEmpty && factCardCount(profile, catalog) >= catalog.factCards.count
+        case .allFossils:
+            return fossilTables(profile).allSatisfy { Fossils.isComplete(table: $0, learner: profile.learner, multipliers: profile.parent.usableMultipliers) }
+        case .itchyBack: return profile.stats.rexScratches >= rexScratches
+        case .nightMuseum: return profile.stats.museumAtNight
+        case .untouchable:
+            guard let run, run.mode == .dinoDash else { return false }
+            return run.result.total > 0 && run.result.correctFirstTry >= run.result.total
         case .rexSpeed: return profile.songs.values.contains { $0.bestRound >= SongRound.whole.rawValue && $0.sung > 0 }
         case .goldRecord: return profile.songs.keys.contains { Int($0).map { SingAlong.level($0, in: profile) == .gold } ?? false }
         case .songbook: return SingAlong.shelf(profile.parent).allSatisfy { SingAlong.record($0, in: profile).quizzes > 0 }
@@ -384,11 +436,11 @@ public enum Trophies {
 
     /// Hands out trophies won away from a level (at the campfire sing-along), with the usual
     /// per-level limit and waiting list. Trophies for a single level run can't be won here.
-    public static func awardOutsideLevel(_ profile: inout Profile, catalog: Catalog = .shared, now: Date = Date()) -> [Trophy] {
+    public static func awardOutsideLevel(_ profile: inout Profile, limit: Int = perLevel, catalog: Catalog = .shared, now: Date = Date()) -> [Trophy] {
         let run = TrophyRun(levelID: "", islandID: "", mode: .eggRescue,
                             result: LevelResult(stars: 0, accuracy: 0, score: 0, bestCombo: 0, correctFirstTry: 0, total: 0),
                             previousStars: 0, guardianAlreadyFriend: false)
-        return award(&profile, run: run, catalog: catalog, now: now)
+        return award(&profile, run: run, limit: limit, catalog: catalog, now: now)
     }
 
     /// How many trophies the player has, out of how many.

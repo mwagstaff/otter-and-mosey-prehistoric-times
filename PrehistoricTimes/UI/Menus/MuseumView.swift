@@ -6,6 +6,8 @@ import PrehistoricTimesCore
 /// fluent, so children can watch their times tables being learnt. Bones are never taken back.
 struct MuseumView: View {
     @Environment(AppModel.self) private var model
+    /// Shown the first time the museum is visited after dark.
+    @State private var nightBanner = false
 
     /// Which dinosaur's skeleton stands for each table.
     static let dinosaurs = [1: "Compsognathus", 2: "Pteranodon", 3: "Triceratops", 4: "Stegosaurus", 5: "Ankylosaurus",
@@ -33,6 +35,12 @@ struct MuseumView: View {
                     Spacer()
                     Glyph("🦴", size: compact ? 34 : 50).accessibilityHidden(true)
                 }
+                if nightBanner {
+                    IconLabel("The museum at night! A secret trophy is waiting for you after your next level.", emoji: "🌙", size: compact ? 14 : 19)
+                        .font(.game(compact ? 14 : 19, weight: .bold)).foregroundStyle(Palette.ink)
+                        .padding(.horizontal, 16).padding(.vertical, 6).panel(fill: Palette.gold, radius: 16)
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                }
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: compact ? 250 : 330), spacing: compact ? 10 : 16)], spacing: compact ? 10 : 16) {
                         ForEach(tables, id: \.self) { table in
@@ -48,6 +56,13 @@ struct MuseumView: View {
             .padding(compact ? 8 : 24)
             .screenBackground("bg_camp", blur: 6, dim: 0.15)
             .environment(\.compact, compact)
+        }
+        .onAppear {
+            let before = model.profile?.stats.museumAtNight ?? true
+            model.visitedMuseum()
+            if !before, model.profile?.stats.museumAtNight == true {
+                withAnimation(.spring(duration: 0.4).delay(0.6)) { nightBanner = true }
+            }
         }
     }
 
@@ -66,6 +81,8 @@ struct SkeletonCard: View {
     let compact: Bool
     /// A table the grown-up hasn't switched on: shown as a teaser, still in the museum's stores.
     var inStore = false
+    /// Bumped to make a complete skeleton come to life for a moment.
+    @State private var wakes = 0
 
     var body: some View {
         let bones = Fossils.bones(table: table, learner: learner)
@@ -89,6 +106,35 @@ struct SkeletonCard: View {
                     }
             }
             .frame(height: compact ? 90 : 140)
+            // A complete skeleton comes to life for a moment: tap it and it stomps and roars.
+            .keyframeAnimator(initialValue: SkeletonWake(), trigger: wakes) { content, wake in
+                content.rotationEffect(.degrees(wake.tilt), anchor: .bottom).offset(y: wake.hop).scaleEffect(wake.scale, anchor: .bottom)
+            } keyframes: { _ in
+                KeyframeTrack(\.hop) {
+                    SpringKeyframe(-14, duration: 0.18); SpringKeyframe(0, duration: 0.2)
+                    SpringKeyframe(-10, duration: 0.18); SpringKeyframe(0, duration: 0.25)
+                }
+                KeyframeTrack(\.tilt) {
+                    CubicKeyframe(-6, duration: 0.2); CubicKeyframe(6, duration: 0.2); CubicKeyframe(-4, duration: 0.2); CubicKeyframe(0, duration: 0.2)
+                }
+                KeyframeTrack(\.scale) { CubicKeyframe(1.08, duration: 0.3); CubicKeyframe(1, duration: 0.5) }
+            }
+            .overlay(alignment: .topTrailing) {
+                if complete {
+                    Text("ROAR!").font(.game(compact ? 16 : 22, weight: .black)).foregroundStyle(Palette.coral)
+                        .phaseAnimator([0.0, 1.0, 0.0], trigger: wakes) { content, phase in content.opacity(phase).scaleEffect(0.8 + phase * 0.3) }
+                }
+            }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                guard complete else { return }
+                AudioManager.shared.play(.roarRex, volume: 0.5)
+                AudioManager.shared.play(.stomp, volume: 0.6)
+                Haptics.shared.success()
+                wakes += 1
+            }
+            .accessibilityAddTraits(complete ? .isButton : [])
+            .accessibilityHint(complete ? "Brings the skeleton to life" : "")
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2), count: 6), spacing: 4) {
                 ForEach(bones, id: \.fact.multiplier) { bone in
                     let counts = needed.contains(bone.fact.multiplier)
@@ -113,4 +159,11 @@ struct SkeletonCard: View {
         .panel(fill: complete ? Palette.gold.opacity(0.35) : Palette.cream.opacity(inStore ? 0.6 : 0.95), radius: 18)
         .opacity(inStore ? 0.75 : 1)
     }
+}
+
+/// How far a skeleton hops, tilts and grows when it comes to life.
+struct SkeletonWake {
+    var hop: CGFloat = 0
+    var tilt: Double = 0
+    var scale: CGFloat = 1
 }

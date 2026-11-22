@@ -17,16 +17,22 @@ struct ParentAreaView: View {
     }
 }
 
-/// A sum most Year 3 children cannot yet do in their head, typed on a number pad.
+/// The grown-ups' gate. A child practising times tables could work out a two-digit × one-digit
+/// sum, so the gate asks a three-digit subtraction with exchanging, well beyond Year 3 or 4 mental
+/// maths, and then wants the Continue button held down for a moment, which small children rarely
+/// do by accident.
 struct ParentGateView: View {
     /// A line above the sum saying what the gate leads to, such as which player is being set up.
     var context: String?
     var onPass: () -> Void
     var onCancel: () -> Void
-    @State private var a = Int.random(in: 13...19)
-    @State private var b = Int.random(in: 6...9)
+    @State private var sum = GateSum()
     @State private var entry = ""
     @State private var wrong = false
+    /// How far the press-and-hold has got, from 0 to 1.
+    @State private var hold: CGFloat = 0
+    @State private var holding = false
+    static let holdSeconds = 1.5
 
     var body: some View {
         VStack(spacing: 14) {
@@ -38,8 +44,8 @@ struct ParentGateView: View {
                     .background(Capsule().fill(.white).stroke(Color(white: 0.85)))
             }
             Text("Grown-ups only").font(.system(size: 30, weight: .bold, design: .rounded))
-            Text("To continue, please answer:").font(.system(size: 18, design: .rounded)).foregroundStyle(.secondary)
-            Text("\(a) × \(b) = \(entry.isEmpty ? "?" : entry)").font(.system(size: 38, weight: .heavy, design: .rounded)).monospacedDigit()
+            Text("To continue, please answer, then press and hold Continue:").font(.system(size: 18, design: .rounded)).foregroundStyle(.secondary)
+            Text("\(sum.a) − \(sum.b) = \(entry.isEmpty ? "?" : entry)").font(.system(size: 38, weight: .heavy, design: .rounded)).monospacedDigit()
             if wrong { Text("That's not right. Here's a new one.").font(.system(size: 15, design: .rounded)).foregroundStyle(.red) }
             HStack(spacing: 8) {
                 ForEach(Array("1234567890"), id: \.self) { digit in
@@ -51,22 +57,73 @@ struct ParentGateView: View {
             .buttonStyle(ParentKeyStyle())
             HStack(spacing: 16) {
                 Button("Back", action: onCancel).buttonStyle(.bordered)
-                Button("Continue") {
-                    if Int(entry) == a * b {
-                        onPass()
-                    } else {
-                        wrong = true
-                        entry = ""
-                        a = .random(in: 13...19)
-                        b = .random(in: 6...9)
-                    }
-                }
-                .buttonStyle(.borderedProminent)
-                .disabled(entry.isEmpty)
+                continueButton
             }
             .controlSize(.large)
         }
         .padding(30)
+    }
+
+    /// Fills up while it is held; lets go early and it empties again.
+    private var continueButton: some View {
+        Text(holding ? "Keep holding…" : "Hold to continue")
+            .font(.system(size: 17, weight: .semibold, design: .rounded))
+            .foregroundStyle(.white)
+            .padding(.horizontal, 20).frame(height: 50)
+            .background {
+                GeometryReader { box in
+                    ZStack(alignment: .leading) {
+                        Capsule().fill(Color.accentColor.opacity(entry.isEmpty ? 0.35 : 0.75))
+                        Capsule().fill(Color.accentColor).frame(width: box.size.width * hold)
+                    }
+                }
+            }
+            .clipShape(Capsule())
+            .opacity(entry.isEmpty ? 0.6 : 1)
+            .onLongPressGesture(minimumDuration: Self.holdSeconds, maximumDistance: 40) {
+                holding = false
+                check()
+            } onPressingChanged: { pressing in
+                guard !entry.isEmpty else { return }
+                holding = pressing
+                withAnimation(pressing ? .linear(duration: Self.holdSeconds) : .easeOut(duration: 0.2)) { hold = pressing ? 1 : 0 }
+            }
+            .accessibilityElement()
+            .accessibilityLabel("Continue")
+            .accessibilityHint("Press and hold")
+            .accessibilityAddTraits(.isButton)
+            .accessibilityAction { check() }
+            .accessibilityIdentifier("gate-continue")
+            .disabled(entry.isEmpty)
+    }
+
+    private func check() {
+        hold = 0
+        guard !entry.isEmpty else { return }
+        if Int(entry) == sum.answer {
+            onPass()
+        } else {
+            wrong = true
+            entry = ""
+            sum = GateSum()
+        }
+    }
+}
+
+/// A three-digit subtraction that needs exchanging in the ones: 623 − 278.
+struct GateSum: Equatable {
+    let a: Int
+    let b: Int
+    var answer: Int { a - b }
+
+    init() {
+        var a = 0, b = 0
+        repeat {
+            a = Int.random(in: 412...968)
+            b = Int.random(in: 127...(a - 105))
+        } while a % 10 >= b % 10 || b % 100 == 0
+        self.a = a
+        self.b = b
     }
 }
 
@@ -110,6 +167,7 @@ struct ParentDashboardView: View {
                         }
                         learning(profile)
                         overview(profile)
+                        TimesTablesReport(profile: profile)
                         skills(profile)
                         practice(profile)
                         achievements(profile)
@@ -211,22 +269,20 @@ struct ParentDashboardView: View {
         Section("Areas needing practice") {
             let weak = profile.learner.skillsNeedingPractice
             let tricky = profile.learner.troublesomeItems.prefix(12)
-            if weak.isEmpty, tricky.isEmpty { Text("Nothing stands out yet. The game brings back anything missed automatically.").foregroundStyle(.secondary) }
+            let slow = LearningReport.slowest(profile.learner)
+            if weak.isEmpty, tricky.isEmpty, slow.isEmpty { Text("Nothing stands out yet. The game brings back anything missed automatically.").foregroundStyle(.secondary) }
             ForEach(weak, id: \.self) { Label($0.title, systemImage: "arrow.up.right.circle") }
             if !tricky.isEmpty {
-                Text("Being revisited: " + tricky.map { describe($0.key) }.joined(separator: ", ")).font(.subheadline)
+                LabeledContent("Trickiest facts (missed more than once)") {
+                    Text(tricky.map { LearningReport.describe($0.key) }.joined(separator: ", ")).multilineTextAlignment(.trailing)
+                }
             }
-        }
-    }
-
-    private func describe(_ key: String) -> String {
-        let parts = key.split(separator: ":")
-        guard parts.count == 2 else { return key }
-        let numbers = parts[1].split(separator: "x")
-        switch parts[0] {
-        case "mul" where numbers.count == 2: return "\(numbers[1]) × \(numbers[0])"
-        case "div" where numbers.count == 2: return "\((Int(numbers[0]) ?? 0) * (Int(numbers[1]) ?? 0)) ÷ \(numbers[0])"
-        default: return String(parts[1])
+            if !slow.isEmpty {
+                LabeledContent("Slowest facts (typed right, but slowly)") {
+                    Text(slow.map { "\(LearningReport.describe($0.key)) (\($0.seconds.formatted(.number.precision(.fractionLength(0)))) s)" }.joined(separator: ", "))
+                        .multilineTextAlignment(.trailing)
+                }
+            }
         }
     }
 
@@ -317,7 +373,7 @@ struct ParentDashboardView: View {
     }
 }
 
-let learningHelp = "Year groups set up the tables in one tap; changing a table makes them custom. Starred focus tables come up most and the other switched-on tables keep coming back for review. \"Multiply and divide by\" picks the other number: switch off × 11 and × 12 to keep things gentler. Adaptive answers let a child pick from three while a fact is new and type it once it's getting there, because typing an answer from memory builds recall. Chases (in the dinosaur levels): calm dinosaurs only get closer after a wrong answer, and no level can ever be failed. Timed bonus points only add extra score for quick answers; nothing ever runs out of time."
+let learningHelp = "Year groups set up the tables in one tap; changing a table makes them custom. Starred focus tables come up most and the other switched-on tables keep coming back for review. \"Multiply and divide by\" picks the other number: switch off × 11 and × 12 to keep things gentler. Adaptive answers let a child pick from three while a fact is new and type it once it's getting there, because typing an answer from memory builds recall. Chases (in the dinosaur levels): calm dinosaurs only get closer after a wrong answer, and no level can ever be failed. Timed bonus points only add extra score for quick answers; nothing in the adventure ever runs out of time. Times Tables Check practice adds a button at Crash Camp for 25 questions with 6 seconds each, like the Year 4 Multiplication Tables Check; scores appear in the report below. The Raptor Race (60 seconds against your own best) opens after Raptor Ridge."
 
 /// Saves a change to one player's learning settings straight away.
 private func parentBinding(_ profile: Profile, _ model: AppModel) -> Binding<ParentSettings> {
@@ -432,6 +488,7 @@ struct PlaySettingsRows: View {
             ForEach([10, 15, 20, 30, 45], id: \.self) { Text("\($0) minutes").tag($0) }
         }
         Toggle("Timed bonus points", isOn: parent.timedChallenges)
+        Toggle("Times Tables Check practice (Year 4)", isOn: parent.mtcPractice)
         Picker("Sing-along rounds", selection: parent.songRounds) {
             Text("1 (sing together)").tag(1)
             Text("2 (and finish the line)").tag(2)
@@ -439,5 +496,107 @@ struct PlaySettingsRows: View {
         }
         Toggle("Sing-along gets faster each round", isOn: parent.songSpeedUp)
         Toggle("A times-table song before every level", isOn: parent.levelSongs)
+    }
+}
+
+/// The times-tables report: every fact from 1 × 1 to 12 × 12 coloured by how well it is known,
+/// then each switched-on table, and the quick-fire scores.
+struct TimesTablesReport: View {
+    let profile: Profile
+
+    static func colour(_ state: FactState) -> Color {
+        switch state {
+        case .new: Color(white: 0.9)
+        case .learning: Color(red: 0.98, green: 0.62, blue: 0.55)
+        case .gettingThere: Color(red: 1.0, green: 0.84, blue: 0.4)
+        case .secure: Color(red: 0.55, green: 0.82, blue: 0.6)
+        case .fluent: Color(red: 0.16, green: 0.6, blue: 0.42)
+        }
+    }
+
+    var body: some View {
+        let settings = profile.parent
+        let grid = LearningReport.grid(profile.learner)
+        Section {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Each square is one multiplication fact: the row is the times table, the column what it is multiplied by.")
+                    .font(.caption).foregroundStyle(.secondary)
+                FactGrid(grid: grid, tables: settings.usableTables, multipliers: settings.usableMultipliers)
+                HStack(spacing: 12) {
+                    ForEach(FactState.allCases, id: \.self) { state in
+                        HStack(spacing: 4) {
+                            RoundedRectangle(cornerRadius: 3).fill(Self.colour(state)).frame(width: 14, height: 14)
+                            Text(state.title).font(.caption)
+                        }
+                    }
+                }
+                .accessibilityElement(children: .combine)
+            }
+            .padding(.vertical, 4)
+            ForEach(ZonePlan.ordered(settings.usableTables), id: \.self) { table in
+                let report = LearningReport.table(table, learner: profile.learner, multipliers: settings.usableMultipliers)
+                LabeledContent("\(table) times table\(settings.usableFocus.contains(table) ? " ★" : "")") {
+                    Text([
+                        "\(report.secure) of \(report.facts) secure",
+                        report.accuracy.map { "\(Int(($0 * 100).rounded()))% right first time" },
+                        report.typicalSeconds.map { "\($0.formatted(.number.precision(.fractionLength(1)))) s typical" },
+                    ].compactMap { $0 }.joined(separator: " · "))
+                    .multilineTextAlignment(.trailing)
+                }
+            }
+            quickFire
+        } header: {
+            Text("Times tables report")
+        } footer: {
+            Text("Secure: right first time three times in a row, on at least two different days. Fluent: secure, and usually typed in under 4 seconds. Bones in the Fossil Museum follow the same rules, and are never taken away.")
+        }
+    }
+
+    @ViewBuilder private var quickFire: some View {
+        let checks = profile.quickFireScores(.mtc)
+        let races = profile.quickFireScores(.raptorRace)
+        if checks.isEmpty {
+            LabeledContent("Times Tables Check practice", value: profile.parent.mtcPractice ? "Not tried yet" : "Switched off")
+        } else {
+            LabeledContent("Times Tables Check practice") {
+                Text("Best \(profile.bestQuickFire(.mtc)) of 25 · " + checks.suffix(6).reversed()
+                    .map { "\($0.score) (\($0.date.formatted(.dateTime.day().month(.abbreviated))))" }.joined(separator: ", "))
+                    .multilineTextAlignment(.trailing)
+            }
+        }
+        if !races.isEmpty {
+            LabeledContent("Raptor Race", value: "Best \(profile.bestQuickFire(.raptorRace)) in 60 s · \(races.count) races")
+        }
+    }
+}
+
+/// The 12 × 12 grid of facts. Tables or multipliers that are switched off are faded.
+struct FactGrid: View {
+    let grid: [[FactState]]
+    let tables: [Int]
+    let multipliers: [Int]
+
+    var body: some View {
+        Grid(horizontalSpacing: 3, verticalSpacing: 3) {
+            GridRow {
+                Text("×").font(.caption.bold()).foregroundStyle(.secondary)
+                ForEach(1...12, id: \.self) { Text("\($0)").font(.caption2.bold()).foregroundStyle(.secondary).frame(maxWidth: .infinity) }
+            }
+            ForEach(1...12, id: \.self) { table in
+                GridRow {
+                    Text("\(table)").font(.caption2.bold()).foregroundStyle(.secondary)
+                    ForEach(1...12, id: \.self) { multiplier in
+                        let state = grid[table - 1][multiplier - 1]
+                        let on = tables.contains(table) && multipliers.contains(multiplier)
+                        RoundedRectangle(cornerRadius: 3)
+                            .fill(TimesTablesReport.colour(state))
+                            .opacity(on ? 1 : 0.3)
+                            .frame(maxWidth: .infinity, minHeight: 16, maxHeight: 22)
+                            .accessibilityLabel("\(multiplier) times \(table): \(state.title)")
+                    }
+                }
+            }
+        }
+        .frame(maxWidth: 520)
     }
 }

@@ -371,16 +371,6 @@ struct IntroView: View {
                         Spacer()
                         answerKeys(width: geometry.size.width - 16, compact: compact)
                     }
-                    VStack {
-                        HStack {
-                            Spacer()
-                            Button(action: tapped { model.finishIntro() }) { IconLabel("Skip", symbol: "forward.end.fill", size: compact ? 16 : 20, trailing: true) }
-                                .buttonStyle(ChunkyButtonStyle(fill: Palette.cream, size: compact ? 16 : 20))
-                        }
-                        Spacer()
-                    }
-                    .padding(compact ? 12 : 24)
-                    .padding(.top, compact ? 44 : 60)
                 } else {
                     DialogueView(lines: model.catalog.introAfter, onLineShown: { index in
                         // The story beats drive the scene: back in time, the crash, then the roar.

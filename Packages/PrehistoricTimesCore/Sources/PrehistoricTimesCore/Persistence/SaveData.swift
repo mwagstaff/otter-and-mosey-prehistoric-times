@@ -36,6 +36,12 @@ public struct PlayerStats: Codable, Equatable, Sendable {
     /// The day trophies were last won, and the islands they were won on that day.
     public var trophyDay: String?
     public var trophyDayIslands: [String] = []
+    /// Zones whose part has been fitted in the Fix-It Workshop.
+    public var workshopsFixed: [String] = []
+    /// Set once the Fossil Museum has been visited after dark (7 pm to 6 am).
+    public var museumAtNight = false
+    /// The most times Rex has been scratched in one go, after giving back the Times Core.
+    public var rexScratches = 0
 
     public init() {}
 
@@ -50,6 +56,9 @@ public struct PlayerStats: Codable, Equatable, Sendable {
         tableFirstTry = c.value(.tableFirstTry, default: [:])
         trophyDay = c.value(.trophyDay, default: nil)
         trophyDayIslands = c.value(.trophyDayIslands, default: [])
+        workshopsFixed = c.value(.workshopsFixed, default: [])
+        museumAtNight = c.value(.museumAtNight, default: false)
+        rexScratches = c.value(.rexScratches, default: 0)
     }
 }
 
@@ -107,6 +116,8 @@ public struct Profile: Codable, Equatable, Identifiable, Sendable {
     public var friendshipPowers = 0
     /// The Campfire Sing-Along's songs, keyed by times table ("3").
     public var songs: [String: SongRecord] = [:]
+    /// Every finished Raptor Race and Times Tables Check practice, oldest first.
+    public var quickFire: [QuickFireScore] = []
 
     public init(nickname: String, avatar: String = "🦦") {
         self.nickname = nickname
@@ -139,7 +150,30 @@ public struct Profile: Codable, Equatable, Identifiable, Sendable {
         trophiesSeen = c.value(.trophiesSeen, default: 0)
         stats = c.value(.stats, default: PlayerStats())
         songs = c.value(.songs, default: [:])
+        quickFire = c.value(.quickFire, default: [])
+        // Saves from before parts were tracked in the workshop: every part won back was fitted
+        // there (it is the only way on), so count them, or Fact Family Fixer could never be won.
+        struct WorkshopProbe: Decodable { let workshopsFixed: [String]? }
+        if (try? c.decodeIfPresent(WorkshopProbe.self, forKey: .stats))??.workshopsFixed == nil { stats.workshopsFixed = crystals }
+        // Treasures that were swapped for prehistoric ones: older saves get the new one in their place.
+        rewards = rewards.map { Self.renamedRewards[$0] ?? $0 }
+        var seen = Set<String>()
+        rewards = rewards.filter { seen.insert($0).inserted }
+        campPetSpots = Dictionary(campPetSpots.map { (Self.renamedRewards[$0.key] ?? $0.key, $0.value) }, uniquingKeysWith: { first, _ in first })
+        for index in decorations.indices { decorations[index].reward = Self.renamedRewards[decorations[index].reward] ?? decorations[index].reward }
+        if let accessory = equippedAccessory { equippedAccessory = Self.renamedRewards[accessory] ?? accessory }
     }
+
+    /// Old pet id to the prehistoric pet that replaced it, level for level.
+    public static let renamedPets = ["pet-butterfly": "pet-stretch", "pet-crab": "pet-paddle", "pet-firefly": "pet-feather",
+                                     "pet-ember": "pet-bonk", "pet-comet": "pet-clubby", "pet-moonmoth": "pet-dot"]
+    /// Old Lost Islands decorations to the prehistoric ones that replaced them.
+    public static let renamedDecorations = ["deco-mushroom": "deco-footprints", "deco-rainbow": "deco-fernarch", "deco-castle": "deco-volcano"]
+    static let renamedRewards = renamedPets.merging(renamedDecorations) { first, _ in first }
+
+    /// The best and latest scores in one kind of quick-fire game.
+    public func quickFireScores(_ kind: QuickFireKind) -> [QuickFireScore] { quickFire.filter { $0.kind == kind } }
+    public func bestQuickFire(_ kind: QuickFireKind) -> Int { quickFireScores(kind).map(\.score).max() ?? 0 }
 
     public var totalStars: Int { levels.values.reduce(0) { $0 + $1.stars } }
     public func stars(for levelID: String) -> Int { levels[levelID]?.stars ?? 0 }
@@ -197,6 +231,8 @@ public struct AppSettings: Codable, Equatable, Sendable {
     public var deviceVoice = false
     /// Play the characters' recorded voices during story dialogue.
     public var characterVoices = true
+    /// How loud roars and stomps are, on top of the sound effects volume.
+    public var roarVolume = 0.8
 
     public init() {}
 
@@ -212,6 +248,7 @@ public struct AppSettings: Codable, Equatable, Sendable {
         spokenInstructions = c.value(.spokenInstructions, default: true)
         deviceVoice = c.value(.deviceVoice, default: false)
         characterVoices = c.value(.characterVoices, default: true)
+        roarVolume = c.value(.roarVolume, default: 0.8)
     }
 }
 

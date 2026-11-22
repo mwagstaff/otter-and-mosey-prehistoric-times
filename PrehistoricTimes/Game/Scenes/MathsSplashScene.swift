@@ -86,6 +86,21 @@ final class MathsSplashScene: GameScene {
         lanes.enumerated().min { abs($0.element - y) < abs($1.element - y) }?.offset ?? 1
     }
 
+    /// An answer chosen from VoiceOver's buttons rather than by tapping a tunnel.
+    override func handleChoice(_ choice: String) {
+        guard phase == .choosing, let index = gates.firstIndex(where: { $0.name == choice }) else { return }
+        let question = current
+        choose(index)
+        noteChoice(choice, for: question)
+    }
+
+    #if DEBUG
+    override func debugAnswer(_ question: Question) {
+        guard phase == .choosing, let index = gates.firstIndex(where: { $0.name == question.correctChoice }) else { return }
+        choose(index)
+    }
+    #endif
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let point = touches.first?.location(in: self) else { return }
         if let item = pearls.first(where: { hypot($0.position.x - point.x, $0.position.y - point.y) <= max(24, $0.size.width * 0.6) }) {

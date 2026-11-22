@@ -47,9 +47,9 @@ struct SingAlongView: View {
     @State private var crowdArt: [String] = SingAlongView.pets
     /// How far this song's friend had come before this visit, to celebrate any step up.
     @State private var startTier = SongFriendTier.unmet
+    /// Only creatures from the time of the dinosaurs come to the campfire.
     private static let pets = ["reward_pet-pip", "reward_pet-nubbin", "reward_pet-spike", "reward_pet-flap", "reward_pet-scoot",
-                                  "reward_pet-chomp", "icon_1f996", "reward_pet-turtle", "reward_pet-bunny", "reward_pet-owl",
-                                  "reward_pet-crab", "reward_pet-squirrel", "reward_pet-butterfly", "reward_pet-bee"]
+                                  "reward_pet-chomp", "icon_1f996"]
 
     private var reducedMotion: Bool { model.settings.reducedMotion }
     private var song: SongPlan { plan ?? SongPlan(table: table, settings: model.profile?.parent ?? ParentSettings()) }
@@ -118,6 +118,15 @@ struct SingAlongView: View {
             singing(size: size, compact: compact)
         case .quiz, .shuffleIntro:
             quizView(size: size, compact: compact)
+                #if DEBUG
+                .task(id: asked) {
+                    guard AppModel.debugAutoAnswer, stage == .quiz else { return }
+                    do { try await Task.sleep(for: .milliseconds(350)) } catch { return }
+                    guard !busy, let fact = quiz?.fact else { return }
+                    entry = String(fact.product)
+                    submit()
+                }
+                #endif
         case .reward:
             reward(compact: compact)
         case .levelStart:
@@ -194,10 +203,6 @@ struct SingAlongView: View {
                 .padding(.horizontal, 12).padding(.vertical, 4).panel(radius: 30)
                 .accessibilityLabel("\(crowd) friends singing along")
             }
-            if let level, stage == .singing || stage == .quiz, (model.profile?.stars(for: level) ?? 0) > 0 {
-                Button(action: tapped(goToLevel)) { IconLabel("Skip", symbol: "forward.end.fill", size: compact ? 14 : 18, trailing: true) }
-                    .buttonStyle(ChunkyButtonStyle(fill: Palette.cream, size: compact ? 14 : 18))
-            }
             if stage == .singing || stage == .between || stage == .intro, level == nil || stage == .singing {
                 HStack(spacing: 4) {
                     Text("Speed").font(.game(compact ? 14 : 19))
@@ -239,7 +244,7 @@ struct SingAlongView: View {
                 ForEach(Array(band.enumerated()), id: \.element.art) { index, member in
                     ZStack(alignment: .topTrailing) {
                         Image(member.art).resizable().scaledToFit().frame(height: height * 0.42)
-                        Glyph(member.instrument, size: height * 0.13)
+                        Glyph(member.instrument, size: height * 0.16, art: member.prop)
                             .rotationEffect(.degrees(singing && !reducedMotion ? (beat.truncatingRemainder(dividingBy: 2) < 1 ? -14 : 14) : 0))
                     }
                     .offset(y: -bob * height * 0.03 - (index.isMultiple(of: 2) ? height * 0.32 : height * 0.22))
@@ -347,14 +352,17 @@ struct SingAlongView: View {
         .allowsHitTesting(false)
     }
 
-    private struct BandMember { let art: String; let instrument: String }
+    private struct BandMember { let art: String; let instrument: String; let prop: String? }
 
     /// Each befriended boss joins the band once their zone's part is back.
     private var band: [BandMember] {
-        let instruments = ["hollow": "🪇", "meadow": "🥁", "swamp": "🎶", "peaks": "🎤", "ridge": "🪘", "rex": "🥁"]
+        // Egg maracas, a log drum, reed pipes, a shiny triangle, stone bongos and Rex's big drum
+        // (with very short drumsticks). The emoji stand in if a painting is missing.
+        let instruments = ["hollow": ("🪇", "prop_maracas"), "meadow": ("🥁", "prop_logdrum"), "swamp": ("🎶", "prop_panpipes"),
+                           "peaks": ("🔔", "prop_triangle"), "ridge": ("🪘", "prop_bongos"), "rex": ("🥁", "prop_bigdrum")]
         guard let profile = model.profile else { return [] }
         return model.catalog.islands.filter { profile.crystals.contains($0.id) }.map {
-            BandMember(art: IslandTheme.island($0.id).guardianHappy, instrument: instruments[$0.id] ?? "🎵")
+            BandMember(art: IslandTheme.island($0.id).guardianHappy, instrument: instruments[$0.id]?.0 ?? "🎵", prop: instruments[$0.id]?.1)
         }
     }
 

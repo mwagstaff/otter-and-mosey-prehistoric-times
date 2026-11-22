@@ -32,9 +32,13 @@ final class GameBridge {
     var keyboard: KeyboardKind = .none
     /// Answer buttons already tried and found wrong on this question; they fade out.
     var ruledOut: Set<String> = []
+    /// The answers placed in the scene for the current question, offered as buttons to VoiceOver.
+    var sceneChoices: [String] = []
     /// Friendship Power charge from 0 to 1, or nil when the meter is hidden.
     var friendship: Double?
     var friendshipUses = 0
+    /// Scratches given to Rex's itchy back after he hands over the Times Core.
+    var rexScratches = 0
     /// Lines the scene wants spoken before play continues.
     var dialogue: [DialogueLine] = []
     var dialogueSpeakerName = ""

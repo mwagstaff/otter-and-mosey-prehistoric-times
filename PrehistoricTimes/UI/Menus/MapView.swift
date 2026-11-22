@@ -107,6 +107,9 @@ struct MapView: View {
         }
         .onAppear {
             scene.configure(states)
+            if let profile = model.profile {
+                scene.pets = profile.rewards.filter { model.catalog.reward($0)?.kind == .pet }.map { "reward_\($0)" }
+            }
             scene.onSelect = { selected = $0 }
             if let id = model.unlockedIsland, let island = model.catalog.island(id), island.ready {
                 model.unlockedIsland = nil
@@ -150,6 +153,24 @@ struct MapView: View {
                         .accessibilityIdentifier("sing-along")
                     Button(action: tapped { model.route = .museum }) { IconLabel("Museum", emoji: "🦴", size: compact ? 15 : 20) }
                         .buttonStyle(ChunkyButtonStyle(fill: Palette.cream, size: compact ? 15 : 20))
+                }
+                // The optional speed games: the Raptor Race once the Dial is back, and Times Tables
+                // Check practice when a grown-up has switched it on.
+                let race = QuickFireRound.raceUnlocked(profile), check = profile.parent.mtcPractice
+                if race || check {
+                    HStack(spacing: compact ? 6 : 12) {
+                        if race {
+                            Button(action: tapped { model.route = .quickFire(.raptorRace) }) { IconLabel("Raptor Race", emoji: "🏁", size: compact ? 15 : 20) }
+                                .buttonStyle(ChunkyButtonStyle(fill: Palette.coral, ink: .white, size: compact ? 15 : 20))
+                                .accessibilityIdentifier("raptor-race")
+                        }
+                        if check {
+                            Button(action: tapped { model.route = .quickFire(.mtc) }) { IconLabel("Times Check", symbol: "stopwatch.fill", size: compact ? 15 : 20) }
+                                .buttonStyle(ChunkyButtonStyle(fill: Palette.cream, size: compact ? 15 : 20))
+                                .accessibilityLabel("Times Tables Check practice")
+                                .accessibilityIdentifier("times-check")
+                        }
+                    }
                 }
             }
             .fixedSize()
@@ -310,6 +331,7 @@ struct IslandView: View {
         case .guardian: "🦖"
         case .dinoDash: "🏃"
         case .tiptoe: "🤫"
+        case .skySnatch: "☁️"
         }
     }
 }

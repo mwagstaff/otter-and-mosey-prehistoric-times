@@ -38,6 +38,9 @@ final class SpeechBadge: SKNode {
 
     private var width: CGFloat = 0
     private var beat = 0.0
+    /// The bubble's full size. It grows up and to the right from the badge's position, with
+    /// 30% of its width to the left.
+    var bubbleSize: CGSize { bubble.size }
 
     func resize(_ newWidth: CGFloat) {
         guard newWidth != width else { return }

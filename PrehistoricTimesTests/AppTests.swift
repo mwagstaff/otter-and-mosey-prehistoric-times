@@ -83,7 +83,10 @@ import Testing
             names += [theme.background, theme.foreground, theme.guardian, theme.guardianChase, theme.guardianHappy, theme.islandArt,
                       theme.container, "part_\(island.part)"] + theme.friends + [theme.guardianSleep].compactMap { $0 }
         }
-        for name in names { #expect(Art.hasAsset(name), "missing art: \(name)") }
+        // Every treasure, trophy and band instrument has its own painting, and Sky Snatch its flyer.
+        names += Catalog.shared.rewards.map(\.art) + Trophies.all().map(\.art) + ["swoop_flyer"]
+        names += ["maracas", "logdrum", "panpipes", "triangle", "bongos", "bigdrum"].map { "prop_\($0)" }
+        for name in Set(names) { #expect(Art.hasAsset(name), "missing art: \(name)") }
     }
 
     @Test func everyZoneHasAThemeAndBossesFaceTheRightWay() {
@@ -124,7 +127,7 @@ import Testing
 
     @Test func everyCharacterLineHasARecording() {
         let missing = Catalog.voicedLines.filter { Narrator.clipURL($0.key) == nil }.map(\.value.text).sorted()
-        #expect(Catalog.voicedLines.count == 233, "the opening, the workshop, the sing-along, all six zones, the finale and the grown-up lines")
+        #expect(Catalog.voicedLines.count == 261, "the opening, the workshop, the sing-along, all six zones, the finale, the grown-up lines and 30 Dino Fact cards")
         #expect(Catalog.shared.islands.allSatisfy { $0.ready }, "every zone is playable")
         #expect(missing.isEmpty, "\(missing.count) character lines missing a recording, e.g. \(missing.prefix(3))")
     }
@@ -260,7 +263,7 @@ import Testing
     }
 
     @Test func everyModeBuildsASceneAndAsksAQuestion() {
-        for id in ["hollow-1", "hollow-2", "hollow-3", "hollow-4", "hollow-5", "swamp-1"] {
+        for id in ["hollow-1", "hollow-2", "hollow-3", "hollow-4", "hollow-5", "swamp-1", "peaks-2"] {
             let level = Catalog.shared.level(id)!
             let island = Catalog.shared.island(containing: id)!
             let bridge = GameBridge()
@@ -275,6 +278,7 @@ import Testing
             case .guardian: scene = GuardianScene(session: session, bridge: bridge, options: options)
             case .dinoDash: scene = DinoDashScene(session: session, bridge: bridge, options: options)
             case .tiptoe: scene = TiptoeScene(session: session, bridge: bridge, options: options)
+            case .skySnatch: scene = SkySnatchScene(session: session, bridge: bridge, options: options)
             }
             let view = SKView(frame: CGRect(x: 0, y: 0, width: 874, height: 402))
             scene.size = view.frame.size

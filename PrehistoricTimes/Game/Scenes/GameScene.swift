@@ -167,15 +167,43 @@ class GameScene: SKScene {
         #endif
         bridge.ruledOut = []
         bridge.keyboard = keyboard(for: question)
+        // Answers placed in the scene are also offered as buttons to VoiceOver (see GameView).
+        bridge.sceneChoices = question.format == .choice && bridge.keyboard == .none ? question.choices : []
         let spoken = shouldSpeak(question)
         bridge.speakable = spoken ? question.spoken : ""
         bridge.speakableKey = spoken ? question.audioKey : nil
         bridge.canSpeak = spoken && Narrator.shared.canSay(key: question.audioKey, fallback: question.spoken)
         if options.settings.spokenInstructions, spoken { Narrator.shared.say(key: question.audioKey, fallback: question.spoken) }
         present(question)
+        #if DEBUG
+        if AppModel.debugAutoAnswer {
+            // Moving targets become selectable after their entrance animation.
+            run(.repeatForever(.sequence([.wait(forDuration: 0.5), .run { [weak self] in
+                guard let self, let current, bridge.dialogue.isEmpty else { return }
+                debugAnswer(current)
+            }])), withKey: "debugAutoAnswer")
+        }
+        #endif
     }
 
+    #if DEBUG
+    func debugAnswer(_ question: Question) {
+        if question.format == .typed {
+            for _ in question.typingTarget { handleBackspace() }
+            for digit in question.typingTarget { handleKey(digit) }
+        } else {
+            handleChoice(question.correctChoice)
+        }
+    }
+    #endif
+
     func shouldSpeak(_ question: Question) -> Bool { true }
+
+    /// After an answer chosen through VoiceOver's buttons: a wrong one fades on the buttons too.
+    func noteChoice(_ choice: String, for question: Question?) {
+        guard let question, !question.isCorrect(choice: choice) else { return }
+        bridge.ruledOut.insert(choice)
+    }
 
     /// Typed answers are numbers, entered on the number pad. Modes that can be picked or typed
     /// show picked answers as buttons; the other modes place their answers in the scene.
@@ -213,7 +241,11 @@ class GameScene: SKScene {
     func succeed(at point: CGPoint) -> AnswerOutcome? {
         guard let question = current else { return nil }
         backdrop.setAnswering(false)
+        #if DEBUG
+        removeAction(forKey: "debugAutoAnswer")
+        #endif
         current = nil
+        bridge.sceneChoices = []
         let outcome = session.complete(question, firstTry: firstTry, seconds: Date().timeIntervalSince(questionStart), usedHint: usedHint)
         AudioManager.shared.play(outcome.combo >= 3 ? .combo : .correct)
         Haptics.shared.success()

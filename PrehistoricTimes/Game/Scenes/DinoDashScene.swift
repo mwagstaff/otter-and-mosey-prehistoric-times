@@ -155,6 +155,21 @@ final class DinoDashScene: GameScene {
         }]))
     }
 
+    /// An answer chosen from VoiceOver's buttons rather than by tapping a signpost.
+    override func handleChoice(_ choice: String) {
+        guard acceptingAnswers, !catching, let index = gates.firstIndex(where: { $0.name == choice }) else { return }
+        let question = current
+        choose(index)
+        noteChoice(choice, for: question)
+    }
+
+    #if DEBUG
+    override func debugAnswer(_ question: Question) {
+        guard acceptingAnswers, !catching, let index = gates.firstIndex(where: { $0.name == question.correctChoice }) else { return }
+        choose(index)
+    }
+    #endif
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let point = touches.first?.location(in: self), phase == .choosing, !catching else { return }
         // Forgiving touch: the signpost nearest the tap, anywhere right of the runners.

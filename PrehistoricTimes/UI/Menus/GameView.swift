@@ -8,9 +8,11 @@ struct GameView: View {
     let level: LevelDef
     let island: Island
 
-    private enum Stage { case intro, playing, outro, results }
+    private enum Stage { case intro, playing, outro, fact, results }
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    /// With VoiceOver on, answers that sit in the scene are offered as buttons as well.
+    @Environment(\.accessibilityVoiceOverEnabled) private var voiceOver
     @Environment(AppModel.self) private var model
     @State private var bridge = GameBridge()
     @State private var scene: GameScene?
@@ -41,8 +43,10 @@ struct GameView: View {
                         }
                         Spacer(minLength: 0)
                         // Answer buttons are always shown; the number pad only without a hardware keyboard.
-                        if stage == .playing, bridge.dialogue.isEmpty, !hardware || bridge.keyboard.isChoices {
-                            GameKeyboard(kind: bridge.keyboard, width: geometry.size.width - 16,
+                        let keys: KeyboardKind = voiceOver && bridge.keyboard == .none && !bridge.sceneChoices.isEmpty
+                            ? .choices(bridge.sceneChoices) : bridge.keyboard
+                        if stage == .playing, bridge.dialogue.isEmpty, !hardware || keys.isChoices {
+                            GameKeyboard(kind: keys, width: geometry.size.width - 16,
                                          onKey: { bridge.key($0) }, onBackspace: { bridge.backspace() },
                                          onChoice: { bridge.choose($0) }, ruledOut: bridge.ruledOut)
                         } else if hardware, bridge.keyboard != .none, stage == .playing {
@@ -118,7 +122,13 @@ struct GameView: View {
             }
                 .id(bridge.dialogue.first?.text ?? "")
         } else if stage == .outro {
-            DialogueView(lines: level.outro, guardianName: island.guardian.name) { stage = .results }
+            DialogueView(lines: level.outro, guardianName: island.guardian.name) {
+                // A first clear earns the level's Dino Fact card before the results.
+                stage = summary?.isFirstClear == true && level.fact != nil ? .fact : .results
+            }
+        } else if stage == .fact, let fact = level.fact {
+            DinoFactReveal(level: level, island: island, fact: fact) { stage = .results }
+                .transition(.opacity)
         } else if stage == .results, let summary, let result {
             LevelCompleteView(level: level, island: island, result: result, summary: summary)
                 .transition(.opacity)
@@ -143,7 +153,7 @@ struct GameView: View {
         // the other modes are answered by tapping things in the scene.
         switch level.mode {
         case .eggRescue, .tiptoe: return KeyMetrics.numberHeight(compact: compact) + 14
-        case .mathsSplash, .bridgeBuilder, .guardian, .dinoDash: return 0
+        case .mathsSplash, .bridgeBuilder, .guardian, .dinoDash, .skySnatch: return 0
         }
     }
 
@@ -189,6 +199,7 @@ struct GameView: View {
         case .guardian: made = GuardianScene(session: session, bridge: bridge, options: options)
         case .dinoDash: made = DinoDashScene(session: session, bridge: bridge, options: options)
         case .tiptoe: made = TiptoeScene(session: session, bridge: bridge, options: options)
+        case .skySnatch: made = SkySnatchScene(session: session, bridge: bridge, options: options)
         }
         made.insets = insets(geometry: geometry, compact: compact, playing: false)
         scene = made
@@ -197,6 +208,7 @@ struct GameView: View {
     private func finish(with levelResult: LevelResult) {
         guard summary == nil, let scene else { return }
         result = levelResult
+        if bridge.rexScratches > 0 { model.recordRexScratches(bridge.rexScratches) }
         summary = model.complete(levelID: level.id, result: levelResult, learner: scene.session.learner, friendshipUses: bridge.friendshipUses)
         stage = .outro
     }

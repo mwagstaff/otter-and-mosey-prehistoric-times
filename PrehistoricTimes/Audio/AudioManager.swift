@@ -17,6 +17,9 @@ enum SFX: String, CaseIterable {
     case snore, splash, ratchet, tiptoe
     /// One big punchy stomp, for the sing-along's stomp drum.
     case stompBig = "stomp_big"
+
+    /// Roars and stomps follow the grown-ups' separate roar volume.
+    var isDinosaur: Bool { rawValue.hasPrefix("roar_") || self == .stomp }
 }
 
 /// Plays music and effects. Uses the ambient audio session, so the ring/silent switch
@@ -74,7 +77,7 @@ final class AudioManager {
             player = made
         }
         guard let player else { return }
-        player.volume = effectsVolume * volume
+        player.volume = effectsVolume * volume * (effect.isDinosaur ? Float(settings.roarVolume) : 1)
         player.currentTime = 0
         player.play()
     }

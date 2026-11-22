@@ -103,6 +103,8 @@ public struct ParentSettings: Codable, Equatable, Sendable {
     public var songSpeedUp = true
     /// Every level opens with about a minute of its table's song.
     public var levelSongs = true
+    /// Times Tables Check practice at Crash Camp: 25 questions, 6 seconds each, like the Year 4 check.
+    public var mtcPractice = false
 
     public init() {}
 
@@ -120,6 +122,7 @@ public struct ParentSettings: Codable, Equatable, Sendable {
         songRounds = min(max(c.value(.songRounds, default: 3), 1), 3)
         songSpeedUp = c.value(.songSpeedUp, default: true)
         levelSongs = c.value(.levelSongs, default: true)
+        mtcPractice = c.value(.mtcPractice, default: false)
     }
 
     /// Switches to a year group's tables and focus.
@@ -128,6 +131,8 @@ public struct ParentSettings: Codable, Equatable, Sendable {
         guard group != .custom else { return }
         tables = group.tables
         focusTables = group.focusTables
+        // The Year 4 preset is the one that prepares for the Multiplication Tables Check.
+        if group == .year4 { mtcPractice = true }
     }
 
     /// The tables actually in use: never empty, always within 1 to 12, sorted.

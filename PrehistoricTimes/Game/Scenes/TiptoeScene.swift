@@ -3,7 +3,7 @@ import SpriteKit
 import UIKit
 
 /// Tiptoe Past. The zone's boss is fast asleep. Every right answer is one tiptoe step closer to the
-/// Times Machine part she is sleeping on; a wrong answer makes her snore louder and stir. She never
+/// Times Machine part she is sleeping on; a wrong answer makes her stir and very nearly wake. She never
 /// wakes up here (the chase is saved for the Big Escape): if she gets too restless she rolls over
 /// and settles again. New facts are answered with buttons, familiar ones on the number pad.
 final class TiptoeScene: GameScene {
@@ -17,6 +17,8 @@ final class TiptoeScene: GameScene {
     private var steps = 0
     /// How restless the sleeper is, from 0 (deeply asleep) to 1 (about to roll over).
     private var stir: CGFloat = 0
+    /// True while she is mid-stir after a wrong answer, so the regular snore waits its turn.
+    private var stirring = false
 
     override func build() {
         sleeper.texture = Art.texture(theme.guardianSleep ?? theme.guardian)
@@ -29,9 +31,7 @@ final class TiptoeScene: GameScene {
         otter.zPosition = 13
         addChild(mosey)
         addChild(otter)
-        if !Effects.reducedMotion {
-            sleeper.run(.repeatForever(SKAction.sequence([.scaleY(to: 1.025, duration: 1.6), .scaleY(to: 1, duration: 1.6)]).eased()))
-        }
+        startBreathing()
         // Snores and floating Zs while she sleeps; louder and bigger as she stirs.
         run(.repeatForever(.sequence([.wait(forDuration: 2.4), .run { [weak self] in self?.breathe() }])), withKey: "snoring")
     }
@@ -188,27 +188,67 @@ final class TiptoeScene: GameScene {
         }
     }
 
-    /// A wrong answer: she snores louder and shuffles. Too restless, and she rolls over.
+    /// Her slow sleeping breath: a gentle rise and fall.
+    private func startBreathing() {
+        guard !Effects.reducedMotion else { return }
+        sleeper.run(.repeatForever(SKAction.sequence([.scaleY(to: 1.025, duration: 1.6), .scaleY(to: 1, duration: 1.6)]).eased()),
+                    withKey: "breathing")
+    }
+
+    /// A wrong answer: she stirs and very nearly wakes. She snorts, stretches up, wriggles and
+    /// smacks her lips, everyone freezes, and then she sighs and sinks back to sleep. She never
+    /// wakes up. Too restless, and she rolls right over first.
     private func restless() {
         stir = min(1, stir + 0.35)
+        let rollsOver = stir >= 1
+        if rollsOver { stir = 0 }
         slip()
-        otter.react(.scared, hold: 0.8)
-        breathe(loud: true)
-        if !Effects.reducedMotion {
-            sleeper.run(.sequence([.rotate(toAngle: 0.04, duration: 0.1), .rotate(toAngle: -0.04, duration: 0.14), .rotate(toAngle: 0, duration: 0.1)]))
-        }
+        otter.react(.scared, hold: 1.3)
+        mosey.react(.scared, hold: 1.3)
+        AudioManager.shared.play(.snore, volume: 0.9)
         Effects.floatPicture("❗", at: CGPoint(x: sleeper.position.x, y: sleeper.position.y + sleeper.size.height * 0.9),
                              size: min(play.height * 0.14, 60), in: self)
-        guard stir >= 1 else { return }
-        stir = 0
-        bridge.showToast("Phew! She rolled over and went back to sleep.")
-        if !Effects.reducedMotion {
-            sleeper.run(.sequence([.scaleX(to: 1.08, y: 0.9, duration: 0.2), .scaleX(to: 1, y: 1, duration: 0.3)]))
-        }
+        if rollsOver { bridge.showToast("Phew! She rolled over and went back to sleep.") }
+        guard !Effects.reducedMotion else { return }
+
+        stirring = true
+        sleeper.removeAction(forKey: "breathing")
+        sleeper.removeAction(forKey: "stir")
+        let wriggle = rollsOver ? 0.12 : 0.07
+        let rouse = SKAction.sequence([
+            // A snort: a quick squash, then she heaves up and stretches.
+            .scaleX(to: 1.05, y: 0.93, duration: 0.12),
+            SKAction.scaleX(to: 0.96, y: 1.12, duration: 0.22).eased(),
+            // A sleepy wriggle, as if she is about to sit up.
+            .rotate(toAngle: CGFloat(wriggle), duration: 0.1),
+            .rotate(toAngle: CGFloat(-wriggle), duration: 0.16),
+            .rotate(toAngle: CGFloat(wriggle * 0.6), duration: 0.14),
+            .rotate(toAngle: 0, duration: 0.12),
+            // The held breath: is she awake?
+            .run { [weak self] in self?.wonder() },
+            .wait(forDuration: 0.45),
+            // No. A big sigh and she sinks back down, a little flatter, then settles.
+            SKAction.scaleX(to: rollsOver ? 1.1 : 1.05, y: rollsOver ? 0.88 : 0.94, duration: 0.35).eased(),
+            SKAction.scaleX(to: 1, y: 1, duration: 0.3).eased(),
+            .run { [weak self] in
+                guard let self else { return }
+                self.stirring = false
+                self.breathe()
+                self.startBreathing()
+            },
+        ])
+        sleeper.run(rouse, withKey: "stir")
+    }
+
+    /// The tense moment mid-stir: a sleepy "hmm?" over her head.
+    private func wonder() {
+        Effects.floatPicture("❓", at: CGPoint(x: sleeper.position.x - sleeper.size.width * 0.25, y: sleeper.position.y + sleeper.size.height * 0.95),
+                             size: min(play.height * 0.11, 48), in: self)
     }
 
     /// A snore and a floating Z, bigger as she stirs.
     private func breathe(loud: Bool = false) {
+        guard !stirring || loud else { return }
         AudioManager.shared.play(.snore, volume: Float(loud ? 0.75 : 0.25 + 0.35 * stir))
         let size = min(play.height * 0.12, 54) * (1 + stir * 0.8)
         Effects.floatPicture("💤", at: CGPoint(x: sleeper.position.x - sleeper.size.width * 0.2, y: sleeper.position.y + sleeper.size.height * 0.75),

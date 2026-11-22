@@ -163,6 +163,21 @@ final class BridgeBuilderScene: GameScene {
 
     // MARK: - Dragging
 
+    /// An answer chosen from VoiceOver's buttons rather than by dragging a stone.
+    override func handleChoice(_ choice: String) {
+        guard !locked, dragging == nil, let tile = tiles.first(where: { $0.name == choice && $0.alpha == 1 }) else { return }
+        let question = current
+        drop(tile)
+        noteChoice(choice, for: question)
+    }
+
+    #if DEBUG
+    override func debugAnswer(_ question: Question) {
+        guard !locked, dragging == nil, let tile = tiles.first(where: { $0.name == question.correctChoice }) else { return }
+        drop(tile)
+    }
+    #endif
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard !locked, let point = touches.first?.location(in: self) else { return }
         // Generous hit area: the nearest live tile within reach of the finger.

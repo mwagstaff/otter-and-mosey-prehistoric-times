@@ -12,6 +12,8 @@ enum Route: Equatable {
     case songShelf
     case song(Int)
     case levelSong(String)
+    /// The Raptor Race and the Times Tables Check practice.
+    case quickFire(QuickFireKind)
 }
 
 /// Writes save files off the main thread, one at a time and in order.
@@ -72,7 +74,8 @@ final class AppModel {
     /// Development shortcuts: `-debugUnlock` clears every level, `-debugLevel bay-1` opens a level,
     /// `-debugRoute map|collection|home|museum|workshop|parent|parent-ending|check|setup|ending|island:hollow` opens a screen (the parent
     /// dashboard without its gate), `-debugPlaytest bay-1` play-tests a level from the dashboard.
-    static let debugTour = ProcessInfo.processInfo.arguments.contains("-debugTour")
+    static let debugAutoAnswer = ProcessInfo.processInfo.arguments.contains("-debugAutoAnswer")
+    static let debugTour = debugAutoAnswer || ProcessInfo.processInfo.arguments.contains("-debugTour")
     static let debugAnswers = debugTour || ProcessInfo.processInfo.arguments.contains("-debugAnswers")
 
     private func applyDebugArguments() {
@@ -120,6 +123,8 @@ final class AppModel {
             case "museum": route = .museum
             case "workshop": route = .workshop(catalog.islands[0].id)
             case "shelf": route = .songShelf
+            case "race": route = .quickFire(.raptorRace)
+            case "mtc": route = .quickFire(.mtc)
             case "check", "setup":
                 update { $0.seenIntro = false }
                 parentUnlocked = name == "setup"
@@ -376,6 +381,35 @@ final class AppModel {
         save.activeProfile = profile
         persistNow()
         return summary
+    }
+
+    /// Keeps the most scratches Rex has had in one go, for the Itchy Back trophy.
+    func recordRexScratches(_ count: Int) {
+        guard playtest == nil, count > (profile?.stats.rexScratches ?? 0) else { return }
+        update { $0.stats.rexScratches = count }
+    }
+
+    /// Notes a Times Machine part fitted in the Fix-It Workshop.
+    func fixedPart(_ islandID: String) {
+        guard profile?.stats.workshopsFixed.contains(islandID) == false else { return }
+        update { $0.stats.workshopsFixed.append(islandID) }
+    }
+
+    /// Notes a visit to the Fossil Museum after dark, for Night at the Museum.
+    func visitedMuseum(at date: Date = Date()) {
+        let hour = Calendar.current.component(.hour, from: date)
+        guard hour >= 19 || hour < 6, profile?.stats.museumAtNight == false else { return }
+        update { $0.stats.museumAtNight = true }
+    }
+
+    /// Saves a finished Raptor Race or Times Tables Check, and hands out any trophies it won.
+    func finishQuickFire(_ round: QuickFireRound) -> [Trophy] {
+        guard var profile = save.activeProfile else { return [] }
+        QuickFireRound.finish(round, profile: &profile)
+        let won = Trophies.awardOutsideLevel(&profile, catalog: catalog)
+        save.activeProfile = profile
+        persistNow()
+        return won
     }
 
     /// Notes a sing-along round sung (and the song finished, after its last round).

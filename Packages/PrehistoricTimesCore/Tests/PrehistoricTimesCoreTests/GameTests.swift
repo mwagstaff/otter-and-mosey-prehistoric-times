@@ -69,7 +69,7 @@ import Testing
     @Test func modesOnlyGetSkillsTheyCanPresent() {
         for level in catalog.allLevels {
             switch level.mode {
-            case .mathsSplash, .eggRescue, .bridgeBuilder, .guardian, .dinoDash, .tiptoe: #expect(!level.skills.isEmpty, "\(level.id)")
+            case .mathsSplash, .eggRescue, .bridgeBuilder, .guardian, .dinoDash, .tiptoe, .skySnatch: #expect(!level.skills.isEmpty, "\(level.id)")
             }
         }
     }
@@ -86,7 +86,7 @@ import Testing
                 seen += 1
                 #expect(!question.prompt.isEmpty)
                 switch level.mode {
-                case .mathsSplash, .dinoDash:
+                case .mathsSplash, .dinoDash, .skySnatch:
                     #expect(question.format == .choice && question.choices.count == 3, "\(level.id)")
                 case .bridgeBuilder:
                     #expect(question.format == .choice && question.choices.count >= 2, "\(level.id)")
@@ -325,6 +325,17 @@ import Testing
         return file
     }
 
+    @Test func olderSavesGetThePrehistoricPetsInPlaceOfTheOldOnes() throws {
+        var profile = Profile(nickname: "Pip")
+        profile.rewards = ["pet-pip", "pet-butterfly", "pet-comet"]
+        let data = try JSONEncoder().encode(profile)
+        let loaded = try JSONDecoder().decode(Profile.self, from: data)
+        #expect(loaded.rewards == ["pet-pip", "pet-stretch", "pet-clubby"])
+        let pets = Set(Catalog.shared.rewards.filter { $0.kind == .pet }.map(\.id))
+        #expect(Profile.renamedPets.values.allSatisfy(pets.contains), "every replacement pet is in the catalogue")
+        #expect(Profile.renamedPets.keys.allSatisfy { !pets.contains($0) }, "the old pets are gone")
+    }
+
     @Test func roundTripsEverything() throws {
         let store = temporaryStore()
         let file = sampleFile()
@@ -426,15 +437,15 @@ import Testing
                            score: 100, bestCombo: right, correctFirstTry: right, total: level.count)
     }
 
-    @Test func thereAre148TrophiesWithUniqueIDsAndArt() {
+    @Test func thereAre159TrophiesWithUniqueIDsAndArt() {
         let all = Trophies.all(catalog)
-        #expect(all.count == 148)
+        #expect(all.count == 159)
         #expect(Set(all.map(\.id)).count == all.count)
         #expect(all.filter { $0.group == .islands }.count == 72)
-        #expect(all.filter { $0.group == .milestones }.count == 40)
-        #expect(all.filter { $0.group == .learning }.count == 19)
-        #expect(all.filter { $0.group == .collections }.count == 8)
-        #expect(all.filter { $0.group == .secret }.count == 9)
+        #expect(all.filter { $0.group == .milestones }.count == 43)
+        #expect(all.filter { $0.group == .learning }.count == 21)
+        #expect(all.filter { $0.group == .collections }.count == 11)
+        #expect(all.filter { $0.group == .secret }.count == 12)
         #expect(all.allSatisfy { !$0.art.isEmpty && !$0.detail.isEmpty })
     }
 
@@ -456,9 +467,10 @@ import Testing
         profile.pendingTrophies = ["first-steps"]
         profile.levels["hollow-1"] = LevelRecord()
         profile.trophiesReady = true
-        let level = catalog.level("hollow-2")!
+        // Stepping Stones: a perfect Dino Dash would also win the Untouchable moment.
+        let level = catalog.level("hollow-3")!
         let summary = Progression.apply(result(level), levelID: level.id, learner: profile.learner, to: &profile, catalog: catalog, now: monday)
-        #expect(summary.trophies.map(\.id) == ["superstar-hollow-2", "flawless-hollow-2"])
+        #expect(summary.trophies.map(\.id) == ["superstar-hollow-3", "flawless-hollow-3"])
         #expect(profile.pendingTrophies.first == "first-steps")
     }
 

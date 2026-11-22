@@ -164,6 +164,156 @@
 "scene": "help",
 "text": "Even the best explorers ask for help. Why don't you find a grown-up?"
 },
+"line_18ab345e": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Maiasaura means good mother lizard. Scientists found whole nesting grounds full of its eggs and babies."
+},
+"line_643b8be9": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Ferns grew on Earth long before the dinosaurs, and lots of plant-eating dinosaurs munched them."
+},
+"line_2c3af4a5": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Dinosaur footprints can turn to stone. Scientists use them to work out how fast dinosaurs walked."
+},
+"line_17f638f2": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Dinosaur eggs had hard shells, like birds' eggs. Some were round, and some were long like a rugby ball."
+},
+"line_cfceab8a": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Maiasaura parents probably brought food to their babies in the nest, just like birds do today."
+},
+"line_b3c95a71": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Triceratops means three-horned face. Its two big horns could be longer than a grown-up's arm."
+},
+"line_887e6c30": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Triceratops had a huge bony frill on its neck. Its whole head could be more than two metres long."
+},
+"line_9769d8a6": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Triceratops had hundreds of teeth packed into rows, for chopping up tough plants."
+},
+"line_1bdc7eef": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Triceratops lived at the very end of the time of the dinosaurs, alongside T-Rex."
+},
+"line_20eb77fc": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "A grown-up Triceratops was as heavy as an elephant, or even heavier."
+},
+"line_a65a998a": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Crocodiles were already around in dinosaur times, and some of them were as long as a bus."
+},
+"line_8b78dec9": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Dragonflies zoomed about in dinosaur times too, and they're still flying today."
+},
+"line_bbe24628": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Stegosaurus lived so long before T-Rex that there was more time between them than between T-Rex and us!"
+},
+"line_6d86409c": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "The big plates on a Stegosaurus's back may have helped it warm up, or show off to other Stegosauruses."
+},
+"line_93a3483e": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "The spikes on a Stegosaurus's tail are called a thagomizer. The name began as a joke in a cartoon!"
+},
+"line_0d6eb95a": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Pteranodon's wings stretched further from tip to tip than a car is long."
+},
+"line_720ad460": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Pterosaurs were the first animals with backbones to fly, long before birds or bats."
+},
+"line_516a9faa": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Scientists think some baby pterosaurs could fly very soon after they hatched."
+},
+"line_36a81279": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Pteranodon had no teeth at all. It probably caught fish with its long, pointed beak."
+},
+"line_cdf5c0fd": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Pterosaurs weren't dinosaurs. They were the dinosaurs' flying cousins."
+},
+"line_4e37d79b": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "A real Velociraptor was only about the size of a turkey, much smaller than in the films."
+},
+"line_5c568c2b": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Velociraptor had feathers, a bit like a bird."
+},
+"line_b51877eb": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Velociraptor had a big curved claw on each foot, which it held up off the ground as it walked."
+},
+"line_c68974d7": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Birds are living dinosaurs, so a chicken is a very distant cousin of T-Rex!"
+},
+"line_8c72659b": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Velociraptor fossils have been found in the Gobi Desert, in Mongolia."
+},
+"line_bc62e785": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "T-Rex had one of the strongest bites of any land animal that has ever lived."
+},
+"line_b4de28e4": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "The biggest T-Rex teeth, roots and all, were about as long as a banana."
+},
+"line_e1af2e2e": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "T-Rex had short arms with just two fingers on each hand, but its arms were very strong."
+},
+"line_8360f1ce": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "A grown-up T-Rex was about as long as a bus, and as heavy as an elephant."
+},
+"line_57966e61": {
+"speaker": "narrator",
+"scene": "facts",
+"text": "Tyrannosaurus rex means tyrant lizard king."
+},
 "line_09890bc9": {
 "speaker": "mosey",
 "scene": "hollow-1",
@@ -648,30 +798,30 @@
 "scene": "peaks-1",
 "text": "I know exactly how they feel."
 },
-"line_66f65191": {
+"line_c594dfa0": {
+"speaker": "swoop",
+"scene": "peaks-2",
+"text": "Ooh, shiny stones! Catch us if you can!"
+},
+"line_96815ed3": {
 "speaker": "otter",
 "scene": "peaks-2",
-"text": "Rocky ledges, counting up in eights."
+"text": "The Swoop Squad has got our number stones!"
 },
-"line_89a5e565": {
+"line_7af18ac8": {
 "speaker": "mosey",
 "scene": "peaks-2",
-"text": "Eight, sixteen, twenty-four. Double, double, double!"
+"text": "Tap the one carrying the right answer. They'll drop it!"
 },
-"line_237bcd06": {
-"speaker": "otter",
+"line_5a5dda6e": {
+"speaker": "swoop",
 "scene": "peaks-2",
-"text": "Don't look down!"
+"text": "Ooh, shiny! Mine! No, mine! It's the Squad's!"
 },
-"line_2f8466a7": {
+"line_731ba1ee": {
 "speaker": "mosey",
 "scene": "peaks-2",
-"text": "I looked down."
-},
-"line_443e0f0d": {
-"speaker": "otter",
-"scene": "peaks-2",
-"text": "Me too. Let's never do that again."
+"text": "And the Bell is right in the middle."
 },
 "line_96b3b252": {
 "speaker": "mosey",
@@ -702,11 +852,6 @@
 "speaker": "otter",
 "scene": "peaks-4",
 "text": "The Swoop Squad is asleep in their nest."
-},
-"line_731ba1ee": {
-"speaker": "mosey",
-"scene": "peaks-4",
-"text": "And the Bell is right in the middle."
 },
 "line_bf4b2a53": {
 "speaker": "otter",
@@ -747,11 +892,6 @@
 "speaker": "mosey",
 "scene": "peaks-5",
 "text": "And a lot of very sleepy pterosaurs."
-},
-"line_5a5dda6e": {
-"speaker": "swoop",
-"scene": "peaks-5",
-"text": "Ooh, shiny! Mine! No, mine! It's the Squad's!"
 },
 "line_e20f6f28": {
 "speaker": "swoop",

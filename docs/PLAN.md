@@ -1,7 +1,7 @@
 # Otter & Mosey: Prehistoric Times — game plan
 
-Status: **plan only, nothing built yet.** The four main design decisions are confirmed (section 13);
-smaller open questions are collected at the end.
+Status: **iOS game built (M0 to M7, 22 November 2026; see M7 for two loose ends).** The web version (M8) is next. The design
+decisions are confirmed (section 13); smaller open questions are collected at the end.
 
 A native iOS and iPadOS game for UK children aged about 7–9 that teaches **times tables and the
 matching division facts**. Every question in the game is a times-tables question; the adventure is
@@ -375,27 +375,96 @@ the shared pieces can be pulled into an "Otter & Mosey kit" later if a third gam
 | M3 | **Vertical slice** ✅ built (19 Nov 2026) | Opening story and crash, Crash Camp map, Hatchling Hollow complete (4 levels, Big Escape, Fix-It Workshop), stars, first trophies, Fossil Museum, dinosaur music. **Play-test with a child here.** |
 | M4 | **Zones 2–6** ✅ built (20 Nov 2026) | All five zones written, drawn, voiced and scored: 25 more levels, four new bosses (Steggy, the Swoop Squad, the Snatch Pack, Rex) with chase, happy and sleeping poses, five backgrounds and foregrounds, five zone tunes, three new roars, four baby-dinosaur pets, a new group photo, and the finale moved to Crash Camp. Voices: Rex is a designed voice (the account's last free slot); Steggy (Lily), the Swoop Squad (Callum) and the Snatch Pack (Laura) use ElevenLabs premade voices, which take no slot, so no Lost Islands voices had to be deleted. Sky Snatch and the Raptor Race are left for M5. |
 | M5a | **Campfire Sing-Along** ✅ built (21 Nov 2026) | Section 14: song plan and quiz rules with tests, 203 song clips and the dialogue recorded, an 8-bar backing loop cut from the approved test beat, the AVAudioEngine song player, the sing-along screen, the song shelf, zone warm-ups, rewards, trophies, grown-up settings, new art (Otter singing and listening, Mosey singing, the sing-along badge) and a UI play-through test. Instrument props for the band are still emoji. |
-| M5 | **Rewards** | Dino Nursery, hats, Crash Camp decorating, full trophy cabinet, Dino Fact cards. |
-| M6 | **Grown-ups** | Presets, the 12 × 12 report, MTC practice, new gate, Gentle dinosaurs. |
-| M7 | **Polish and QA** | Every device size, performance, accessibility pass, play-test runner green. |
+| M5 | **Rewards** ✅ built (22 Nov 2026) | The Dino Nursery (12 baby dinosaurs, the newest three trotting behind Otter and Mosey on the map), 9 hats (fossil-hunter hat, bone hair clip and Mama Maia's bow from the Big Escapes, plus the goggles and Lost Islands hats), 11 Crash Camp decorations (footprint path, fern arch, volcano lamp and a dino skeleton replace the last Lost Islands ones; older saves are moved over), a 159-trophy cabinet (Raptor Racer ladder, Fact Family Fixer, MTC Ready, Camp Designer, Fossil Hunter, Dino Expert, and the secrets Itchy Back, Untouchable and Night at the Museum), 30 narrated Dino Fact cards (one per level, given on the first clear and kept under Treasures → Facts), museum skeletons that come to life when complete and tapped, **Sky Snatch** (Pterodactyl Peaks level 2) and the **Raptor Race** (after Raptor Ridge). The band's instruments are painted. 24 new pictures ($0.38). |
+| M6 | **Grown-ups** ✅ built (22 Nov 2026) | Year-group presets (Year 4 switches on check practice), the times-tables report (12 × 12 grid by fact state, each table's secure facts, accuracy and typical time, trickiest and slowest facts, check and race scores), **Times Tables Check practice** (25 questions from the 2 to 12 tables, 6 seconds each with 3-second gaps, no feedback until the end, scores kept), a new gate (a three-digit subtraction with exchanging, then press and hold), Gentle dinosaurs and a separate roar volume. |
+| M7 | **Polish and QA** ✅ mostly (22 Nov 2026) | Checked on iPhone 17 Pro and iPad mini. VoiceOver can now answer in every mode (answers placed in a scene are also offered as buttons), boss speech badges sit above or beside the head instead of on it, Skip is gone (dialogue says "Tap anywhere to continue"), Otter and Mosey face the right way in the Raptor Race. Runner: core 131 tests, app 14, iPhone UI suite all green; iPad all green except `testCampPetKeepsItsNewRoamingSpot`, which has failed on iPad since 20 Nov (the dragged pet stops short beside the palm tree). Still to do: that test, and the 3 Sky Snatch ending lines once the ElevenLabs quota resets (see `tools/content/islands.py`). |
 | M8 | **Web version** | See below. |
 
 ---
 
 ## 11. Web version (after iOS is finished)
 
-The same approach Lost Islands is already using: TypeScript, Vite and PixiJS, with:
-
-- `web/src/core`: a TypeScript port of `PrehistoricTimesCore`, with its tests ported too, and
-  cross-language contract tests so star, trophy, fact-state and planner rules can't drift.
-- Content JSON imported straight from the Swift package; art and audio copied in by
-  `sync-assets.mjs`; saves in the same JSON shape.
-- Scenes ported mode by mode onto the small SpriteKit-style engine already written for Lost
-  Islands (`web/src/engine`).
-- Playwright play-throughs in Chromium and mobile WebKit; `?level=` and `?short` for testing.
+Planned on 22 November 2026. **Start once M7 is done and the iOS work is committed**, so the
+port happens once, against a finished core. Published at
+`https://otterandmosey.com/play/prehistoric-times/`, alongside Lost Islands, with a detail page
+at `/games/prehistoric-times/`.
 
 Keeping every rule in the core package (and nothing clever in the scenes) is what makes this port
 mostly mechanical.
+
+### Part A: the web game (`web/` in this folder)
+
+The same approach Lost Islands is using: TypeScript, Vite and PixiJS, copied from its `web/`
+rather than shared (decision 3 in section 13).
+
+1. **Setup.** Copy Lost Islands' Vite, TypeScript and PixiJS setup, and `web/src/engine` as it is.
+   Point the `@content` alias at the `PrehistoricTimesCore` JSON, and `sync-assets.mjs` at this
+   game's `Assets.xcassets` (about 38 MB) and `Resources` (about 27 MB). The "All adventures"
+   link comes from `VITE_GAMES_HOME`, as in Lost Islands.
+2. **Core port.** `web/src/core`: a TypeScript port of `PrehistoricTimesCore` (about 3,100 lines of
+   Swift): fact tracking, question planner, zones, answer styles, fossils, song plans, sessions,
+   progression, trophies and saves.
+   - Saves under a new browser key, `prehistoric-times.save`, in the same JSON shape as the Swift
+     save, so they never collide with Lost Islands (`lost-islands.save`).
+   - Port the core tests (about 1,500 lines).
+   - Extend the parity test (`swift-contract.json`, as in Lost Islands) so Swift and web produce
+     identical results for stars, trophies, fact states, seeded planner output and song timelines.
+3. **Scenes.** The opening story and crash, then Egg Hatch, Dino Dash, Stepping Stones, Tiptoe
+   Past and the Big Escape, plus whatever M5 adds (Sky Snatch, Raptor Race). Then characters,
+   backdrops and effects.
+4. **Screens.** Crash Camp map, Fix-It Workshop, Fossil Museum, trophies, the M5 rewards (Dino
+   Nursery, hats, decorating, Dino Fact cards), the finale and the M6 grown-ups' area (presets,
+   12 × 12 report, MTC practice, gate, Gentle dinosaurs). As in Lost Islands, these are web
+   layouts in the game's style rather than copies of the iOS screens.
+5. **Sing-along.** The riskiest piece (about 1,150 lines of UI plus the song player). The Web
+   Audio API schedules the clips against `AudioContext.currentTime`; each song's clips are
+   decoded before it starts; audio unlocks on the first tap, as iPhone and iPad Safari require;
+   "Fill the ladder" becomes a typed quiz.
+6. **Load weight.** About 65 MB of assets is too much to load at once on a phone: load art and
+   audio per zone, and song clips per table.
+7. **Testing.** Vitest for the core; Playwright play-throughs in Chromium and mobile WebKit, with
+   `?level=hollow-1` and `?short`. Then switch on the browser layers in `tools/playtest`.
+
+### Part B: otterandmosey.com changes (`website/`)
+
+- **`src/catalogue.mjs`:** add the second game. Each entry also gets its own source folder, card
+  art, card tag and background scenes. Card tags: "Times tables · Ages 7–9".
+- **`scripts/build.mjs`:** it assumes one game today (`games[0]` and a single game folder). Rework
+  it so each game takes artwork from its own folder, builds with its own base path
+  (`--base=/play/<slug>/`) and gets its own favicon.
+- **Homepage:**
+  - A neutral hero, "Choose your adventure", scrolling to `#games`; the nav's "Let's play" goes
+    to `/#games`.
+  - Two matching game cards. The Prehistoric Times card could use `bg_camp` with `duo_machine` or
+    `island_rex`. Each card has its own tag; "OUR FIRST ADVENTURE" stays on Lost Islands only.
+  - The page description names both games.
+- **Rotating backgrounds:** add Prehistoric scenes (for example Hatchling Hollow, the swamp, the
+  peaks and Crash Camp). Prefix scene ids with the game, because both games have `bg_title` and
+  `bg_woods`, and check that an old saved scene id still falls back cleanly.
+- **Grown-ups section and FAQ:** answers cover both games, say that each game saves separately in
+  the browser, and link to both detail pages.
+- **New detail page `/games/prehistoric-times/`,** written specially for this game like the Lost
+  Islands one: the time-machine story, the six zones with their art, the learning (adaptive 1–12
+  tables and division, calm by default, the sing-along, the Fossil Museum), how to play and how
+  saves work.
+- **Privacy page:** each game has its own save; the sing-along uses no microphone.
+- **Plumbing:** the new pages in the sitemap; `/healthcheck` in `server.mjs` checks both game
+  entry files; the new pages in `test/site.test.mjs`; both READMEs updated; M8 marked done here.
+  The server's trailing-slash redirect already works for any game path.
+
+### Release
+
+Release the website changes and the game together: build, run the tests, then check a level,
+audio, a sing-along and saved progress in a browser. Deploy with the existing `node_project.zsh`
+command after approval. The build rebuilds both games and the release gets bigger, so check the
+size on Mini, and consider a way to skip rebuilding a game that hasn't changed.
+
+### Still open
+
+- Card wording: Lost Islands reads "Otter and Mosey and / The Lost Islands"; proposed "Otter and
+  Mosey in / Prehistoric Times".
+- Should the card also say "iPhone & iPad · Coming soon", given the App Store question below?
+- A play-test of the web version with a child before it goes on the homepage?
 
 ---
 
@@ -432,6 +501,12 @@ Decided on 20 November 2026, for the sing-along (section 14):
    counts in full.
 10. **Microphone:** none.
 
+Decided on 22 November 2026, for the web version (section 11):
+
+11. **Name and address:** Prehistoric Times, at `otterandmosey.com/play/prehistoric-times/`.
+12. **When:** after M7, not alongside the iOS work.
+13. **Homepage:** a neutral hero and two equal game cards; backgrounds rotate through both games.
+
 Still open, no rush:
 
 - Should the boss dinosaurs talk (designed voices), or only roar while Otter and Mosey do the
@@ -440,7 +515,6 @@ Still open, no rush:
 - Is this for the family only (TestFlight / direct install, like Lost Islands) or the App Store?
   The App Store's Kids category has extra rules on gates and data, which the design already meets.
 - Include ×0 facts? (Not in the Year 3 curriculum or the MTC; proposed: no.)
-- Where will the web version be hosted? (Lost Islands builds for `/play/lost-islands/`.)
 
 ---
 

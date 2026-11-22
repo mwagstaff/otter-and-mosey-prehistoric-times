@@ -43,13 +43,28 @@ final class GuardianScene: GameScene {
         let texture = guardian.texture?.size() ?? CGSize(width: 1, height: 1)
         guardian.size = CGSize(width: guardianHeight * texture.width / texture.height, height: guardianHeight)
         guardian.position = CGPoint(x: play.maxX - max(guardian.size.width * 0.52, play.width * 0.14), y: groundY)
-        guardianBadge.resize(min(max(play.height * 0.22, 56), 120))
-        guardianBadge.position = CGPoint(x: guardian.position.x - guardian.size.width * 0.42, y: guardian.position.y + guardian.size.height * 0.78)
+        placeGuardianBadge()
         otter.resize(min(play.height * 0.36, 250))
         mosey.resize(min(play.height * 0.46, 330))
         placeHeroes()
         sign?.position = signPosition
         layoutOrbs()
+    }
+
+    /// The boss's "talking" bubble sits just above the top of the picture, towards the head end,
+    /// so it never covers a face. Where there is no room above (a tall boss on a short screen) it
+    /// goes beside the head instead, on the heroes' side.
+    private func placeGuardianBadge() {
+        guardianBadge.resize(min(max(play.height * 0.2, 56), 110))
+        let bubble = guardianBadge.bubbleSize
+        let left = guardian.position.x - guardian.size.width * 0.5
+        let top = guardian.position.y + guardian.size.height
+        let gap = bubble.height * 0.08
+        if top + gap + bubble.height <= play.maxY {
+            guardianBadge.position = CGPoint(x: max(left + guardian.size.width * 0.18, play.minX + bubble.width * 0.3), y: top + gap)
+        } else {
+            guardianBadge.position = CGPoint(x: left - bubble.width * 0.72, y: max(top - bubble.height * 1.05, groundY))
+        }
     }
 
     /// Otter stands on the left with Mosey beside him. Where the screen is too narrow for that
@@ -167,10 +182,23 @@ final class GuardianScene: GameScene {
 
     // MARK: - Input
 
+    #if DEBUG
+    override func debugAnswer(_ question: Question) {
+        guard acceptingAnswers, let orb = orbs.first(where: { $0.name == question.correctChoice }) else { return }
+        orb.run(.pop(to: 1.15))
+        answered(at: orb.position)
+    }
+    #endif
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let point = touches.first?.location(in: self) else { return }
         if partOffered, let crystal, crystal.position.distance(to: point) < max(crystal.size.height, 90) {
             collectCrystal()
+            return
+        }
+        // Rex's back is still itchy where the Times Core was: tap him for a scratch.
+        if partOffered, options.island.guardian.kind == "rex", guardian.frame.insetBy(dx: -20, dy: -20).contains(point) {
+            scratchRex(at: point)
             return
         }
         if let powerButton, powerButton.frame.insetBy(dx: -24, dy: -24).contains(point) {
@@ -179,7 +207,20 @@ final class GuardianScene: GameScene {
         }
         guard acceptingAnswers, let question = current, question.format == .choice else { return }
         guard let orb = orbs.filter({ $0.alpha == 1 }).min(by: { $0.position.distance(to: point) < $1.position.distance(to: point) }),
-              orb.position.distance(to: point) < orbSize * 0.8, let choice = orb.name else { return }
+              orb.position.distance(to: point) < orbSize * 0.8 else { return }
+        pick(orb, for: question)
+    }
+
+    /// An answer chosen from VoiceOver's buttons rather than by tapping an orb.
+    override func handleChoice(_ choice: String) {
+        guard acceptingAnswers, let question = current, question.format == .choice,
+              let orb = orbs.first(where: { $0.name == choice && $0.alpha == 1 }) else { return }
+        pick(orb, for: question)
+        noteChoice(choice, for: question)
+    }
+
+    private func pick(_ orb: SKNode, for question: Question) {
+        guard let choice = orb.name else { return }
         if question.isCorrect(choice: choice) {
             orb.run(.pop(to: 1.15))
             answered(at: orb.position)
@@ -396,8 +437,26 @@ final class GuardianScene: GameScene {
     private func offerPart() {
         if crystal == nil { popPart() }
         partOffered = true
-        bridge.caption = "Tap the \(options.island.partName)!"
+        bridge.caption = options.island.guardian.kind == "rex"
+            ? "Tap the \(options.island.partName)! (Rex still looks a bit itchy…)"
+            : "Tap the \(options.island.partName)!"
         AudioManager.shared.play(.portal)
+    }
+
+    /// A good scratch on Rex's back. He wriggles with happiness; ten in a row wins Itchy Back.
+    private func scratchRex(at point: CGPoint) {
+        bridge.rexScratches += 1
+        let count = bridge.rexScratches
+        AudioManager.shared.play(count.isMultiple(of: 3) ? .roarRex : .ratchet, volume: count.isMultiple(of: 3) ? 0.3 : 0.5)
+        Haptics.shared.tap()
+        Effects.floatPicture(["😌", "💤", "✨", "😊"][count % 4], at: CGPoint(x: point.x, y: point.y + 40), size: min(play.height * 0.14, 60), in: self)
+        bridge.caption = count >= Trophies.rexScratches ? "Best scratch ever! Now tap the \(options.island.partName)." : "Scratch, scratch… \(count)!"
+        guard !Effects.reducedMotion else { return }
+        guardian.removeAction(forKey: "scratch")
+        guardian.run(.sequence([
+            .rotate(toAngle: 0.05, duration: 0.08), .rotate(toAngle: -0.05, duration: 0.12), .rotate(toAngle: 0, duration: 0.08),
+            .scaleX(to: 1.04, y: 0.97, duration: 0.1), .scale(to: 1, duration: 0.12),
+        ]), withKey: "scratch")
     }
 
     private func collectCrystal() {

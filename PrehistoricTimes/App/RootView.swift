@@ -50,6 +50,8 @@ struct RootView: View {
                         Button("Collection") { model.route = .collection }
                         Button("Trophies") { model.openTrophies() }
                         Button("Fossil Museum") { model.route = .museum }
+                        Button("Raptor Race") { model.route = .quickFire(.raptorRace) }
+                        Button("Times Tables Check") { model.route = .quickFire(.mtc) }
                         Button("Opening story") { model.route = .intro }
                         Button("Ending") { model.route = .ending }
                     }
@@ -106,6 +108,7 @@ struct RootView: View {
             if let island = model.catalog.island(id) { WorkshopView(island: island) } else { MapView() }
         case .museum: MuseumView()
         case .songShelf: SongShelfView()
+        case .quickFire(let kind): QuickFireView(kind: kind)
         case .song(let table): SingAlongView(table: table)
         case .levelSong(let id):
             if let profile = model.profile, let song = SingAlong.levelSong(id, profile: profile, catalog: model.catalog) {
@@ -132,6 +135,8 @@ struct RootView: View {
         case .intro: AudioManager.shared.playMusic("music_title")
         // The sing-along plays its own beat.
         case .song, .levelSong: AudioManager.shared.playMusic("none")
+        case .quickFire(.raptorRace): AudioManager.shared.playMusic("music_chase")
+        case .quickFire(.mtc): AudioManager.shared.playMusic("none")
         default: AudioManager.shared.playMusic("music_main")
         }
     }
@@ -177,7 +182,7 @@ struct DedicationView: View {
                 .padding(.horizontal, 24)
                 VStack {
                     Spacer()
-                    Button(action: tapped(onDone)) { IconLabel("Tap to continue", symbol: "play.fill", size: compact ? 18 : 24 * scale, trailing: true) }
+                    Button(action: tapped(onDone)) { IconLabel("Tap anywhere to continue", symbol: "play.fill", size: compact ? 18 : 24 * scale, trailing: true) }
                         .buttonStyle(ChunkyButtonStyle(fill: Palette.cream, size: compact ? 18 : 24 * scale))
                         .padding(.bottom, compact ? 14 : 40)
                 }

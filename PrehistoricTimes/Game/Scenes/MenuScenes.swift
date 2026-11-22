@@ -150,6 +150,11 @@ final class WorldMapScene: CoverScene {
     private var islands: [String: SKNode] = [:]
     private var selected: String?
     private let boat = SKSpriteNode(texture: Art.texture("duo_ride"))
+    /// The newest baby dinosaurs from the Dino Nursery, trotting along behind Otter and Mosey.
+    private let followers = SKNode()
+    var pets: [String] = [] {
+        didSet { if pets != oldValue, isBuilt { layoutFollowers() } }
+    }
     private let pathLayer = SKNode()
     private let camp = SKNode()
 
@@ -174,6 +179,8 @@ final class WorldMapScene: CoverScene {
         addChild(camp)
         boat.zPosition = 30
         addChild(boat)
+        followers.zPosition = 29
+        addChild(followers)
         let glints = Effects.ambient(.sparkles, size: size)
         glints.particleBirthRate = 4
         addChild(glints)
@@ -375,14 +382,34 @@ final class WorldMapScene: CoverScene {
         let texture = boat.texture?.size() ?? CGSize(width: 2, height: 1)
         boat.size = CGSize(width: islandSize * 0.62, height: islandSize * 0.62 * texture.height / texture.width)
         let target = CGPoint(x: point(index).x - islandSize * 0.5, y: point(index).y - islandSize * 0.3)
+        layoutFollowers()
         if animated {
             boat.run(SKAction.move(to: target, duration: 0.8).eased())
+            followers.run(SKAction.move(to: target, duration: 0.95).eased())
         } else {
+            followers.position = target
             boat.position = target
             boat.removeAction(forKey: "bob")
             if !Effects.reducedMotion {
                 boat.run(.repeatForever(SKAction.sequence([.moveBy(x: 0, y: 5, duration: 0.9), .moveBy(x: 0, y: -5, duration: 0.9)]).eased()), withKey: "bob")
             }
+        }
+    }
+
+    /// Up to three pets in a little line behind the heroes, each hopping on its own beat.
+    private func layoutFollowers() {
+        followers.removeAllChildren()
+        followers.isHidden = boat.isHidden
+        let side = islandSize * 0.2
+        for (index, art) in pets.suffix(3).reversed().enumerated() {
+            let pet = SKSpriteNode(texture: Art.emoji(art, size: 96), size: CGSize(width: side, height: side))
+            pet.position = CGPoint(x: -boat.size.width * 0.45 - CGFloat(index) * side * 0.85, y: -boat.size.height * 0.28 + CGFloat(index % 2) * side * 0.12)
+            followers.addChild(pet)
+            guard !Effects.reducedMotion else { continue }
+            pet.run(.sequence([.wait(forDuration: 0.2 * Double(index)), .repeatForever(.sequence([
+                SKAction.moveBy(x: 0, y: side * 0.18, duration: 0.25).eased(), SKAction.moveBy(x: 0, y: -side * 0.18, duration: 0.25).eased(),
+                .wait(forDuration: 1.1 + 0.2 * Double(index)),
+            ]))]))
         }
     }
 

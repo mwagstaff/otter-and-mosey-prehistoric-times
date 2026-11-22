@@ -21,13 +21,46 @@ nonisolated final class PlaythroughTests: XCTestCase {
         XCTAssertTrue(caption.waitForExistence(timeout: 20))
     }
 
+    /// The line under every speech panel. There is no Skip: dialogue moves on a tap at a time.
+    static let continuePrompt = "Tap anywhere to continue"
+
+    /// Waits for a speech panel, then taps through every line of it. False if none appears.
+    @MainActor private func tapThroughDialogue(_ app: XCUIApplication, within timeout: TimeInterval) -> Bool {
+        let prompt = app.staticTexts[Self.continuePrompt]
+        guard prompt.waitForExistence(timeout: timeout) else { return false }
+        for _ in 0..<15 where prompt.exists {
+            if prompt.isHittable { prompt.tap() }
+            RunLoop.current.run(until: Date().addingTimeInterval(0.5))
+        }
+        return true
+    }
+
+    @MainActor func testAutoAnswerCompletesSongAndWorkshop() {
+        continueAfterFailure = false
+        XCUIDevice.shared.orientation = .landscapeLeft
+        let app = XCUIApplication()
+        app.launchArguments = ["-debugAutoAnswer", "-debugRoute", "song:3", "-debugQuiz", "-debugShort"]
+        app.launch()
+        XCTAssertTrue(tapThroughDialogue(app, within: 25)) // Start the shuffled half of the quiz.
+        XCTAssertTrue(app.staticTexts["You learned the 3s song!"].waitForExistence(timeout: 20))
+
+        app.terminate()
+        app.launchArguments = ["-debugAutoAnswer", "-debugRoute", "workshop"]
+        app.launch()
+        XCTAssertTrue(tapThroughDialogue(app, within: 15))
+        let solved = app.staticTexts.matching(NSPredicate(format: "label ENDSWITH %@", "Perfect fit!")).firstMatch
+        XCTAssertTrue(solved.waitForExistence(timeout: 10))
+        XCTAssertTrue(tapThroughDialogue(app, within: 15)) // Fit the part after all three puzzles.
+        XCTAssertTrue(app.buttons["Back to Crash Camp"].waitForExistence(timeout: 10))
+    }
+
     @MainActor func testGrownUpKeypadAcceptsTapsAcrossEachKey() {
         continueAfterFailure = false
         XCUIDevice.shared.orientation = .landscapeLeft
         let app = XCUIApplication()
         app.launch()
         let grownUps = app.buttons["Grown-ups"]
-        app.buttons["Tap to continue"].tap()
+        app.buttons["Tap anywhere to continue"].tap()
         XCTAssertTrue(grownUps.waitForExistence(timeout: 15))
         grownUps.tap()
 
@@ -56,7 +89,7 @@ nonisolated final class PlaythroughTests: XCTestCase {
         app.launchArguments = ["-debugRoute", "parent"]
         XCUIDevice.shared.orientation = .landscapeLeft
         app.launch()
-        app.buttons["Tap to continue"].tap()
+        app.buttons["Tap anywhere to continue"].tap()
 
         let table = app.buttons.matching(NSPredicate(format: "label == %@ AND value == %@", "10×", "On")).firstMatch
         let focus = app.buttons.matching(NSPredicate(format: "label == %@ AND value == %@", "10×", "Review")).firstMatch
@@ -112,8 +145,8 @@ nonisolated final class PlaythroughTests: XCTestCase {
         var typed = 0
         while Date() < deadline {
             RunLoop.current.run(until: Date().addingTimeInterval(0.3))
-            let skip = app.buttons["Skip"]
-            if skip.exists && skip.isHittable { skip.tap(); continue }
+            let next = app.staticTexts[Self.continuePrompt]
+            if next.exists && next.isHittable { next.tap(); continue }
             if app.staticTexts["You learned the 3s song!"].exists { break }
             // The ladder, then the shuffle challenge straight after it: read the question and answer it.
             let waiting = app.staticTexts["Type the answer. The band will wait!"].exists || app.staticTexts["All mixed up! Take your time."].exists
@@ -158,12 +191,17 @@ nonisolated final class PlaythroughTests: XCTestCase {
     @MainActor func testAllLevelsThroughControls() throws {
         try play(Catalog.shared.allLevels.map(\.id))
     }
-    @MainActor private func play(_ levels: [String]) throws {
+    @MainActor func testAutoAnswerAcrossAllLevels() throws {
+        try play(Catalog.shared.allLevels.map(\.id), autoAnswer: true)
+    }
+
+    @MainActor private func play(_ levels: [String], autoAnswer: Bool = false) throws {
         continueAfterFailure = false
         XCUIDevice.shared.orientation = .landscapeLeft
         for level in levels {
             let app = XCUIApplication()
             app.launchArguments = ["-debugLevel", level, "-debugShort", "-debugAutomation"]
+            if autoAnswer { app.launchArguments += ["-debugAutoAnswer", "-debugSkipIntro"] }
             app.launch()
             defer { app.terminate() }
             let state = app.otherElements["playtest-state"]
@@ -173,8 +211,8 @@ nonisolated final class PlaythroughTests: XCTestCase {
             var finished = false
             while Date() < deadline {
                 RunLoop.current.run(until: Date().addingTimeInterval(0.15))
-                let skip = app.buttons["Skip"]
-                if skip.exists && skip.isHittable { skip.tap(); continue }
+                let prompt = app.staticTexts[Self.continuePrompt]
+                if prompt.exists && prompt.isHittable { prompt.tap(); continue }
                 guard let raw = state.value as? String, let data = raw.data(using: .utf8),
                       let s = try JSONSerialization.jsonObject(with: data) as? [String: Any] else { continue }
                 if s["finished"] as? Bool == true { XCTAssertEqual(s["stars"] as? Int, 3, level); finished = true; break }
@@ -183,7 +221,7 @@ nonisolated final class PlaythroughTests: XCTestCase {
                 }
                 if let p = s["powerButton"] as? [String: Double] { tap(p) }
                 else if let p = s["crystal"] as? [String: Double] { tap(p) }
-                else if s["ready"] as? Bool == true {
+                else if !autoAnswer, s["ready"] as? Bool == true {
                     let choices = s["choices"] as? [String] ?? []
                     let targets = s["targets"] as? [[String: Double]] ?? []
                     if !choices.isEmpty, let answer = s["choice"] as? String, let index = choices.firstIndex(of: answer),

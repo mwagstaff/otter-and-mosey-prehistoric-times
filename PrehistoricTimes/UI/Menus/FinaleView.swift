@@ -208,9 +208,6 @@ struct FinaleView: View {
             overlays(m)
             Color.white.opacity(flash).allowsHitTesting(false)
             if !nextOn {
-                Button(action: tapped { skipToEnd() }) { Text("Skip") }
-                    .buttonStyle(ChunkyButtonStyle(fill: Palette.cream, size: max(14, 1.8 * u)))
-                    .position(x: m.skipButton.midX, y: m.skipButton.midY)
                 Text("Tap to speed up").font(.game(max(11, 1.5 * u), weight: .bold)).foregroundStyle(.white.opacity(0.8))
                     .shadow(color: .black.opacity(0.5), radius: 0, y: 1)
                     .fixedSize()
@@ -586,11 +583,6 @@ struct FinaleView: View {
     private func burst(_ count: Int, x: Double, y: Double) {
         let scale = max(stageSize.width / 1000, 0.5)
         confetti.burst(calm ? count / 3 : count, at: CGPoint(x: x * stageSize.width, y: y * stageSize.height), scale: scale)
-    }
-
-    private func skipToEnd() {
-        startBeat = 6
-        run += 1
     }
 
     /// Puts everything as it would be at the start of `beat`, for Skip.

@@ -11,8 +11,8 @@ network calls. A web version follows once the iOS game is finished.
 
 ## Status
 
-**M0 to M4 are done: all six zones and the finale can be played from start to finish.** Rewards,
-grown-ups' extras and polish (M5 to M7) come next. See [docs/PLAN.md](docs/PLAN.md).
+**The iOS game is built (M0 to M7): all six zones, the finale, the rewards and the grown-ups'
+area.** The web version (M8) comes next. See [docs/PLAN.md](docs/PLAN.md).
 
 What plays today:
 
@@ -43,9 +43,20 @@ What plays today:
   and friends join in, one per line sung and per right answer. A record for each table on the song
   shelf (reached from the campfire band at Crash Camp or the map's camp card), and grown-up
   settings for rounds, speed-up and level songs. See section 14 of the plan.
+- **Sky Snatch** (Pterodactyl Peaks): the Swoop Squad flies past dangling number stones; tap
+  the one with the right answer and it drops the stone into Otter's paws.
+- **Rewards (M5):** the Dino Nursery (12 baby dinosaurs, who follow Otter and Mosey on the map and
+  play at Crash Camp), 9 hats, 11 camp decorations, 30 narrated Dino Fact cards (one per level,
+  under Treasures → Facts), and a 159-trophy cabinet with secrets to find.
+- **Raptor Race:** after Raptor Ridge, 60 seconds of quick-fire facts against your own best.
+- **Times Tables Check practice:** when a grown-up switches it on (the Year 4 preset does), 25
+  questions with 6 seconds each, like the Year 4 check. Scores go into the grown-ups' report.
 - **Music:** a prehistoric main theme, a jungle tune for Hatchling Hollow and a bouncy chase.
-- **Grown-ups:** year-group presets, tables 1 to 12 with focus stars, multipliers, question kinds,
-  answer style and chase pace (Calm, Exciting or Gentle dinosaurs).
+- **Grown-ups:** behind a three-digit subtraction and a press-and-hold. Year-group presets, tables
+  1 to 12 with focus stars, multipliers, question kinds, answer style, chase pace (Calm, Exciting or
+  Gentle dinosaurs), check practice and a separate roar volume. The times-tables report shows every
+  fact from 1 × 1 to 12 × 12 by how well it is known, each table's progress, the trickiest and
+  slowest facts, and check and race scores.
 
 Debug launch arguments also include `-debugRoute museum|workshop` and `-debugSkipIntro` (go straight
 to a level's first question).
@@ -125,7 +136,7 @@ Nothing in the app talks to the network, and no key is ever bundled.
 | Argument | Effect |
 | --- | --- |
 | `-debugLevel bay-1` | Open a level directly. |
-| `-debugRoute map` | Open a screen: `map`, `collection`, `home`, `parent` (skips the grown-ups' gate), `ending`, `intro`, `island:woods`, `shelf` (the song shelf), `song:3` (the 3s song), `levelsong:hollow-1` (a level's opening song). |
+| `-debugRoute map` | Open a screen: `map`, `collection`, `home`, `parent` (skips the grown-ups' gate), `ending`, `intro`, `island:woods`, `shelf` (the song shelf), `song:3` (the 3s song), `levelsong:hollow-1` (a level's opening song), `race` (Raptor Race), `mtc` (Times Tables Check practice). |
 | `-debugPlaytest bay-1` | Play-test a level as if started from the grown-ups' area (nothing is saved). |
 | `-debugUnlock` | Treat every level as cleared for this launch. |
 | `-debugShort` | Limit levels to three questions, and sing-along songs to three lines. |
@@ -134,12 +145,14 @@ Nothing in the app talks to the network, and no key is ever bundled.
 | `-debugBefriend` | In a Big Escape, skip the chase and go straight to the boss making friends. |
 | `-debugTour` | Open the map with a hammer menu for every level, every zone’s Fix-It Workshop, songs, camp, collection, trophies, museum, opening story and ending. Includes answer cues. |
 | `-debugAnswers` | Show the exact choice or digits in every level, sing-along quiz and workshop. Combine with a direct route for a layout check without the hammer menu. |
+| `-debugAutoAnswer` | Start a disposable tour and automatically submit the correct answer in levels, song quizzes and workshops. Story, boss actions and reward collection stay interactive. |
 | `-debugResults` | Open a level directly on its perfect-run rewards screen. |
 
 **On Mike’s iPhone**, run `./tools/iphone-playtest -debugShort` from this game’s directory. It builds the current Debug sources, installs the app, and starts the tour. Use the hammer at the left edge to change activities mid-session. The tour and answer-cue switches start with a fresh in-memory player on each launch. Add `-debugUnlock` to explore cleared-game rewards and collections. Set `PLAYTEST_DEVICE` to target a different device by name or UDID.
 
 | To check | Arguments to add to `./tools/iphone-playtest` |
 | --- | --- |
+| Fast tour with automatic answers and three-question levels | `-debugAutoAnswer -debugShort` |
 | Short level, including normal gestures, mistakes and hints | `-debugLevel hollow-1 -debugSkipIntro -debugShort` |
 | Boss friendship and part collection | `-debugLevel hollow-5 -debugSkipIntro -debugBefriend` |
 | Trophy collection and reward navigation | `-debugLevel hollow-1 -debugResults` |

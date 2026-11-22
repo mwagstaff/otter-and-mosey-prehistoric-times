@@ -754,6 +754,160 @@
    "name": "songfriend_12",
    "style": "icon",
    "prompt": "An adorable chubby cartoon baby dinosaur musician for a children's game: a baby Plesiosaurus, deep ocean blue with flippers, playing a little violin. Big sparkly happy eyes, full body, sitting or standing."
+  },
+  {
+   "name": "reward_pet-stretch",
+   "style": "icon",
+   "prompt": "Stretch, a baby Brachiosaurus: soft lavender-blue with a cream tummy, a long neck stretched up proudly, a small round head with a little bump on top, stubby legs, big happy eyes, a sweet smile."
+  },
+  {
+   "name": "reward_pet-paddle",
+   "style": "icon",
+   "prompt": "Paddle, a baby Ichthyosaurus (a dolphin-shaped prehistoric sea reptile): glossy turquoise with a pale aqua tummy, a short rounded snout with a toothless smile, four little flippers, a crescent tail fin and a small back fin, big happy eyes, leaping playfully."
+  },
+  {
+   "name": "reward_pet-feather",
+   "style": "icon",
+   "prompt": "Feather, a baby Archaeopteryx (the first feathered dinosaur-bird): fluffy with bright red, orange and gold feathers, small clawed wings spread in a wave, a long feathery tail, a little toothless beak-snout, big happy eyes."
+  },
+  {
+   "name": "reward_pet-bonk",
+   "style": "icon",
+   "prompt": "Bonk, a baby Pachycephalosaurus: warm golden-yellow with a cream tummy, a big shiny round dome head ringed with soft rounded bumps, standing on two legs with tiny arms raised, big happy eyes, a cheeky grin."
+  },
+  {
+   "name": "reward_pet-clubby",
+   "style": "icon",
+   "prompt": "Clubby, a baby Ankylosaurus: rusty orange-brown with a pale peach tummy, a low wide body covered in rows of soft rounded armour bumps, a little round club on the end of its tail, big happy eyes, a wide friendly smile."
+  },
+  {
+   "name": "reward_pet-dot",
+   "style": "icon",
+   "prompt": "Dot, a baby Protoceratops: pale pink with lilac spots, a small rounded neck frill, a short parrot-like beak with a happy smile, chunky little legs, big sparkly eyes, trotting happily."
+  },
+  {
+   "name": "swoop_flyer",
+   "refs": [
+    "tools/raw/boss_swoop.png"
+   ],
+   "model": "gpt-image-2.5-sunburst",
+   "quality": "high",
+   "prompt": "Exactly the same art style, colours and markings as the reference flying reptiles. Draw just ONE of them, alone, one figure only: a single friendly blue pteranodon flying, side view facing LEFT (beak and head at the left, tail to the right), both wings spread wide in mid-flap, legs tucked up underneath, beak closed in a cheeky happy smile, big expressive eyes. Nothing in its beak or feet: no bell, no stone."
+  },
+  {
+   "name": "reward_deco-footprints",
+   "style": "icon",
+   "prompt": "A short winding path of three big three-toed dinosaur footprints pressed into sandy earth, edged with little round pebbles and a tiny fern sprout."
+  },
+  {
+   "name": "reward_deco-fernarch",
+   "style": "icon",
+   "prompt": "A leafy garden arch made of two curling prehistoric fern fronds meeting at the top, tied with a twist of vine, with a few tiny flowers."
+  },
+  {
+   "name": "reward_deco-volcano",
+   "style": "icon",
+   "prompt": "A cute little lamp shaped like a rounded volcano, glowing warm orange from the top like a night light, with a soft curl of smoke and friendly rounded rocks around its base."
+  },
+  {
+   "name": "reward_deco-skeleton",
+   "style": "icon",
+   "prompt": "A friendly museum-style dinosaur skeleton model on a little wooden stand: a cute long-necked dinosaur made of rounded ivory bones, smiling skull."
+  },
+  {
+   "name": "reward_hat-fossil",
+   "style": "icon",
+   "prompt": "A sand-coloured fossil hunter's sun hat with a wide brim and a brown band, a small brush and a little ivory dinosaur bone tucked into the band."
+  },
+  {
+   "name": "reward_hat-bone",
+   "style": "icon",
+   "prompt": "A cute hair clip shaped like a small cartoon dinosaur bone, ivory white with a pink ribbon bow in the middle."
+  },
+  {
+   "name": "badge_missing-number",
+   "style": "badge",
+   "prompt": "A round reward sticker for a children's times-tables game: a magnifying glass discovering a glowing golden question-mark-shaped dinosaur egg in a nest, on a soft violet disc with a chunky cream rim."
+  },
+  {
+   "name": "badge_counting",
+   "style": "badge",
+   "prompt": "A round reward sticker for a children's times-tables game: a row of four stepping stones crossing a little stream, each a little higher than the last, with three-toed footprints hopping across them, on a sky-blue disc with a chunky cream rim."
+  },
+  {
+   "name": "badge_fact-family",
+   "style": "badge",
+   "prompt": "A round reward sticker for a children's times-tables game: four shiny brass cog wheels of different sizes meshing together, with a steel spanner across them, on a warm teal disc with a chunky cream rim."
+  },
+  {
+   "name": "badge_mtc",
+   "style": "badge",
+   "prompt": "A round reward sticker for a children's times-tables game: a gold stopwatch with a big green tick in front of it and little sparkles, on a deep blue disc with a chunky cream rim."
+  },
+  {
+   "name": "badge_raptor-race",
+   "style": "badge",
+   "prompt": "A round reward sticker for a children's times-tables game: a chequered finish flag and a cute feathery orange baby velociraptor sprinting with speed lines, on a sunset-orange disc with a chunky cream rim."
+  },
+  {
+   "name": "badge_decorations-all",
+   "style": "badge",
+   "prompt": "A round reward sticker for a children's times-tables game: a cosy camp with a little tent, a campfire and string lights, on a warm green disc with a chunky cream rim."
+  },
+  {
+   "name": "badge_fossils-all",
+   "style": "badge",
+   "prompt": "A round reward sticker for a children's times-tables game: a complete cute dinosaur skeleton standing proudly with a little golden crown of light around its skull, on a sandy gold disc with a chunky cream rim."
+  },
+  {
+   "name": "badge_fact-cards",
+   "style": "badge",
+   "prompt": "A round reward sticker for a children's times-tables game: a small fanned stack of three illustrated cards showing a dinosaur silhouette, a footprint and an egg, on a coral-red disc with a chunky cream rim."
+  },
+  {
+   "name": "badge_itchy-back",
+   "style": "badge",
+   "prompt": "A round reward sticker for a children's times-tables game: a cute green cartoon T-Rex with a blissful happy face, eyes closed, a back-scratcher reaching its back, little hearts floating, on a purple disc with a chunky cream rim."
+  },
+  {
+   "name": "badge_untouchable",
+   "style": "badge",
+   "prompt": "A round reward sticker for a children's times-tables game: a speedy cartoon river otter running with a big dust cloud behind and a tiny far-away dinosaur silhouette, on a bright yellow disc with a chunky cream rim."
+  },
+  {
+   "name": "badge_night-museum",
+   "style": "badge",
+   "prompt": "A round reward sticker for a children's times-tables game: a cute dinosaur skeleton in a museum at night, lit by a crescent moon through a window, with tiny stars, on a midnight-blue disc with a chunky cream rim."
+  },
+  {
+   "name": "prop_maracas",
+   "style": "icon",
+   "prompt": "A pair of cute maracas made from speckled cream dinosaur eggshells on short wooden handles, crossed."
+  },
+  {
+   "name": "prop_logdrum",
+   "style": "icon",
+   "prompt": "A chunky hollow log drum with a stretched leaf top, tied with vines, and two stick drumsticks resting on it."
+  },
+  {
+   "name": "prop_panpipes",
+   "style": "icon",
+   "prompt": "Panpipes made of a row of hollow green swamp reeds of different lengths, tied together with vine."
+  },
+  {
+   "name": "prop_triangle",
+   "style": "icon",
+   "prompt": "A shiny golden musical triangle hanging from a loop of string, with a little striker beater and sparkle."
+  },
+  {
+   "name": "prop_bongos",
+   "style": "icon",
+   "prompt": "A pair of bongo drums carved from warm red volcanic stone, with patterned bands, side by side."
+  },
+  {
+   "name": "prop_bigdrum",
+   "style": "icon",
+   "prompt": "A huge round bass drum painted purple with gold rims, and two very short stubby drumsticks resting on top."
   }
  ]
 }

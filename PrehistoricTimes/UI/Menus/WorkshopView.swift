@@ -80,7 +80,18 @@ struct WorkshopView: View {
                     case .intro, .done:
                         machine(compact: compact)
                     case .puzzles:
-                        if let puzzle { board(puzzle, size: geometry.size, compact: compact) }
+                        if let puzzle {
+                            board(puzzle, size: geometry.size, compact: compact)
+                                #if DEBUG
+                                .task(id: index) {
+                                    guard AppModel.debugAutoAnswer else { return }
+                                    do { try await Task.sleep(for: .milliseconds(350)) } catch { return }
+                                    guard !solved else { return }
+                                    rowsFilled = puzzle.rows
+                                    choose(puzzle.question.correctChoice, in: puzzle)
+                                }
+                                #endif
+                        }
                     case .fitted:
                         machine(compact: compact)
                         if lastPart {
@@ -259,6 +270,7 @@ struct WorkshopView: View {
 
     private func fit() {
         stage = .fitted
+        model.fixedPart(island.id)
         AudioManager.shared.play(.ratchet)
         AudioManager.shared.play(.crystal)
         Haptics.shared.crescendo()

@@ -1,7 +1,7 @@
 import PrehistoricTimesCore
 import SwiftUI
 
-/// Speech bubbles for story moments. Tap anywhere to move on; Skip jumps to the end.
+/// Speech bubbles for story moments. Tap anywhere to move on, one line at a time.
 struct DialogueView: View {
     var lines: [DialogueLine]
     var guardianName: String = "Guardian"
@@ -29,9 +29,6 @@ struct DialogueView: View {
                             .padding(.vertical, 4)
                             .background(Capsule().fill(speakerColour))
                         Spacer()
-                        // Skip sits in the panel, so it never covers a character in the scene.
-                        Button(action: tapped(finish)) { IconLabel("Skip", symbol: "forward.end.fill", size: compact ? 14 : 17 * scale, trailing: true) }
-                            .buttonStyle(ChunkyButtonStyle(fill: Palette.cream, size: compact ? 14 : 17 * scale))
                     }
                     Text(line.text)
                         .font(.game(compact ? 21 : 30 * scale, weight: .bold))
@@ -41,7 +38,7 @@ struct DialogueView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     HStack {
                         Spacer()
-                        IconLabel("Tap to continue", symbol: "play.fill", size: compact ? 13 : 16 * scale, trailing: true)
+                        IconLabel("Tap anywhere to continue", symbol: "play.fill", size: compact ? 13 : 16 * scale, trailing: true)
                             .font(.game(compact ? 13 : 16 * scale, weight: .bold))
                             .foregroundStyle(Palette.ink.opacity(0.55))
                     }
